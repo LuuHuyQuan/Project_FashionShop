@@ -1,186 +1,371 @@
-import React from 'react';
-import { ArrowRight, Star, TrendingUp, Package, Truck, Shield } from 'lucide-react';
-import { Card, CardContent } from '../components/ui/card';
-import { Badge } from '../components/ui/badge';
+import React, { useState } from 'react';
+import { ArrowRight, Star, Truck, Shield, Package, Sparkles, ChevronRight, Heart, ShoppingCart, Flame, Zap } from 'lucide-react';
+
+const categories = [
+  { name: 'Áo thun', items: 120, gradient: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)', emoji: '👕' },
+  { name: 'Áo sơ mi', items: 85, gradient: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)', emoji: '👔' },
+  { name: 'Quần jeans', items: 95, gradient: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)', emoji: '👖' },
+  { name: 'Phụ kiện', items: 150, gradient: 'linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)', emoji: '🎒' },
+];
+
+const featuredProducts = [
+  { name: 'Áo thun Premium Cotton', price: 599000, oldPrice: 799000, badge: 'Sale', rating: 5, reviews: 284, gradient: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)' },
+  { name: 'Áo sơ mi Slim Fit', price: 749000, badge: 'New', rating: 4, reviews: 165, gradient: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)' },
+  { name: 'Quần jeans Skinny', price: 899000, badge: 'Hot', rating: 5, reviews: 213, gradient: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)' },
+  { name: 'Áo khoác Bomber', price: 1299000, badge: 'Trend', rating: 4, reviews: 98, gradient: 'linear-gradient(135deg, #fa709a 0%, #fee140 100%)' },
+];
+
+const badgeColors: Record<string, { bg: string; text: string }> = {
+  Sale: { bg: 'linear-gradient(135deg, #f5576c, #ef4444)', text: '#fff' },
+  New: { bg: 'linear-gradient(135deg, #43e97b, #38f9d7)', text: '#075538' },
+  Hot: { bg: 'linear-gradient(135deg, #fa709a, #fee140)', text: '#fff' },
+  Trend: { bg: 'linear-gradient(135deg, #a18cd1, #fbc2eb)', text: '#fff' },
+};
 
 const HomePage: React.FC = () => {
+  const [wishlist, setWishlist] = useState<number[]>([]);
+
+  const toggleWishlist = (idx: number) => {
+    setWishlist((prev) => prev.includes(idx) ? prev.filter((i) => i !== idx) : [...prev, idx]);
+  };
+
   return (
-    <div className="flex flex-col gap-20 py-8">
-      {/* Hero Section */}
-      <section className="container mx-auto px-4">
-        <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 px-8 py-32 text-white md:px-16">
-          <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PHBhdHRlcm4gaWQ9ImdyaWQiIHdpZHRoPSI2MCIgaGVpZ2h0PSI2MCIgcGF0dGVyblVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+PHBhdGggZD0iTSAxMCAwIEwgMCAwIDAgMTAiIGZpbGw9Im5vbmUiIHN0cm9rZT0id2hpdGUiIHN0cm9rZS1vcGFjaXR5PSIwLjA1IiBzdHJva2Utd2lkdGg9IjEiLz48L3BhdHRlcm4+PC9kZWZzPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9InVybCgjZ3JpZCkiLz48L3N2Zz4=')] opacity-40"></div>
-          <div className="relative z-10 max-w-3xl">
-            <Badge className="mb-6 bg-white/10 text-white border-white/20 hover:bg-white/20 backdrop-blur">
-              Bộ sưu tập mùa xuân 2026
-            </Badge>
-            <h1 className="mb-6 text-6xl font-extrabold tracking-tight md:text-7xl lg:text-8xl animate-in fade-in slide-in-from-bottom-4 duration-1000 leading-tight">
-              Định Hình <span className="gradient-text-pink">Phong Cách</span> Của Bạn
+    <div className="flex flex-col">
+
+      {/* ─── HERO ─────────────────────────────── */}
+      <section className="relative overflow-hidden min-h-[90vh] flex items-center"
+        style={{ background: 'linear-gradient(135deg, #f8fafc 0%, #eef2ff 40%, #faf5ff 100%)' }}>
+
+        {/* Background orbs */}
+        <div className="absolute inset-0 pointer-events-none overflow-hidden">
+          <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] rounded-full opacity-20"
+            style={{ background: 'radial-gradient(circle, #667eea 0%, transparent 70%)', filter: 'blur(80px)' }} />
+          <div className="absolute bottom-1/4 right-1/4 w-[400px] h-[400px] rounded-full opacity-20"
+            style={{ background: 'radial-gradient(circle, #f093fb 0%, transparent 70%)', filter: 'blur(80px)' }} />
+          <div className="absolute top-1/2 right-1/3 w-[300px] h-[300px] rounded-full opacity-10"
+            style={{ background: 'radial-gradient(circle, #4facfe 0%, transparent 70%)', filter: 'blur(60px)' }} />
+          {/* Grid pattern */}
+          <div className="absolute inset-0 opacity-[0.04]"
+            style={{ backgroundImage: 'linear-gradient(rgba(100,100,140,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(100,100,140,0.5) 1px, transparent 1px)', backgroundSize: '60px 60px' }} />
+        </div>
+
+        <div className="container mx-auto px-6 py-24 relative z-10">
+          <div className="max-w-4xl">
+            {/* Badge */}
+            <div className="inline-flex items-center gap-2 mb-8 px-4 py-2 rounded-full"
+              style={{ background: 'rgba(102,126,234,0.1)', border: '1px solid rgba(102,126,234,0.2)' }}>
+              <Sparkles size={14} className="text-purple-500" />
+              <span className="text-sm font-medium text-purple-600">Bộ sưu tập mùa xuân 2026</span>
+            </div>
+
+            <h1 className="text-6xl md:text-7xl xl:text-[90px] font-extrabold text-slate-900 leading-[1.05] tracking-tight mb-8">
+              Định Hình{' '}
+              <span className="relative inline-block">
+                <span style={{
+                  background: 'linear-gradient(135deg, #f093fb 0%, #f5576c 50%, #fa709a 100%)',
+                  WebkitBackgroundClip: 'text',
+                  WebkitTextFillColor: 'transparent',
+                  backgroundClip: 'text',
+                }}>
+                  Phong Cách
+                </span>
+              </span>
+              <br />Của Bạn
             </h1>
-            <p className="mb-8 text-lg text-slate-200 md:text-xl max-w-2xl animate-in fade-in slide-in-from-bottom-4 duration-1000 delay-150">
+
+            <p className="text-xl text-slate-500 max-w-2xl mb-10 leading-relaxed">
               Khám phá bộ sưu tập mới nhất với những thiết kế độc quyền, mang lại sự tự tin và thoải mái cho mọi hoạt động hàng ngày.
             </p>
-            <div className="flex flex-wrap gap-4 animate-in fade-in slide-in-from-bottom-4 duration-1000 delay-300">
-              <a href="/products" className="group flex items-center gap-2 rounded-full bg-gradient-to-r from-purple-600 to-pink-600 px-8 py-4 font-semibold text-white hover:from-purple-700 hover:to-pink-700 transition-all hover:shadow-2xl hover:scale-105 shadow-lg">
+
+            <div className="flex flex-wrap items-center gap-4">
+              <a
+                href="/products"
+                className="group inline-flex items-center gap-3 px-8 py-4 rounded-2xl font-bold text-white text-base transition-all duration-300 hover:scale-105"
+                style={{
+                  background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                  boxShadow: '0 8px 32px rgba(102,126,234,0.4)',
+                }}
+              >
                 Mua ngay
                 <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
               </a>
-              <button className="rounded-full border-2 border-white/30 px-8 py-4 font-semibold backdrop-blur hover:bg-white/10 transition-all hover:border-white/50 hover:scale-105">
+              <button
+                className="inline-flex items-center gap-2 px-8 py-4 rounded-2xl font-semibold text-slate-700 text-base transition-all hover:bg-slate-100"
+                style={{ border: '1px solid #cbd5e1' }}
+              >
                 Xem bộ sưu tập
+                <ChevronRight size={18} />
               </button>
             </div>
+
+            {/* Stats */}
+            <div className="flex flex-wrap gap-8 mt-12 pt-12" style={{ borderTop: '1px solid #e2e8f0' }}>
+              {[
+                { value: '10.000+', label: 'Sản phẩm' },
+                { value: '50.000+', label: 'Khách hàng' },
+                { value: '4.9★', label: 'Đánh giá TB' },
+                { value: '98%', label: 'Hài lòng' },
+              ].map((stat) => (
+                <div key={stat.label}>
+                  <p className="text-2xl font-extrabold text-slate-800">{stat.value}</p>
+                  <p className="text-sm text-slate-400 mt-0.5">{stat.label}</p>
+                </div>
+              ))}
+            </div>
           </div>
-          {/* Decorative gradient orbs */}
-          <div className="absolute -right-20 -top-20 h-80 w-80 rounded-full bg-purple-500 opacity-20 blur-3xl"></div>
-          <div className="absolute -bottom-20 right-40 h-80 w-80 rounded-full bg-pink-500 opacity-20 blur-3xl"></div>
         </div>
       </section>
 
-      {/* Features Section */}
-      <section className="container mx-auto px-4">
-        <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
-          <Card className="group cursor-pointer border-none bg-gradient-to-br from-blue-50 to-cyan-50 hover-lift">
-            <CardContent className="flex items-start gap-4 p-6">
-              <div className="rounded-full bg-blue-500 p-3 group-hover:scale-110 transition-transform">
-                <Truck className="text-white" size={24} />
-              </div>
-              <div>
-                <h3 className="font-bold text-lg mb-1">Miễn phí vận chuyển</h3>
-                <p className="text-sm text-muted-foreground">Đơn hàng trên 500.000đ</p>
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card className="group cursor-pointer border-none bg-gradient-to-br from-purple-50 to-pink-50 hover-lift">
-            <CardContent className="flex items-start gap-4 p-6">
-              <div className="rounded-full bg-purple-500 p-3 group-hover:scale-110 transition-transform">
-                <Shield className="text-white" size={24} />
-              </div>
-              <div>
-                <h3 className="font-bold text-lg mb-1">Bảo hành chính hãng</h3>
-                <p className="text-sm text-muted-foreground">Đổi trả trong 30 ngày</p>
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card className="group cursor-pointer border-none bg-gradient-to-br from-orange-50 to-red-50 hover-lift">
-            <CardContent className="flex items-start gap-4 p-6">
-              <div className="rounded-full bg-orange-500 p-3 group-hover:scale-110 transition-transform">
-                <Package className="text-white" size={24} />
-              </div>
-              <div>
-                <h3 className="font-bold text-lg mb-1">Đóng gói cẩn thận</h3>
-                <p className="text-sm text-muted-foreground">Sản phẩm được bảo vệ tốt nhất</p>
-              </div>
-            </CardContent>
-          </Card>
-        </div>
-      </section>
-
-      {/* Categories Section */}
-      <section className="container mx-auto px-4">
-        <div className="mb-10 text-center">
-          <h2 className="text-4xl font-bold mb-3">Danh mục sản phẩm</h2>
-          <p className="text-muted-foreground text-lg">Khám phá phong cách phù hợp với bạn</p>
-        </div>
-
-        <div className="grid grid-cols-2 gap-6 lg:grid-cols-4">
-          {[
-            { name: 'Áo thun', color: 'from-blue-500 to-cyan-500', items: 120 },
-            { name: 'Áo sơ mi', color: 'from-purple-500 to-pink-500', items: 85 },
-            { name: 'Quần jeans', color: 'from-orange-500 to-red-500', items: 95 },
-            { name: 'Phụ kiện', color: 'from-green-500 to-emerald-500', items: 150 }
-          ].map((category, i) => (
-            <Card key={i} className="group cursor-pointer border-none overflow-hidden hover-lift">
-              <div className={`h-40 bg-gradient-to-br ${category.color} relative overflow-hidden`}>
-                <div className="absolute inset-0 bg-black/20 group-hover:bg-black/5 transition-all"></div>
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <TrendingUp className="text-white opacity-30 group-hover:opacity-50 transition-all group-hover:scale-125 duration-500 animate-float" size={64} />
+      {/* ─── FEATURES ─────────────────────────── */}
+      <section className="py-16" style={{ background: '#ffffff' }}>
+        <div className="container mx-auto px-6">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {[
+              {
+                icon: Truck,
+                title: 'Miễn phí vận chuyển',
+                desc: 'Đơn hàng trên 500.000đ',
+                gradient: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)',
+                glow: 'rgba(79,172,254,0.2)',
+              },
+              {
+                icon: Shield,
+                title: 'Bảo hành chính hãng',
+                desc: 'Đổi trả trong 30 ngày',
+                gradient: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                glow: 'rgba(102,126,234,0.2)',
+              },
+              {
+                icon: Package,
+                title: 'Đóng gói cẩn thận',
+                desc: 'Sản phẩm được bảo vệ tốt nhất',
+                gradient: 'linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)',
+                glow: 'rgba(67,233,123,0.2)',
+              },
+            ].map((feat) => (
+              <div
+                key={feat.title}
+                className="group rounded-2xl p-6 flex items-center gap-5 transition-all duration-300 hover:scale-[1.02] cursor-pointer"
+                style={{
+                  background: '#f8fafc',
+                  border: '1px solid #e2e8f0',
+                }}
+              >
+                <div
+                  className="w-14 h-14 rounded-2xl flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform"
+                  style={{ background: feat.gradient, boxShadow: `0 8px 24px ${feat.glow}` }}
+                >
+                  <feat.icon size={24} className="text-white" />
+                </div>
+                <div>
+                  <h3 className="font-bold text-slate-800 text-lg">{feat.title}</h3>
+                  <p className="text-slate-400 text-sm mt-0.5">{feat.desc}</p>
                 </div>
               </div>
-              <CardContent className="p-4">
-                <h3 className="font-bold text-lg mb-1">{category.name}</h3>
-                <p className="text-sm text-muted-foreground">{category.items} sản phẩm</p>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
-      </section>
-
-      {/* Featured Products */}
-      <section className="container mx-auto px-4">
-        <div className="mb-10 flex items-end justify-between">
-          <div>
-            <h2 className="text-4xl font-bold mb-2">Sản phẩm nổi bật</h2>
-            <p className="text-muted-foreground text-lg">Những mẫu thiết kế được yêu thích nhất tuần này</p>
+            ))}
           </div>
-          <a href="/products" className="text-sm font-semibold hover:underline decoration-primary underline-offset-4 flex items-center gap-1 group">
-            Xem tất cả
-            <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
-          </a>
         </div>
+      </section>
 
-        <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4">
-          {[
-            { name: 'Áo thun Premium V1', price: '599.000', badge: 'Hot', badgeColor: 'bg-red-500' },
-            { name: 'Áo thun Premium V2', price: '649.000', badge: 'New', badgeColor: 'bg-green-500' },
-            { name: 'Áo thun Premium V3', price: '579.000', badge: 'Sale', badgeColor: 'bg-orange-500' },
-            { name: 'Áo thun Premium V4', price: '699.000', badge: 'Trend', badgeColor: 'bg-purple-500' }
-          ].map((product, i) => (
-            <Card key={i} className="group cursor-pointer border hover-lift overflow-hidden">
-              <div className="relative aspect-[3/4] overflow-hidden product-placeholder" style={{
-                background: `linear-gradient(135deg, ${i === 0 ? '#667eea, #764ba2' : i === 1 ? '#f093fb, #f5576c' : i === 2 ? '#4facfe, #00f2fe' : '#43e97b, #38f9d7'})`
-              }}>
-                <Badge className={`absolute top-3 left-3 z-10 ${product.badgeColor} text-white border-none shadow-lg`}>
-                  {product.badge}
-                </Badge>
-                <div className="absolute top-3 right-3 z-10 rounded-full bg-white p-2 shadow-sm opacity-0 group-hover:opacity-100 transition-all group-hover:scale-110">
-                  <Star className="fill-yellow-400 text-yellow-400" size={16} />
+      {/* ─── CATEGORIES ───────────────────────── */}
+      <section className="py-20" style={{ background: 'linear-gradient(180deg, #ffffff 0%, #f8fafc 100%)' }}>
+        <div className="container mx-auto px-6">
+          <div className="text-center mb-14">
+            <div className="inline-flex items-center gap-2 mb-4 px-4 py-1.5 rounded-full"
+              style={{ background: 'rgba(244,114,182,0.1)', border: '1px solid rgba(244,114,182,0.2)' }}>
+              <Flame size={13} className="text-pink-500" />
+              <span className="text-sm text-pink-600 font-medium">Danh mục</span>
+            </div>
+            <h2 className="text-4xl md:text-5xl font-extrabold text-slate-900 mb-4">Danh mục sản phẩm</h2>
+            <p className="text-slate-400 text-lg">Khám phá phong cách phù hợp với bạn</p>
+          </div>
+
+          <div className="grid grid-cols-2 gap-5 lg:grid-cols-4">
+            {categories.map((cat) => (
+              <a
+                href="/products"
+                key={cat.name}
+                className="group relative rounded-3xl overflow-hidden cursor-pointer transition-all duration-300 hover:scale-[1.03] hover:-translate-y-2"
+                style={{ boxShadow: '0 8px 32px rgba(0,0,0,0.08)' }}
+              >
+                {/* Gradient bg */}
+                <div className="h-52 relative flex items-center justify-center" style={{ background: cat.gradient }}>
+                  <div className="absolute inset-0 bg-black/10 group-hover:bg-black/0 transition-all" />
+                  {/* Decorative circles */}
+                  <div className="absolute -bottom-10 -right-10 w-40 h-40 rounded-full bg-white/20" />
+                  <div className="absolute -top-5 -left-5 w-24 h-24 rounded-full bg-white/20" />
+                  <span className="text-6xl relative z-10 group-hover:scale-125 transition-transform duration-500">
+                    {cat.emoji}
+                  </span>
                 </div>
-                <div className="absolute inset-0 flex items-center justify-center opacity-10 group-hover:opacity-20 transition-opacity">
-                  <div className="text-white text-9xl font-bold">{i + 1}</div>
-                </div>
-              </div>
-              <CardContent className="p-4">
-                <h3 className="font-semibold text-lg mb-1 group-hover:text-primary transition-colors">{product.name}</h3>
-                <p className="text-muted-foreground text-sm mb-2">Category Fashion</p>
-                <div className="flex items-center justify-between">
-                  <p className="font-bold text-lg">{product.price}đ</p>
-                  <div className="flex gap-0.5">
-                    {[1, 2, 3, 4, 5].map((star) => (
-                      <Star key={star} className="fill-yellow-400 text-yellow-400" size={14} />
-                    ))}
+                {/* Info */}
+                <div className="p-4 bg-white" style={{ borderTop: '0' }}>
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <h3 className="font-bold text-slate-800 text-base">{cat.name}</h3>
+                      <p className="text-slate-400 text-xs mt-0.5">{cat.items} sản phẩm</p>
+                    </div>
+                    <ChevronRight size={16} className="text-slate-300 group-hover:text-slate-600 group-hover:translate-x-1 transition-all" />
                   </div>
                 </div>
-              </CardContent>
-            </Card>
-          ))}
+              </a>
+            ))}
+          </div>
         </div>
       </section>
 
-      {/* Promo Banner */}
-      <section className="container mx-auto px-4">
-        <Card className="border-none bg-gradient-to-r from-violet-600 via-purple-600 to-fuchsia-600 text-white overflow-hidden">
-          <CardContent className="relative p-12 md:p-16">
+      {/* ─── FEATURED PRODUCTS ────────────────── */}
+      <section className="py-20" style={{ background: 'linear-gradient(180deg, #f8fafc 0%, #ffffff 100%)' }}>
+        <div className="container mx-auto px-6">
+          <div className="flex items-end justify-between mb-14">
+            <div>
+              <div className="inline-flex items-center gap-2 mb-4 px-4 py-1.5 rounded-full"
+                style={{ background: 'rgba(102,126,234,0.1)', border: '1px solid rgba(102,126,234,0.2)' }}>
+                <Zap size={13} className="text-purple-500" />
+                <span className="text-sm text-purple-600 font-medium">Nổi bật</span>
+              </div>
+              <h2 className="text-4xl md:text-5xl font-extrabold text-slate-900 mb-2">Sản phẩm nổi bật</h2>
+              <p className="text-slate-400 text-lg">Những mẫu thiết kế được yêu thích nhất tuần này</p>
+            </div>
+            <a
+              href="/products"
+              className="hidden md:inline-flex items-center gap-2 text-sm font-semibold transition-all group text-purple-600 hover:text-purple-700"
+            >
+              Xem tất cả
+              <ArrowRight size={15} className="group-hover:translate-x-1 transition-transform" />
+            </a>
+          </div>
+
+          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+            {featuredProducts.map((product, idx) => {
+              const bc = badgeColors[product.badge] ?? badgeColors.Sale;
+              const isWished = wishlist.includes(idx);
+              return (
+                <div
+                  key={idx}
+                  className="group rounded-3xl overflow-hidden cursor-pointer transition-all duration-300 hover:scale-[1.02] hover:-translate-y-1"
+                  style={{
+                    background: '#ffffff',
+                    border: '1px solid #e2e8f0',
+                    boxShadow: '0 4px 24px rgba(0,0,0,0.06)',
+                  }}
+                >
+                  {/* Product image area */}
+                  <div className="relative aspect-[4/5] overflow-hidden" style={{ background: product.gradient }}>
+                    {/* Decorative */}
+                    <div className="absolute inset-0 bg-black/10 group-hover:bg-black/0 transition-all" />
+                    <div className="absolute -bottom-16 -right-16 w-52 h-52 rounded-full bg-white/15" />
+                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-[100px] font-black text-white/15 select-none">
+                      {idx + 1}
+                    </div>
+
+                    {/* Badge */}
+                    <div
+                      className="absolute top-4 left-4 px-3 py-1 rounded-full text-xs font-bold z-10"
+                      style={{ background: bc.bg, color: bc.text, boxShadow: '0 2px 8px rgba(0,0,0,0.2)' }}
+                    >
+                      {product.badge}
+                    </div>
+
+                    {/* Actions overlay */}
+                    <div className="absolute top-4 right-4 flex flex-col gap-2 z-10 opacity-0 group-hover:opacity-100 transition-all duration-300 translate-x-2 group-hover:translate-x-0">
+                      <button
+                        onClick={(e) => { e.preventDefault(); toggleWishlist(idx); }}
+                        className="w-9 h-9 rounded-full bg-white/95 flex items-center justify-center shadow-lg hover:scale-110 transition-transform"
+                      >
+                        <Heart
+                          size={16}
+                          className={isWished ? 'fill-red-500 text-red-500' : 'text-gray-600'}
+                        />
+                      </button>
+                      <button className="w-9 h-9 rounded-full bg-white/95 flex items-center justify-center shadow-lg hover:scale-110 transition-transform">
+                        <ShoppingCart size={16} className="text-gray-600" />
+                      </button>
+                    </div>
+
+                    {/* Add to cart hover bar */}
+                    <div
+                      className="absolute bottom-0 left-0 right-0 flex items-center justify-center py-3 translate-y-full group-hover:translate-y-0 transition-all duration-300"
+                      style={{ background: 'rgba(0,0,0,0.65)', backdropFilter: 'blur(8px)' }}
+                    >
+                      <span className="text-white text-sm font-semibold flex items-center gap-2">
+                        <ShoppingCart size={16} />
+                        Thêm vào giỏ hàng
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Product info */}
+                  <div className="p-5">
+                    <p className="text-xs text-slate-400 mb-1.5">Fashion · Premium</p>
+                    <h3 className="font-bold text-slate-800 text-base leading-tight mb-3 group-hover:text-purple-600 transition-colors">
+                      {product.name}
+                    </h3>
+
+                    {/* Rating */}
+                    <div className="flex items-center gap-1.5 mb-3">
+                      <div className="flex gap-0.5">
+                        {[...Array(5)].map((_, i) => (
+                          <Star
+                            key={i}
+                            size={12}
+                            className={i < product.rating ? 'fill-yellow-400 text-yellow-400' : 'text-slate-200'}
+                          />
+                        ))}
+                      </div>
+                      <span className="text-xs text-slate-400">({product.reviews})</span>
+                    </div>
+
+                    {/* Price */}
+                    <div className="flex items-center gap-2">
+                      <p className="font-extrabold text-slate-900 text-lg">{product.price.toLocaleString('vi-VN')}đ</p>
+                      {product.oldPrice && (
+                        <p className="text-sm text-slate-300 line-through">{product.oldPrice.toLocaleString('vi-VN')}đ</p>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
+      {/* ─── PROMO BANNER ─────────────────────── */}
+      <section className="py-10" style={{ background: '#ffffff' }}>
+        <div className="container mx-auto px-6">
+          <div
+            className="relative overflow-hidden rounded-3xl p-12 md:p-16"
+            style={{ background: 'linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%)' }}
+          >
+            {/* Decorative */}
+            <div className="absolute -right-20 -top-20 w-80 h-80 rounded-full bg-white/10 blur-3xl" />
+            <div className="absolute -bottom-20 right-40 w-80 h-80 rounded-full bg-white/10 blur-3xl" />
+            <div className="absolute inset-0 opacity-[0.04]"
+              style={{ backgroundImage: 'linear-gradient(rgba(255,255,255,1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,1) 1px, transparent 1px)', backgroundSize: '40px 40px' }} />
+
             <div className="relative z-10 max-w-2xl">
-              <Badge className="mb-4 bg-white/20 text-white border-none backdrop-blur">
-                Ưu đãi đặc biệt
-              </Badge>
-              <h2 className="text-4xl md:text-5xl font-bold mb-4">
-                Giảm giá 30% cho khách hàng mới
+              <div className="inline-flex items-center gap-2 mb-6 px-4 py-2 rounded-full bg-white/20 backdrop-blur-sm">
+                <Sparkles size={14} className="text-yellow-200" />
+                <span className="text-sm font-semibold text-white">Ưu đãi đặc biệt</span>
+              </div>
+              <h2 className="text-5xl md:text-6xl font-extrabold text-white mb-5 leading-tight">
+                Giảm giá <span className="text-yellow-200">30%</span><br />cho khách hàng mới
               </h2>
-              <p className="text-lg text-purple-100 mb-6">
+              <p className="text-lg text-white/75 mb-8">
                 Đăng ký ngay hôm nay để nhận mã giảm giá đặc biệt cho đơn hàng đầu tiên của bạn.
               </p>
-              <button className="bg-white text-purple-600 px-8 py-3 rounded-full font-semibold hover:bg-purple-50 transition-all hover:shadow-xl hover:scale-105">
-                Nhận mã ngay
+              <button
+                className="px-10 py-4 rounded-2xl font-bold text-purple-700 bg-white text-base transition-all hover:bg-yellow-50 hover:scale-105"
+                style={{ boxShadow: '0 8px 32px rgba(0,0,0,0.2)' }}
+              >
+                Nhận mã ngay →
               </button>
             </div>
-            <div className="absolute right-0 top-0 h-full w-1/3 bg-white/5 backdrop-blur-sm"></div>
-            <div className="absolute -right-10 -bottom-10 h-60 w-60 rounded-full bg-white opacity-10 blur-3xl"></div>
-          </CardContent>
-        </Card>
+          </div>
+        </div>
       </section>
+
     </div>
   );
 };

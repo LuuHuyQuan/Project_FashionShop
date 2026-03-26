@@ -1,0 +1,359 @@
+import React, { useState } from 'react';
+import {
+  TrendingUp,
+  Package,
+  ShoppingBag,
+  Users,
+  ArrowUpRight,
+  ArrowDownRight,
+  Eye,
+  MoreHorizontal,
+  Zap,
+  Clock,
+} from 'lucide-react';
+
+const stats = [
+  {
+    label: 'Doanh thu',
+    value: '128.450.000đ',
+    change: '+12.5%',
+    up: true,
+    icon: TrendingUp,
+    gradient: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+    glow: 'rgba(102,126,234,0.15)',
+    bg: '#ede9fe',
+    iconColor: '#7c3aed',
+    sparkline: [40, 55, 48, 70, 65, 85, 78, 95, 88, 100],
+  },
+  {
+    label: 'Đơn hàng',
+    value: '1.284',
+    change: '+8.2%',
+    up: true,
+    icon: ShoppingBag,
+    gradient: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
+    glow: 'rgba(240,147,251,0.15)',
+    bg: '#fce7f3',
+    iconColor: '#db2777',
+    sparkline: [30, 45, 38, 60, 55, 72, 68, 80, 75, 88],
+  },
+  {
+    label: 'Sản phẩm',
+    value: '342',
+    change: '+3.1%',
+    up: true,
+    icon: Package,
+    gradient: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)',
+    glow: 'rgba(79,172,254,0.15)',
+    bg: '#dbeafe',
+    iconColor: '#2563eb',
+    sparkline: [60, 65, 62, 70, 68, 72, 70, 75, 72, 78],
+  },
+  {
+    label: 'Người dùng',
+    value: '5.621',
+    change: '-1.4%',
+    up: false,
+    icon: Users,
+    gradient: 'linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)',
+    glow: 'rgba(67,233,123,0.15)',
+    bg: '#d1fae5',
+    iconColor: '#059669',
+    sparkline: [80, 78, 75, 82, 79, 76, 80, 74, 72, 70],
+  },
+];
+
+const recentOrders = [
+  { id: '#ORD-001', customer: 'Nguyễn Văn A', product: 'Áo thun Premium Cotton', amount: '599.000đ', status: 'Hoàn thành', date: '21/03/2026' },
+  { id: '#ORD-002', customer: 'Trần Thị B', product: 'Quần jeans Skinny', amount: '899.000đ', status: 'Đang giao', date: '21/03/2026' },
+  { id: '#ORD-003', customer: 'Lê Văn C', product: 'Áo khoác Bomber', amount: '1.299.000đ', status: 'Chờ xử lý', date: '20/03/2026' },
+  { id: '#ORD-004', customer: 'Phạm Thị D', product: 'Áo sơ mi Slim Fit', amount: '749.000đ', status: 'Hoàn thành', date: '20/03/2026' },
+  { id: '#ORD-005', customer: 'Hoàng Văn E', product: 'Quần kaki Chinos', amount: '799.000đ', status: 'Đã hủy', date: '19/03/2026' },
+];
+
+const statusConfig: Record<string, { bg: string; text: string; dot: string; border: string }> = {
+  'Hoàn thành': { bg: '#dcfce7', text: '#16a34a', dot: '#16a34a', border: '#bbf7d0' },
+  'Đang giao':  { bg: '#dbeafe', text: '#2563eb', dot: '#2563eb', border: '#bfdbfe' },
+  'Chờ xử lý':  { bg: '#fef9c3', text: '#ca8a04', dot: '#ca8a04', border: '#fde68a' },
+  'Đã hủy':     { bg: '#fee2e2', text: '#dc2626', dot: '#dc2626', border: '#fecaca' },
+};
+
+const topProducts = [
+  { name: 'Áo thun Premium Cotton', sold: 142, revenue: '85.058.000đ', progress: 85, gradient: 'linear-gradient(90deg, #667eea, #764ba2)' },
+  { name: 'Quần jeans Skinny', sold: 98, revenue: '88.102.000đ', progress: 70, gradient: 'linear-gradient(90deg, #f093fb, #f5576c)' },
+  { name: 'Áo khoác Bomber', sold: 67, revenue: '87.033.000đ', progress: 55, gradient: 'linear-gradient(90deg, #4facfe, #00f2fe)' },
+  { name: 'Áo sơ mi Slim Fit', sold: 115, revenue: '86.135.000đ', progress: 80, gradient: 'linear-gradient(90deg, #43e97b, #38f9d7)' },
+];
+
+const avatarGradients = ['#667eea,#764ba2', '#f093fb,#f5576c', '#4facfe,#00f2fe', '#43e97b,#38f9d7', '#fa709a,#fee140'];
+
+// Mini sparkline SVG
+const Sparkline: React.FC<{ data: number[]; gradient: string; up: boolean }> = ({ data, up }) => {
+  const max = Math.max(...data);
+  const min = Math.min(...data);
+  const w = 60;
+  const h = 24;
+  const pts = data.map((v, i) => {
+    const x = (i / (data.length - 1)) * w;
+    const y = h - ((v - min) / (max - min || 1)) * h;
+    return `${x},${y}`;
+  });
+  const color = up ? '#16a34a' : '#dc2626';
+  return (
+    <svg width={w} height={h} viewBox={`0 0 ${w} ${h}`} className="opacity-70">
+      <polyline
+        points={pts.join(' ')}
+        fill="none"
+        stroke={color}
+        strokeWidth="1.5"
+        strokeLinejoin="round"
+        strokeLinecap="round"
+      />
+    </svg>
+  );
+};
+
+const AdminDashboard: React.FC = () => {
+  const [orderTab, setOrderTab] = useState<'recent' | 'all'>('recent');
+
+  return (
+    <div className="space-y-6">
+      {/* Header */}
+      <div className="flex items-center justify-between">
+        <div>
+          <div className="flex items-center gap-2 mb-1">
+            <Zap size={18} className="text-amber-500" />
+            <h1 className="text-2xl font-bold text-slate-800">Tổng quan</h1>
+          </div>
+          <p className="text-slate-500 text-sm">Chào mừng trở lại! Đây là tóm tắt hôm nay.</p>
+        </div>
+        <div
+          className="flex items-center gap-2 text-sm text-slate-500 rounded-xl px-4 py-2.5 bg-white border border-slate-200"
+        >
+          <Clock size={13} className="text-violet-500" />
+          <span>Tháng 3, 2026</span>
+        </div>
+      </div>
+
+      {/* Stats grid */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
+        {stats.map((stat) => (
+          <div
+            key={stat.label}
+            className="bg-white rounded-2xl p-5 relative overflow-hidden transition-all duration-300 hover:scale-[1.02] hover:shadow-lg cursor-pointer group border border-slate-100"
+            style={{ boxShadow: '0 1px 6px rgba(0,0,0,0.06)' }}
+          >
+            {/* Top accent bar */}
+            <div
+              className="absolute top-0 left-0 right-0 h-0.5 opacity-80"
+              style={{ background: stat.gradient }}
+            />
+
+            <div className="flex items-start justify-between mb-4 relative">
+              <div
+                className="w-11 h-11 rounded-2xl flex items-center justify-center"
+                style={{ background: stat.bg }}
+              >
+                <stat.icon size={20} style={{ color: stat.iconColor }} />
+              </div>
+              <span
+                className={`flex items-center gap-1 text-xs font-semibold px-2 py-1 rounded-lg ${
+                  stat.up ? 'text-emerald-600 bg-emerald-50' : 'text-red-500 bg-red-50'
+                }`}
+              >
+                {stat.up ? <ArrowUpRight size={11} /> : <ArrowDownRight size={11} />}
+                {stat.change}
+              </span>
+            </div>
+
+            <div className="relative">
+              <p className="text-slate-400 text-xs font-medium mb-0.5">{stat.label}</p>
+              <p className="text-slate-800 font-bold text-xl tracking-tight">{stat.value}</p>
+              <div className="mt-3">
+                <Sparkline data={stat.sparkline} gradient={stat.gradient} up={stat.up} />
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* Main content grid */}
+      <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
+        {/* Recent Orders */}
+        <div
+          className="xl:col-span-2 bg-white rounded-2xl overflow-hidden border border-slate-100"
+          style={{ boxShadow: '0 1px 6px rgba(0,0,0,0.06)' }}
+        >
+          <div className="flex items-center justify-between px-6 py-4 border-b border-slate-100">
+            <div className="flex items-center gap-3">
+              <h2 className="font-bold text-slate-800">Đơn hàng gần đây</h2>
+              <span className="text-xs px-2 py-0.5 rounded-full bg-violet-100 text-violet-600 font-medium">
+                {recentOrders.length} đơn
+              </span>
+            </div>
+            <button
+              className="text-xs flex items-center gap-1.5 px-3 py-1.5 rounded-lg transition-all hover:bg-violet-50 text-violet-500 font-medium"
+            >
+              Xem tất cả <Eye size={12} />
+            </button>
+          </div>
+
+          {/* Tab filter */}
+          <div className="flex gap-1 px-6 pt-3">
+            {(['recent', 'all'] as const).map((t) => (
+              <button
+                key={t}
+                onClick={() => setOrderTab(t)}
+                className="px-3 py-1.5 rounded-lg text-xs font-medium transition-all"
+                style={
+                  orderTab === t
+                    ? { background: '#ede9fe', color: '#7c3aed', border: '1px solid #ddd6fe' }
+                    : { color: '#94a3b8', border: '1px solid transparent' }
+                }
+              >
+                {t === 'recent' ? 'Hôm nay' : 'Tất cả'}
+              </button>
+            ))}
+          </div>
+
+          <div className="overflow-x-auto">
+            <table className="w-full">
+              <thead>
+                <tr style={{ borderBottom: '1px solid #f1f5f9' }}>
+                  {['Mã đơn', 'Khách hàng', 'Sản phẩm', 'Số tiền', 'Trạng thái', 'Ngày'].map((h) => (
+                    <th key={h} className="text-left text-xs text-slate-400 font-semibold px-6 py-3 uppercase tracking-wider bg-slate-50">
+                      {h}
+                    </th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {recentOrders.map((order, idx) => {
+                  const sc = statusConfig[order.status];
+                  return (
+                    <tr
+                      key={order.id}
+                      className="group transition-colors"
+                      style={{ borderBottom: '1px solid #f8fafc' }}
+                      onMouseEnter={(e) => (e.currentTarget.style.background = '#f8fafc')}
+                      onMouseLeave={(e) => (e.currentTarget.style.background = 'transparent')}
+                    >
+                      <td className="px-6 py-3.5 text-xs font-mono font-semibold" style={{ color: '#7c3aed' }}>{order.id}</td>
+                      <td className="px-6 py-3.5">
+                        <div className="flex items-center gap-2.5">
+                          <div
+                            className="w-7 h-7 rounded-full flex items-center justify-center text-[11px] font-bold flex-shrink-0 text-white"
+                            style={{ background: `linear-gradient(135deg, ${avatarGradients[idx % 5]})` }}
+                          >
+                            {order.customer.charAt(0)}
+                          </div>
+                          <span className="text-sm text-slate-700 font-medium">{order.customer}</span>
+                        </div>
+                      </td>
+                      <td className="px-6 py-3.5 text-sm text-slate-400 max-w-[140px] truncate">{order.product}</td>
+                      <td className="px-6 py-3.5 text-sm font-bold text-slate-800">{order.amount}</td>
+                      <td className="px-6 py-3.5">
+                        <span
+                          className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium"
+                          style={{ background: sc.bg, color: sc.text, border: `1px solid ${sc.border}` }}
+                        >
+                          <span className="w-1.5 h-1.5 rounded-full animate-pulse" style={{ background: sc.dot }} />
+                          {order.status}
+                        </span>
+                      </td>
+                      <td className="px-6 py-3.5 text-xs text-slate-400">{order.date}</td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        {/* Top Products */}
+        <div
+          className="bg-white rounded-2xl overflow-hidden border border-slate-100"
+          style={{ boxShadow: '0 1px 6px rgba(0,0,0,0.06)' }}
+        >
+          <div className="flex items-center justify-between px-5 py-4 border-b border-slate-100">
+            <h2 className="font-bold text-slate-800">Bán chạy nhất</h2>
+            <button className="text-slate-300 hover:text-slate-500 transition-colors p-1">
+              <MoreHorizontal size={18} />
+            </button>
+          </div>
+          <div className="p-5 space-y-5">
+            {topProducts.map((product, idx) => (
+              <div key={product.name} className="group">
+                <div className="flex items-center justify-between mb-2">
+                  <div className="flex items-center gap-2">
+                    <span
+                      className="w-6 h-6 rounded-lg flex items-center justify-center text-xs font-bold text-white"
+                      style={{ background: product.gradient }}
+                    >
+                      {idx + 1}
+                    </span>
+                    <span className="text-sm text-slate-600 truncate max-w-[130px] group-hover:text-slate-800 transition-colors">
+                      {product.name}
+                    </span>
+                  </div>
+                  <span className="text-xs text-slate-400">{product.sold} sold</span>
+                </div>
+                <div className="w-full h-1.5 rounded-full bg-slate-100 overflow-hidden">
+                  <div
+                    className="h-full rounded-full transition-all duration-1000"
+                    style={{ width: `${product.progress}%`, background: product.gradient }}
+                  />
+                </div>
+                <p className="text-xs text-slate-400 mt-1.5 text-right">{product.revenue}</p>
+              </div>
+            ))}
+          </div>
+
+          {/* Quick stats at bottom */}
+          <div className="px-5 pb-5 grid grid-cols-2 gap-2">
+            {[
+              { label: 'Tổng sản phẩm', value: '342', color: '#7c3aed', bg: '#ede9fe' },
+              { label: 'Tồn kho thấp', value: '5', color: '#dc2626', bg: '#fee2e2' },
+            ].map((s) => (
+              <div key={s.label} className="rounded-xl p-3 text-center border border-slate-100" style={{ background: s.bg }}>
+                <p className="text-lg font-bold" style={{ color: s.color }}>{s.value}</p>
+                <p className="text-xs text-slate-500 mt-0.5">{s.label}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Bottom row: Activity feed */}
+      <div
+        className="bg-white rounded-2xl p-5 border border-slate-100"
+        style={{ boxShadow: '0 1px 6px rgba(0,0,0,0.06)' }}
+      >
+        <div className="flex items-center justify-between mb-4">
+          <h2 className="font-bold text-slate-800">Hoạt động gần đây</h2>
+        </div>
+        <div className="flex gap-4 overflow-x-auto pb-1">
+          {[
+            { time: '2 phút trước', text: 'Đơn hàng #ORD-001 hoàn thành', color: '#16a34a', bg: '#dcfce7' },
+            { time: '15 phút trước', text: 'Người dùng mới đăng ký: hoang.lan@gmail.com', color: '#7c3aed', bg: '#ede9fe' },
+            { time: '32 phút trước', text: 'Sản phẩm "Áo khoác Bomber" hết hàng', color: '#dc2626', bg: '#fee2e2' },
+            { time: '1 giờ trước', text: 'Đánh giá 5⭐ từ Trần Thị B', color: '#d97706', bg: '#fef3c7' },
+            { time: '2 giờ trước', text: 'Đơn hàng #ORD-006 vừa được tạo', color: '#2563eb', bg: '#dbeafe' },
+          ].map((activity, i) => (
+            <div
+              key={i}
+              className="flex-shrink-0 rounded-xl p-4 min-w-[220px] border"
+              style={{ background: activity.bg, borderColor: activity.bg }}
+            >
+              <div className="w-1.5 h-1.5 rounded-full mb-2" style={{ background: activity.color }} />
+              <p className="text-sm text-slate-700 leading-tight">{activity.text}</p>
+              <p className="text-xs text-slate-400 mt-2">{activity.time}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default AdminDashboard;

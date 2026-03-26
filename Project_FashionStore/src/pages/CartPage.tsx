@@ -6,7 +6,6 @@ import { Separator } from '../components/ui/separator';
 import { Badge } from '../components/ui/badge';
 
 const CartPage: React.FC = () => {
-  // Mock cart items - in a real app, this would come from state/context
   const cartItems = [
     {
       id: 1,
@@ -149,15 +148,12 @@ const CartPage: React.FC = () => {
             </a>
           </div>
         </div>
-
-        {/* Order Summary */}
         <div className="lg:col-span-1">
           <Card className="sticky top-20">
             <CardHeader>
               <CardTitle>Tóm tắt đơn hàng</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
-              {/* Promo Code */}
               <div>
                 <label className="text-sm font-medium mb-2 flex items-center gap-2">
                   <Tag size={16} />
@@ -172,8 +168,6 @@ const CartPage: React.FC = () => {
               </div>
 
               <Separator />
-
-              {/* Price Breakdown */}
               <div className="space-y-3">
                 <div className="flex justify-between text-sm">
                   <span className="text-muted-foreground">Tạm tính</span>
@@ -197,19 +191,15 @@ const CartPage: React.FC = () => {
 
               <Separator />
 
-              {/* Total */}
               <div className="flex justify-between items-center">
                 <span className="font-bold text-lg">Tổng cộng</span>
                 <span className="font-bold text-2xl text-primary">{total.toLocaleString('vi-VN')}đ</span>
               </div>
-
-              {/* Checkout Button */}
               <button className="w-full bg-primary text-white py-4 rounded-lg font-bold hover:bg-primary/90 transition-all hover:shadow-xl hover:scale-105 flex items-center justify-center gap-2">
                 Thanh toán
                 <ArrowRight size={20} />
               </button>
 
-              {/* Info */}
               <div className="bg-muted/50 p-4 rounded-lg space-y-2">
                 <p className="text-xs text-muted-foreground flex items-start gap-2">
                   <ShoppingBag size={14} className="mt-0.5 flex-shrink-0" />
@@ -227,5 +217,4 @@ const CartPage: React.FC = () => {
     </div>
   );
 };
-
 export default CartPage;

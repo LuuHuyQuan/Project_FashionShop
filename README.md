@@ -1,134 +1,121 @@
-🛒 Website Bán Hàng Thời Trang (E-Commerce System)
-📌 Giới thiệu
+# FashionStore E-Commerce Website
 
-Hệ thống là một website bán hàng trực tuyến, giúp kết nối giữa khách hàng và cửa hàng thông qua nền tảng số.
+> Website bán hàng thời trang full-stack (React + TypeScript + .NET + SQL Server)
 
-Hệ thống hỗ trợ:
+---
 
-Khách hàng mua sắm online
-Nhân viên xử lý đơn hàng
-Quản trị viên quản lý toàn bộ hệ thống
-  🎯 Mục tiêu hệ thống
-Xây dựng nền tảng bán hàng hiện đại, dễ sử dụng
-Tối ưu quy trình mua hàng và xử lý đơn
-Phân quyền rõ ràng giữa Admin – Staff – Customer
-Đảm bảo dữ liệu chính xác và dễ mở rộng
-  👥 Vai trò người dùng
-👤 1. Khách hàng (Customer)
-  Xem sản phẩm
-  Thêm vào giỏ hàng
-  Đặt hàng
-  Đánh giá sản phẩm
-🧑‍💼 2. Nhân viên (Staff)
-  Xử lý đơn hàng
-  Cập nhật trạng thái đơn
-  Kiểm tra thông tin giao hàng
-  Hỗ trợ khách hàng
-👑 3. Quản trị viên (Admin)
-Quản lý người dùng
-Quản lý sản phẩm & danh mục
-Phân quyền nhân viên
-Theo dõi thống kê
-🧩 Mô tả nghiệp vụ hệ thống
-🔹 1. Quản lý người dùng (Users)
+## 📌 Giới thiệu
 
-Hệ thống lưu thông tin:
+FashionStore là một hệ thống thương mại điện tử đặt trọng tâm vào trải nghiệm người dùng, quản lý sản phẩm, đơn hàng, quyền hạn và hỗ trợ quy trình bán hàng tổng thể.
 
-Họ tên, email, số điện thoại
-Vai trò:
-admin
-staff
-customer
-vip
-Trạng thái:
-active
-inactive
-banned
+Mục tiêu:
+- Xây dựng website bán hàng hiện đại, responsive
+- Tối ưu trải nghiệm mua hàng, giỏ hàng và thanh toán
+- Phân quyền rõ ràng: Admin, Staff, Customer
+- Dễ mở rộng và bảo trì
 
-👉 Mỗi user:
 
-Có 1 giỏ hàng
-Có thể tạo nhiều đơn hàng
-Có thể viết đánh giá
-🔹 2. Quản lý danh mục (Categories)
-Phân loại sản phẩm theo ngành
-Hỗ trợ SEO (slug)
-Trạng thái hoạt động
 
-👉 1 danh mục → nhiều sản phẩm
+## 👥 Vai trò người dùng
 
-🔹 3. Quản lý sản phẩm (Products)
+### 1. Khách hàng (Customer)
+- Xem danh sách sản phẩm, tìm kiếm, lọc
+- Thêm sản phẩm vào giỏ hàng
+- Thanh toán & xem đơn hàng của bản thân
+- Đánh giá và nhận xét sản phẩm
 
-Thông tin:
+### 2. Nhân viên (Staff)
+- Xử lý đơn hàng, cập nhật trạng thái
+- Theo dõi thông tin giao hàng
+- Hỗ trợ khách hàng khi cần
 
-Tên, mô tả
-Giá, giá cũ
-Tồn kho
-Trạng thái
-Nhãn (Sale / New / Hot)
+### 3. Quản trị viên (Admin)
+- Quản lý người dùng, sản phẩm, danh mục
+- Phân quyền nhân viên
+- Quản lý đơn hàng và thống kê bán hàng
 
-👉 Quan hệ:
+---
 
-1 sản phẩm thuộc 1 danh mục
-Có nhiều ảnh
-Có nhiều màu & size
-🔹 4. Hình ảnh sản phẩm
-Nhiều ảnh cho mỗi sản phẩm
-Có ảnh đại diện (thumbnail)
-🔹 5. Thuộc tính sản phẩm
-🎨 Màu sắc
-Tên màu
-Mã HEX
-📏 Kích cỡ
-XS / S / M / L / XL
-🔹 6. Đánh giá sản phẩm (Reviews)
-Người dùng đánh giá từ 1–5 sao
-Bình luận
-Gắn với user & product
-🔹 7. Giỏ hàng (Cart System)
-🛒 Cart
-Mỗi user có 1 giỏ hàng
-📦 Cart Items
-Sản phẩm + màu + size + số lượng
-🔹 8. Đơn hàng (Orders)
+## 🧩 Nghiệp vụ chính
 
-Thông tin:
+### Quản lý người dùng
+- Thu thập: Họ tên, email, số điện thoại
+- Quyền: `admin`, `staff`, `customer`, `vip`
+- Trạng thái: `active`, `inactive`, `banned`
+- Tính năng: 1 user có 1 giỏ hàng, nhiều đơn hàng, đánh giá sản phẩm
 
-Mã đơn
-Người đặt
-Địa chỉ giao hàng
-Tổng tiền
-Trạng thái:
-pending
-processing
-shipping
-completed
-cancelled
-Thanh toán:
-COD
-VNPay
-MoMo
-🔹 9. Chi tiết đơn hàng (Order Items)
+### Quản lý danh mục (Categories)
+- Phân loại sản phẩm, dùng slug SEO
+- 1 danh mục nhiều sản phẩm
 
-Lưu snapshot:
+### Quản lý sản phẩm (Products)
+- Thuộc tính: tên, mô tả, giá (giá gốc + giá bán), tồn kho, trạng thái, nhãn (Sale/New/Hot)
+- Quan hệ: 1 sản phẩm thuộc 1 danh mục, nhiều ảnh, màu sắc, size
 
-Tên sản phẩm
-Giá
-Màu
-Size
-Số lượng
-🚀 Tính năng chính
-Đăng ký / đăng nhập
-Quản lý sản phẩm
-Quản lý danh mục
-Giỏ hàng
-Đặt hàng
-Thanh toán
-Đánh giá sản phẩm
-Quản lý đơn hàng
-Phân quyền (Admin / Staff / Customer)
-🛠 Công nghệ sử dụng
-Frontend: ReactJS + TypeScript
-Backend: C# (.NET)
-Database: SQL Server
-📁 Database Schema
+### Hình ảnh sản phẩm
+- Nhiều ảnh/sản phẩm
+- Ảnh đại diện (thumbnail)
+
+### Thuộc tính sản phẩm
+- Color: tên, mã HEX
+- Size: XS/S/M/L/XL
+
+### Đánh giá sản phẩm (Reviews)
+- User đánh giá 1–5 sao + bình luận
+- Liên kết với user và product
+
+### Giỏ hàng (Cart)
+- 1 user = 1 giỏ hàng
+- Cart item: product + color + size + qty
+
+### Đơn hàng (Orders)
+- Thông tin: mã đơn, người đặt, địa chỉ, tổng tiền
+- Trạng thái: `pending`, `processing`, `shipping`, `completed`, `cancelled`
+- Thanh toán: `COD`, `VNPay`, `MoMo`
+
+### Chi tiết đơn hàng (Order Items)
+- Snapshot: tên sản phẩm, giá, màu, size, số lượng
+
+---
+
+## 🚀 Tính năng chính
+- Đăng ký / đăng nhập
+- Browsing / tìm kiếm / lọc sản phẩm
+- Giỏ hàng + checkout
+- Quản lý sản phẩm, danh mục
+- Quản lý đơn hàng
+- Phân quyền Admin / Staff / Customer
+- Đánh giá sản phẩm
+
+---
+
+## 🛠 Công nghệ sử dụng
+- Frontend: React.js + TypeScript + Vite
+- Backend: C# .NET (ASP.NET Core)
+- Database: SQL Server
+- UI: CSS / component-based design
+
+---
+
+## 🚀 Chạy dự án
+1. `cd Project_FashionStore`
+2. `npm install`
+3. `npm run dev`
+
+> Backend: cấu hình API và DB bên project `be/` (nếu có).
+
+---
+
+## 📁 Cấu trúc thư mục chính (frontend)
+- `src/components`: UI components và layout
+- `src/pages`: các trang Home, Products, Cart, Admin
+- `src/routes`: AppRoutes
+- `src/assets`: hình ảnh, css, scripts
+- `src/lib`: helpers và utils
+
+---
+
+## 📌 Ghi chú
+- Đảm bảo cấu hình kết nối DB trong `appsettings.json` cho backend
+- Tạo migration & seed data nếu cần
+

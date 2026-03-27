@@ -8,22 +8,22 @@ Hệ thống hỗ trợ:
 Khách hàng mua sắm online
 Nhân viên xử lý đơn hàng
 Quản trị viên quản lý toàn bộ hệ thống
-🎯 Mục tiêu hệ thống
+  🎯 Mục tiêu hệ thống
 Xây dựng nền tảng bán hàng hiện đại, dễ sử dụng
 Tối ưu quy trình mua hàng và xử lý đơn
 Phân quyền rõ ràng giữa Admin – Staff – Customer
 Đảm bảo dữ liệu chính xác và dễ mở rộng
-👥 Vai trò người dùng
+  👥 Vai trò người dùng
 👤 1. Khách hàng (Customer)
-Xem sản phẩm
-Thêm vào giỏ hàng
-Đặt hàng
-Đánh giá sản phẩm
+  Xem sản phẩm
+  Thêm vào giỏ hàng
+  Đặt hàng
+  Đánh giá sản phẩm
 🧑‍💼 2. Nhân viên (Staff)
-Xử lý đơn hàng
-Cập nhật trạng thái đơn
-Kiểm tra thông tin giao hàng
-Hỗ trợ khách hàng
+  Xử lý đơn hàng
+  Cập nhật trạng thái đơn
+  Kiểm tra thông tin giao hàng
+  Hỗ trợ khách hàng
 👑 3. Quản trị viên (Admin)
 Quản lý người dùng
 Quản lý sản phẩm & danh mục

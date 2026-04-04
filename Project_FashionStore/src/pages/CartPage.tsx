@@ -1,44 +1,19 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { ShoppingBag, Trash2, Plus, Minus, Tag, ArrowRight } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card';
 import { Input } from '../components/ui/input';
 import { Separator } from '../components/ui/separator';
 import { Badge } from '../components/ui/badge';
+import { useCart } from '../context/CartContext';
 
 const CartPage: React.FC = () => {
-  const cartItems = [
-    {
-      id: 1,
-      name: 'Áo thun Premium Cotton',
-      price: 599000,
-      quantity: 2,
-      size: 'L',
-      color: 'Đen',
-      image: 'product1'
-    },
-    {
-      id: 2,
-      name: 'Quần jeans Skinny Fit',
-      price: 899000,
-      quantity: 1,
-      size: 'M',
-      color: 'Xanh đậm',
-      image: 'product2'
-    },
-    {
-      id: 3,
-      name: 'Áo khoác Bomber',
-      price: 1299000,
-      quantity: 1,
-      size: 'XL',
-      color: 'Xám',
-      image: 'product3'
-    },
-  ];
+  const navigate = useNavigate();
+  const { cartItems, updateQuantity, removeFromCart, getTotalPrice } = useCart();
 
-  const subtotal = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
+  const subtotal = getTotalPrice();
   const shipping = subtotal > 500000 ? 0 : 30000;
-  const discount = 50000;
+  const discount = 0;
   const total = subtotal + shipping - discount;
 
   const hasItems = cartItems.length > 0;
@@ -77,17 +52,17 @@ const CartPage: React.FC = () => {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Cart Items */}
         <div className="lg:col-span-2 space-y-4">
-          {cartItems.map((item, idx) => (
-            <Card key={item.id} className="overflow-hidden hover-lift">
+          {cartItems.map((item) => (
+            <Card key={`${item.id}-${item.selectedSize}-${item.selectedColor}`} className="overflow-hidden hover-lift">
               <CardContent className="p-0">
                 <div className="flex gap-6 p-6">
                   {/* Product Image */}
-                  <div className="w-32 h-32 flex-shrink-0 rounded-lg overflow-hidden product-placeholder" style={{
-                    background: `linear-gradient(135deg, ${idx === 0 ? '#667eea, #764ba2' : idx === 1 ? '#f093fb, #f5576c' : '#4facfe, #00f2fe'})`
-                  }}>
-                    <div className="absolute inset-0 flex items-center justify-center opacity-20">
-                      <div className="text-white text-4xl font-bold">{item.id}</div>
-                    </div>
+                  <div className="w-32 h-32 flex-shrink-0 rounded-lg overflow-hidden bg-slate-100">
+                    <img
+                      src={item.image}
+                      alt={item.name}
+                      className="w-full h-full object-cover"
+                    />
                   </div>
 
                   {/* Product Details */}
@@ -97,14 +72,17 @@ const CartPage: React.FC = () => {
                         <h3 className="font-bold text-lg mb-1">{item.name}</h3>
                         <div className="flex gap-2 mb-2">
                           <Badge variant="outline" className="text-xs">
-                            Size: {item.size}
+                            Size: {item.selectedSize}
                           </Badge>
                           <Badge variant="outline" className="text-xs">
-                            Màu: {item.color}
+                            Màu: {item.selectedColor}
                           </Badge>
                         </div>
                       </div>
-                      <button className="h-8 w-8 rounded-full hover:bg-red-50 flex items-center justify-center group transition-colors">
+                      <button
+                        onClick={() => removeFromCart(item.id, item.selectedSize, item.selectedColor)}
+                        className="h-8 w-8 rounded-full hover:bg-red-50 flex items-center justify-center group transition-colors"
+                      >
                         <Trash2 size={18} className="text-muted-foreground group-hover:text-red-500 transition-colors" />
                       </button>
                     </div>
@@ -114,13 +92,19 @@ const CartPage: React.FC = () => {
                       <div className="flex items-center gap-3">
                         <span className="text-sm font-medium text-muted-foreground">Số lượng:</span>
                         <div className="flex items-center border rounded-lg">
-                          <button className="p-2 hover:bg-muted transition-colors rounded-l-lg">
+                          <button
+                            onClick={() => updateQuantity(item.id, item.selectedSize, item.selectedColor, item.quantity - 1)}
+                            className="p-2 hover:bg-muted transition-colors rounded-l-lg"
+                          >
                             <Minus size={16} />
                           </button>
                           <span className="px-4 py-2 font-medium min-w-[3rem] text-center border-x">
                             {item.quantity}
                           </span>
-                          <button className="p-2 hover:bg-muted transition-colors rounded-r-lg">
+                          <button
+                            onClick={() => updateQuantity(item.id, item.selectedSize, item.selectedColor, item.quantity + 1)}
+                            className="p-2 hover:bg-muted transition-colors rounded-r-lg"
+                          >
                             <Plus size={16} />
                           </button>
                         </div>
@@ -140,12 +124,12 @@ const CartPage: React.FC = () => {
 
           {/* Continue Shopping */}
           <div className="pt-4">
-            <a
-              href="/products"
+            <button
+              onClick={() => navigate('/products')}
               className="inline-flex items-center gap-2 text-primary font-semibold hover:underline underline-offset-4"
             >
               ← Tiếp tục mua sắm
-            </a>
+            </button>
           </div>
         </div>
         <div className="lg:col-span-1">
@@ -195,7 +179,10 @@ const CartPage: React.FC = () => {
                 <span className="font-bold text-lg">Tổng cộng</span>
                 <span className="font-bold text-2xl text-primary">{total.toLocaleString('vi-VN')}đ</span>
               </div>
-              <button className="w-full bg-primary text-white py-4 rounded-lg font-bold hover:bg-primary/90 transition-all hover:shadow-xl hover:scale-105 flex items-center justify-center gap-2">
+              <button
+                onClick={() => navigate('/checkout')}
+                className="w-full bg-primary text-white py-4 rounded-lg font-bold hover:bg-primary/90 transition-all hover:shadow-xl hover:scale-105 flex items-center justify-center gap-2"
+              >
                 Thanh toán
                 <ArrowRight size={20} />
               </button>

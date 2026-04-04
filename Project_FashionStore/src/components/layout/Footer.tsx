@@ -41,9 +41,8 @@ const Footer: React.FC = () => {
               {[
                 { label: 'Trang chủ', href: '/' },
                 { label: 'Sản phẩm', href: '/products' },
-                { label: 'Bộ sưu tập', href: '#' },
-                { label: 'Xu hướng', href: '#' },
-                { label: 'Về chúng tôi', href: '#' }
+                { label: 'Về chúng tôi', href: '/about' },
+                { label: 'Liên hệ', href: '/contact' }
               ].map((link) => (
                 <li key={link.label}>
                   <a href={link.href} className="text-muted-foreground hover:text-primary transition-colors hover:translate-x-1 inline-block">

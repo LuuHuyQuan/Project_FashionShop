@@ -6,7 +6,16 @@ import AdminLayout from '../layouts/AdminLayout';
 // Lazy load public pages
 const HomePage = lazy(() => import('../pages/HomePage'));
 const ProductsPage = lazy(() => import('../pages/ProductsPage'));
+const ProductDetailPage = lazy(() => import('../pages/ProductDetailPage'));
 const CartPage = lazy(() => import('../pages/CartPage'));
+const CheckoutPage = lazy(() => import('../pages/CheckoutPage'));
+const OrderSuccessPage = lazy(() => import('../pages/OrderSuccessPage'));
+const WishlistPage = lazy(() => import('../pages/WishlistPage'));
+const LoginPage = lazy(() => import('../pages/LoginPage'));
+const RegisterPage = lazy(() => import('../pages/RegisterPage'));
+const UserProfilePage = lazy(() => import('../pages/UserProfilePage'));
+const AboutPage = lazy(() => import('../pages/AboutPage'));
+const ContactPage = lazy(() => import('../pages/ContactPage'));
 const NotFoundPage = lazy(() => import('../pages/NotFoundPage'));
 
 // Lazy load admin pages
@@ -39,7 +48,18 @@ const AppRoutes: React.FC = () => {
       {/* Public routes */}
       <Route path="/" element={<MainLayout><Suspense fallback={<LoadingFallback />}><HomePage /></Suspense></MainLayout>} />
       <Route path="/products" element={<MainLayout><Suspense fallback={<LoadingFallback />}><ProductsPage /></Suspense></MainLayout>} />
+      <Route path="/products/:id" element={<MainLayout><Suspense fallback={<LoadingFallback />}><ProductDetailPage /></Suspense></MainLayout>} />
       <Route path="/cart" element={<MainLayout><Suspense fallback={<LoadingFallback />}><CartPage /></Suspense></MainLayout>} />
+      <Route path="/checkout" element={<MainLayout><Suspense fallback={<LoadingFallback />}><CheckoutPage /></Suspense></MainLayout>} />
+      <Route path="/order-success" element={<MainLayout><Suspense fallback={<LoadingFallback />}><OrderSuccessPage /></Suspense></MainLayout>} />
+      <Route path="/wishlist" element={<MainLayout><Suspense fallback={<LoadingFallback />}><WishlistPage /></Suspense></MainLayout>} />
+      <Route path="/profile" element={<MainLayout><Suspense fallback={<LoadingFallback />}><UserProfilePage /></Suspense></MainLayout>} />
+      <Route path="/about" element={<MainLayout><Suspense fallback={<LoadingFallback />}><AboutPage /></Suspense></MainLayout>} />
+      <Route path="/contact" element={<MainLayout><Suspense fallback={<LoadingFallback />}><ContactPage /></Suspense></MainLayout>} />
+
+      {/* Auth routes (no layout - full page) */}
+      <Route path="/login" element={<Suspense fallback={<LoadingFallback />}><LoginPage /></Suspense>} />
+      <Route path="/register" element={<Suspense fallback={<LoadingFallback />}><RegisterPage /></Suspense>} />
 
       {/* Admin routes */}
       <Route path="/admin" element={<AdminLayout><Suspense fallback={<AdminLoadingFallback />}><AdminDashboard /></Suspense></AdminLayout>} />

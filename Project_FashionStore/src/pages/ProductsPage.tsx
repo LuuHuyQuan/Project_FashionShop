@@ -1,18 +1,9 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Filter, Grid, List, Star, Heart, ShoppingCart, Search, SlidersHorizontal, ChevronDown, X } from 'lucide-react';
+import { products as allProducts, categories as allCategories } from '../data/products.ts';
 
-const products = [
-  { id: 1, name: 'Áo thun Premium Cotton', price: 599000, oldPrice: 799000, category: 'Áo thun', badge: 'Sale', rating: 5, reviews: 284, sold: 1240, gradient: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)' },
-  { id: 2, name: 'Áo sơ mi Slim Fit', price: 749000, category: 'Áo sơ mi', badge: 'New', rating: 4, reviews: 165, sold: 860, gradient: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)' },
-  { id: 3, name: 'Quần jeans Skinny', price: 899000, category: 'Quần', badge: 'Hot', rating: 5, reviews: 213, sold: 975, gradient: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)' },
-  { id: 4, name: 'Áo khoác Bomber', price: 1299000, category: 'Áo khoác', badge: 'Trend', rating: 4, reviews: 98, sold: 432, gradient: 'linear-gradient(135deg, #fa709a 0%, #fee140 100%)' },
-  { id: 5, name: 'Áo thun Oversized', price: 549000, category: 'Áo thun', rating: 5, reviews: 189, sold: 1560, gradient: 'linear-gradient(135deg, #a18cd1 0%, #fbc2eb 100%)' },
-  { id: 6, name: 'Quần shorts thể thao', price: 399000, oldPrice: 499000, category: 'Quần', badge: 'Sale', rating: 4, reviews: 142, sold: 890, gradient: 'linear-gradient(135deg, #fd7043 0%, #ffa726 100%)' },
-  { id: 7, name: 'Áo polo Classic', price: 699000, category: 'Áo polo', rating: 5, reviews: 76, sold: 350, gradient: 'linear-gradient(135deg, #26c6da 0%, #00acc1 100%)' },
-  { id: 8, name: 'Quần kaki Chinos', price: 799000, category: 'Quần', badge: 'New', rating: 4, reviews: 55, sold: 280, gradient: 'linear-gradient(135deg, #66bb6a 0%, #43a047 100%)' },
-];
-
-const categories = ['Tất cả', 'Áo thun', 'Áo sơ mi', 'Quần', 'Áo khoác', 'Áo polo', 'Phụ kiện'];
+const categories = ['Tất cả', ...Array.from(new Set(allProducts.map(p => p.category)))];
 const priceRanges = ['Dưới 500.000đ', '500K – 1.000K', '1.000K – 2.000K', 'Trên 2.000K'];
 const sizes = ['XS', 'S', 'M', 'L', 'XL', 'XXL'];
 const colorOptions = [
@@ -28,9 +19,11 @@ const badgeStyles: Record<string, { bg: string; color: string }> = {
   New: { bg: 'rgba(67,233,123,0.9)', color: '#065f46' },
   Hot: { bg: 'rgba(250,112,154,0.9)', color: '#fff' },
   Trend: { bg: 'rgba(161,140,209,0.9)', color: '#fff' },
+  Mới: { bg: 'rgba(67,233,123,0.9)', color: '#065f46' },
 };
 
 const ProductsPage: React.FC = () => {
+  const navigate = useNavigate();
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
   const [selectedCat, setSelectedCat] = useState('Tất cả');
   const [search, setSearch] = useState('');
@@ -44,7 +37,7 @@ const ProductsPage: React.FC = () => {
     setWishlist((prev) => prev.includes(id) ? prev.filter((i) => i !== id) : [...prev, id]);
   };
 
-  const filtered = products.filter((p) => {
+  const filtered = allProducts.filter((p) => {
     const matchCat = selectedCat === 'Tất cả' || p.category === selectedCat;
     const matchSearch = p.name.toLowerCase().includes(search.toLowerCase());
     return matchCat && matchSearch;
@@ -76,7 +69,7 @@ const ProductsPage: React.FC = () => {
               className="px-4 py-2 rounded-xl text-sm font-semibold transition-all"
               style={
                 selectedCat === cat
-                  ? { background: 'linear-gradient(135deg, #667eea, #764ba2)', color: '#fff', boxShadow: '0 4px 16px rgba(102,126,234,0.4)' }
+                  ? { background: '#2563eb', color: '#fff' }
                   : { background: '#ffffff', color: '#64748b', border: '1px solid #e2e8f0' }
               }
             >
@@ -126,12 +119,12 @@ const ProductsPage: React.FC = () => {
                         className="w-full flex items-center justify-between px-3 py-2 rounded-lg text-sm transition-all"
                         style={
                           selectedCat === cat
-                            ? { background: 'rgba(102,126,234,0.08)', color: '#7c3aed', border: '1px solid rgba(102,126,234,0.15)' }
+                            ? { background: '#dbeafe', color: '#2563eb', border: '1px solid #93c5fd' }
                             : { color: '#64748b', border: '1px solid transparent' }
                         }
                       >
                         <span>{cat}</span>
-                        {selectedCat === cat && <span className="text-xs text-purple-500">✓</span>}
+                        {selectedCat === cat && <span className="text-xs text-slate-700">✓</span>}
                       </button>
                     ))}
                   </div>
@@ -161,7 +154,7 @@ const ProductsPage: React.FC = () => {
                         className="w-10 h-10 rounded-lg text-sm font-semibold transition-all"
                         style={
                           selectedSize === size
-                            ? { background: 'linear-gradient(135deg, #667eea, #764ba2)', color: '#fff' }
+                            ? { background: '#2563eb', color: '#fff' }
                             : { background: '#f8fafc', color: '#64748b', border: '1px solid #e2e8f0' }
                         }
                       >
@@ -183,7 +176,7 @@ const ProductsPage: React.FC = () => {
                         className="w-8 h-8 rounded-full transition-all"
                         style={{
                           background: c.value,
-                          border: selectedColor === c.name ? '3px solid #7c3aed' : '2px solid #e2e8f0',
+                          border: selectedColor === c.name ? '3px solid #2563eb' : '2px solid #e2e8f0',
                           transform: selectedColor === c.name ? 'scale(1.2)' : 'scale(1)',
                         }}
                       />
@@ -254,7 +247,7 @@ const ProductsPage: React.FC = () => {
                       className="p-1.5 rounded-lg transition-all"
                       style={
                         viewMode === mode
-                          ? { background: 'linear-gradient(135deg, #667eea, #764ba2)', color: '#fff' }
+                          ? { background: '#2563eb', color: '#fff' }
                           : { color: '#94a3b8' }
                       }
                     >
@@ -267,13 +260,14 @@ const ProductsPage: React.FC = () => {
 
             {/* Products */}
             {viewMode === 'grid' ? (
-              <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 xl:grid-cols-3">
+              <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
                 {filtered.map((product, idx) => {
                   const bs = badgeStyles[product.badge ?? ''];
                   const isWished = wishlist.includes(product.id);
                   return (
                     <div
                       key={product.id}
+                      onClick={() => navigate(`/products/${product.id}`)}
                       className="group rounded-2xl overflow-hidden cursor-pointer transition-all duration-300 hover:scale-[1.02] hover:-translate-y-1"
                       style={{
                         background: '#ffffff',
@@ -282,12 +276,13 @@ const ProductsPage: React.FC = () => {
                       }}
                     >
                       {/* Image */}
-                      <div className="relative aspect-[4/5] overflow-hidden" style={{ background: product.gradient }}>
-                        <div className="absolute -bottom-10 -right-10 w-40 h-40 rounded-full bg-white/15" />
-                        <div className="absolute inset-0 bg-black/5 group-hover:bg-black/0 transition-all" />
-                        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-[80px] font-black text-white/10 select-none">
-                          {idx + 1}
-                        </div>
+                      <div className="relative aspect-[4/5] overflow-hidden bg-slate-100">
+                        <img
+                          src={product.image}
+                          alt={product.name}
+                          className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent" />
 
                         {product.badge && bs && (
                           <div
@@ -355,6 +350,7 @@ const ProductsPage: React.FC = () => {
                   return (
                     <div
                       key={product.id}
+                      onClick={() => navigate(`/products/${product.id}`)}
                       className="group flex gap-5 rounded-2xl overflow-hidden cursor-pointer transition-all duration-300 hover:scale-[1.01]"
                       style={{
                         background: '#ffffff',
@@ -362,9 +358,13 @@ const ProductsPage: React.FC = () => {
                         boxShadow: '0 2px 8px rgba(0,0,0,0.04)',
                       }}
                     >
-                      <div className="relative w-48 h-48 flex-shrink-0" style={{ background: product.gradient }}>
-                        <div className="absolute inset-0 bg-black/10 group-hover:bg-black/0 transition-all" />
-                        <div className="absolute inset-0 flex items-center justify-center text-[60px] font-black text-white/10">{idx + 1}</div>
+                      <div className="relative w-48 h-48 flex-shrink-0 overflow-hidden bg-slate-100">
+                        <img
+                          src={product.image}
+                          alt={product.name}
+                          className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent" />
                         {product.badge && bs && (
                           <div className="absolute top-3 left-3 px-2.5 py-1 rounded-full text-xs font-bold" style={{ background: bs.bg, color: bs.color }}>
                             {product.badge}
@@ -397,8 +397,7 @@ const ProductsPage: React.FC = () => {
                               <Heart size={17} className={isWished ? 'fill-red-500 text-red-500' : 'text-slate-400'} />
                             </button>
                             <button
-                              className="flex items-center gap-2 px-5 py-2.5 rounded-xl font-semibold text-white text-sm transition-all hover:opacity-90"
-                              style={{ background: 'linear-gradient(135deg, #667eea, #764ba2)' }}
+                              className="flex items-center gap-2 px-5 py-2.5 rounded-xl font-semibold text-white text-sm transition-all hover:opacity-90 bg-blue-600"
                             >
                               <ShoppingCart size={16} />
                               Thêm vào giỏ
@@ -426,7 +425,7 @@ const ProductsPage: React.FC = () => {
                   className="w-10 h-10 rounded-xl text-sm font-bold transition-all"
                   style={
                     page === 1
-                      ? { background: 'linear-gradient(135deg, #667eea, #764ba2)', color: '#fff', boxShadow: '0 4px 16px rgba(102,126,234,0.4)' }
+                      ? { background: '#2563eb', color: '#fff' }
                       : { background: '#ffffff', color: '#64748b', border: '1px solid #e2e8f0' }
                   }
                 >

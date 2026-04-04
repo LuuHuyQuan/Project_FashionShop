@@ -85,15 +85,14 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
                 key={item.path}
                 to={item.path}
                 title={!sidebarOpen ? item.label : ''}
-                className={`flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-200 group relative ${
-                  isActive ? '' : 'hover:bg-slate-50'
-                }`}
+                className={`flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-200 group relative ${isActive ? '' : 'hover:bg-slate-50'
+                  }`}
                 style={
                   isActive
                     ? {
-                        background: `${item.color}12`,
-                        border: `1px solid ${item.color}25`,
-                      }
+                      background: `${item.color}12`,
+                      border: `1px solid ${item.color}25`,
+                    }
                     : { border: '1px solid transparent' }
                 }
               >
@@ -158,7 +157,6 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
         </div>
       </aside>
 
-      {/* Main content */}
       <div className="flex-1 flex flex-col overflow-hidden">
         {/* Top bar */}
         <header
@@ -176,7 +174,6 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
             {sidebarOpen ? <X size={18} /> : <Menu size={18} />}
           </button>
 
-          {/* Breadcrumb */}
           <div className="flex items-center gap-1.5 text-sm">
             <span className="text-slate-400">Admin</span>
             <ChevronRight size={13} className="text-slate-300" />
@@ -191,7 +188,6 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
 
           <div className="flex-1" />
 
-          {/* Search */}
           <div className="relative hidden md:block">
             <Search size={14} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
             <input
@@ -201,7 +197,6 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
             />
           </div>
 
-          {/* Notification */}
           <button
             className="relative w-9 h-9 rounded-xl flex items-center justify-center text-slate-500 hover:text-slate-700 hover:bg-slate-100 transition-all"
             style={{ border: '1px solid #e2e8f0' }}
@@ -217,7 +212,6 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
             )}
           </button>
 
-          {/* Avatar */}
           <div
             className="w-9 h-9 rounded-xl flex items-center justify-center text-xs font-bold text-white cursor-pointer"
             style={{

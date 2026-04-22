@@ -1,0 +1,12 @@
+D:\PROJECT\Reactjs + .Net\Project_FashionStore\Project_BeFashionStore\src\Services.Auth.Domain\bin\Debug\net10.0\Services.Auth.Domain.deps.json
+D:\PROJECT\Reactjs + .Net\Project_FashionStore\Project_BeFashionStore\src\Services.Auth.Domain\bin\Debug\net10.0\Services.Auth.Domain.dll
+D:\PROJECT\Reactjs + .Net\Project_FashionStore\Project_BeFashionStore\src\Services.Auth.Domain\bin\Debug\net10.0\Services.Auth.Domain.pdb
+D:\PROJECT\Reactjs + .Net\Project_FashionStore\Project_BeFashionStore\src\Services.Auth.Domain\obj\Debug\net10.0\Services.Auth.Domain.GeneratedMSBuildEditorConfig.editorconfig
+D:\PROJECT\Reactjs + .Net\Project_FashionStore\Project_BeFashionStore\src\Services.Auth.Domain\obj\Debug\net10.0\Services.Auth.Domain.AssemblyInfoInputs.cache
+D:\PROJECT\Reactjs + .Net\Project_FashionStore\Project_BeFashionStore\src\Services.Auth.Domain\obj\Debug\net10.0\Services.Auth.Domain.AssemblyInfo.cs
+D:\PROJECT\Reactjs + .Net\Project_FashionStore\Project_BeFashionStore\src\Services.Auth.Domain\obj\Debug\net10.0\Services.Auth.Domain.csproj.CoreCompileInputs.cache
+D:\PROJECT\Reactjs + .Net\Project_FashionStore\Project_BeFashionStore\src\Services.Auth.Domain\obj\Debug\net10.0\Services.Auth.Domain.sourcelink.json
+D:\PROJECT\Reactjs + .Net\Project_FashionStore\Project_BeFashionStore\src\Services.Auth.Domain\obj\Debug\net10.0\Services.Auth.Domain.dll
+D:\PROJECT\Reactjs + .Net\Project_FashionStore\Project_BeFashionStore\src\Services.Auth.Domain\obj\Debug\net10.0\refint\Services.Auth.Domain.dll
+D:\PROJECT\Reactjs + .Net\Project_FashionStore\Project_BeFashionStore\src\Services.Auth.Domain\obj\Debug\net10.0\Services.Auth.Domain.pdb
+D:\PROJECT\Reactjs + .Net\Project_FashionStore\Project_BeFashionStore\src\Services.Auth.Domain\obj\Debug\net10.0\ref\Services.Auth.Domain.dll

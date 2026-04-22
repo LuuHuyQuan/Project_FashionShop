@@ -1,11 +1,112 @@
 {
   "version": 3,
   "targets": {
-    "net10.0": {}
+    "net10.0": {
+      "Microsoft.Extensions.DependencyInjection.Abstractions/10.0.0": {
+        "type": "package",
+        "compile": {
+          "lib/net10.0/Microsoft.Extensions.DependencyInjection.Abstractions.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net10.0/Microsoft.Extensions.DependencyInjection.Abstractions.dll": {
+            "related": ".xml"
+          }
+        },
+        "build": {
+          "buildTransitive/net8.0/_._": {}
+        }
+      },
+      "BuildingBlocks.Application/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v10.0",
+        "dependencies": {
+          "Microsoft.Extensions.DependencyInjection.Abstractions": "10.0.0"
+        },
+        "compile": {
+          "bin/placeholder/BuildingBlocks.Application.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/BuildingBlocks.Application.dll": {}
+        }
+      },
+      "BuildingBlocks.Domain/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v10.0",
+        "compile": {
+          "bin/placeholder/BuildingBlocks.Domain.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/BuildingBlocks.Domain.dll": {}
+        }
+      },
+      "Services.Ordering.Domain/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v10.0",
+        "compile": {
+          "bin/placeholder/Services.Ordering.Domain.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/Services.Ordering.Domain.dll": {}
+        }
+      }
+    }
   },
-  "libraries": {},
+  "libraries": {
+    "Microsoft.Extensions.DependencyInjection.Abstractions/10.0.0": {
+      "sha512": "L3AdmZ1WOK4XXT5YFPEwyt0ep6l8lGIPs7F5OOBZc77Zqeo01Of7XXICy47628sdVl0v/owxYJTe86DTgFwKCA==",
+      "type": "package",
+      "path": "microsoft.extensions.dependencyinjection.abstractions/10.0.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "Icon.png",
+        "PACKAGE.md",
+        "THIRD-PARTY-NOTICES.TXT",
+        "buildTransitive/net461/Microsoft.Extensions.DependencyInjection.Abstractions.targets",
+        "buildTransitive/net462/_._",
+        "buildTransitive/net8.0/_._",
+        "buildTransitive/netcoreapp2.0/Microsoft.Extensions.DependencyInjection.Abstractions.targets",
+        "lib/net10.0/Microsoft.Extensions.DependencyInjection.Abstractions.dll",
+        "lib/net10.0/Microsoft.Extensions.DependencyInjection.Abstractions.xml",
+        "lib/net462/Microsoft.Extensions.DependencyInjection.Abstractions.dll",
+        "lib/net462/Microsoft.Extensions.DependencyInjection.Abstractions.xml",
+        "lib/net8.0/Microsoft.Extensions.DependencyInjection.Abstractions.dll",
+        "lib/net8.0/Microsoft.Extensions.DependencyInjection.Abstractions.xml",
+        "lib/net9.0/Microsoft.Extensions.DependencyInjection.Abstractions.dll",
+        "lib/net9.0/Microsoft.Extensions.DependencyInjection.Abstractions.xml",
+        "lib/netstandard2.0/Microsoft.Extensions.DependencyInjection.Abstractions.dll",
+        "lib/netstandard2.0/Microsoft.Extensions.DependencyInjection.Abstractions.xml",
+        "lib/netstandard2.1/Microsoft.Extensions.DependencyInjection.Abstractions.dll",
+        "lib/netstandard2.1/Microsoft.Extensions.DependencyInjection.Abstractions.xml",
+        "microsoft.extensions.dependencyinjection.abstractions.10.0.0.nupkg.sha512",
+        "microsoft.extensions.dependencyinjection.abstractions.nuspec",
+        "useSharedDesignerContext.txt"
+      ]
+    },
+    "BuildingBlocks.Application/1.0.0": {
+      "type": "project",
+      "path": "../BuildingBlocks.Application/BuildingBlocks.Application.csproj",
+      "msbuildProject": "../BuildingBlocks.Application/BuildingBlocks.Application.csproj"
+    },
+    "BuildingBlocks.Domain/1.0.0": {
+      "type": "project",
+      "path": "../BuildingBlocks.Domain/BuildingBlocks.Domain.csproj",
+      "msbuildProject": "../BuildingBlocks.Domain/BuildingBlocks.Domain.csproj"
+    },
+    "Services.Ordering.Domain/1.0.0": {
+      "type": "project",
+      "path": "../Services.Ordering.Domain/Services.Ordering.Domain.csproj",
+      "msbuildProject": "../Services.Ordering.Domain/Services.Ordering.Domain.csproj"
+    }
+  },
   "projectFileDependencyGroups": {
-    "net10.0": []
+    "net10.0": [
+      "BuildingBlocks.Application >= 1.0.0",
+      "BuildingBlocks.Domain >= 1.0.0",
+      "Services.Ordering.Domain >= 1.0.0"
+    ]
   },
   "packageFolders": {
     "C:\\Users\\Luu Huy Quan\\.nuget\\packages\\": {},
@@ -43,7 +144,17 @@
       "frameworks": {
         "net10.0": {
           "targetAlias": "net10.0",
-          "projectReferences": {}
+          "projectReferences": {
+            "D:\\PROJECT\\Reactjs + .Net\\Project_FashionStore\\Project_BeFashionStore\\src\\BuildingBlocks.Application\\BuildingBlocks.Application.csproj": {
+              "projectPath": "D:\\PROJECT\\Reactjs + .Net\\Project_FashionStore\\Project_BeFashionStore\\src\\BuildingBlocks.Application\\BuildingBlocks.Application.csproj"
+            },
+            "D:\\PROJECT\\Reactjs + .Net\\Project_FashionStore\\Project_BeFashionStore\\src\\BuildingBlocks.Domain\\BuildingBlocks.Domain.csproj": {
+              "projectPath": "D:\\PROJECT\\Reactjs + .Net\\Project_FashionStore\\Project_BeFashionStore\\src\\BuildingBlocks.Domain\\BuildingBlocks.Domain.csproj"
+            },
+            "D:\\PROJECT\\Reactjs + .Net\\Project_FashionStore\\Project_BeFashionStore\\src\\Services.Ordering.Domain\\Services.Ordering.Domain.csproj": {
+              "projectPath": "D:\\PROJECT\\Reactjs + .Net\\Project_FashionStore\\Project_BeFashionStore\\src\\Services.Ordering.Domain\\Services.Ordering.Domain.csproj"
+            }
+          }
         }
       },
       "warningProperties": {

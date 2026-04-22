@@ -1,8 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "TB1y1H25W8M=",
+  "dgSpecHash": "ObmSsWtsqEo=",
   "success": true,
   "projectFilePath": "D:\\PROJECT\\Reactjs + .Net\\Project_FashionStore\\Project_BeFashionStore\\src\\Services.Auth.Application\\Services.Auth.Application.csproj",
-  "expectedPackageFiles": [],
+  "expectedPackageFiles": [
+    "C:\\Users\\Luu Huy Quan\\.nuget\\packages\\microsoft.extensions.dependencyinjection.abstractions\\10.0.0\\microsoft.extensions.dependencyinjection.abstractions.10.0.0.nupkg.sha512"
+  ],
   "logs": []
 }

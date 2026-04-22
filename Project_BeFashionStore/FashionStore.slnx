@@ -1,0 +1,20 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/BuildingBlocks.Application/BuildingBlocks.Application.csproj" />
+    <Project Path="src/BuildingBlocks.Domain/BuildingBlocks.Domain.csproj" />
+    <Project Path="src/BuildingBlocks.Infrastructure/BuildingBlocks.Infrastructure.csproj" />
+    <Project Path="src/Gateway.Api/Gateway.Api.csproj" />
+    <Project Path="src/Services.Auth.Api/Services.Auth.Api.csproj" />
+    <Project Path="src/Services.Auth.Application/Services.Auth.Application.csproj" />
+    <Project Path="src/Services.Auth.Domain/Services.Auth.Domain.csproj" />
+    <Project Path="src/Services.Auth.Infrastructure/Services.Auth.Infrastructure.csproj" />
+    <Project Path="src/Services.Catalog.Api/Services.Catalog.Api.csproj" />
+    <Project Path="src/Services.Catalog.Application/Services.Catalog.Application.csproj" />
+    <Project Path="src/Services.Catalog.Domain/Services.Catalog.Domain.csproj" />
+    <Project Path="src/Services.Catalog.Infrastructure/Services.Catalog.Infrastructure.csproj" />
+    <Project Path="src/Services.Ordering.Api/Services.Ordering.Api.csproj" />
+    <Project Path="src/Services.Ordering.Application/Services.Ordering.Application.csproj" />
+    <Project Path="src/Services.Ordering.Domain/Services.Ordering.Domain.csproj" />
+    <Project Path="src/Services.Ordering.Infrastructure/Services.Ordering.Infrastructure.csproj" />
+  </Folder>
+</Solution>

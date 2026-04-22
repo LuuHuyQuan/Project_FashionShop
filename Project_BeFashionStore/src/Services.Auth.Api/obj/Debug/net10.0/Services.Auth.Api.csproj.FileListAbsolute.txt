@@ -1,9 +1,0 @@
-D:\PROJECT\Reactjs + .Net\Project_FashionStore\Project_BeFashionStore\src\Services.Auth.Api\obj\Debug\net10.0\Services.Auth.Api.csproj.AssemblyReference.cache
-D:\PROJECT\Reactjs + .Net\Project_FashionStore\Project_BeFashionStore\src\Services.Auth.Api\obj\Debug\net10.0\rpswa.dswa.cache.json
-D:\PROJECT\Reactjs + .Net\Project_FashionStore\Project_BeFashionStore\src\Services.Auth.Api\obj\Debug\net10.0\Services.Auth.Api.GeneratedMSBuildEditorConfig.editorconfig
-D:\PROJECT\Reactjs + .Net\Project_FashionStore\Project_BeFashionStore\src\Services.Auth.Api\obj\Debug\net10.0\Services.Auth.Api.AssemblyInfoInputs.cache
-D:\PROJECT\Reactjs + .Net\Project_FashionStore\Project_BeFashionStore\src\Services.Auth.Api\obj\Debug\net10.0\Services.Auth.Api.AssemblyInfo.cs
-D:\PROJECT\Reactjs + .Net\Project_FashionStore\Project_BeFashionStore\src\Services.Auth.Api\obj\Debug\net10.0\Services.Auth.Api.csproj.CoreCompileInputs.cache
-D:\PROJECT\Reactjs + .Net\Project_FashionStore\Project_BeFashionStore\src\Services.Auth.Api\obj\Debug\net10.0\Services.Auth.Api.MvcApplicationPartsAssemblyInfo.cs
-D:\PROJECT\Reactjs + .Net\Project_FashionStore\Project_BeFashionStore\src\Services.Auth.Api\obj\Debug\net10.0\Services.Auth.Api.MvcApplicationPartsAssemblyInfo.cache
-D:\PROJECT\Reactjs + .Net\Project_FashionStore\Project_BeFashionStore\src\Services.Auth.Api\obj\Debug\net10.0\Services.Auth.Api.sourcelink.json

@@ -4,6 +4,12 @@ export const PUBLIC_ROUTES = {
   PRODUCTS: '/products',
   PRODUCT_DETAIL: '/products/:id',
   CART: '/cart',
+  CHECKOUT: '/checkout',
+  ORDER_SUCCESS: '/order-success',
+  WISHLIST: '/wishlist',
+  LOGIN: '/login',
+  REGISTER: '/register',
+  PROFILE: '/profile',
   ABOUT: '/about',
   CONTACT: '/contact',
   NOT_FOUND: '*',
@@ -22,3 +28,4 @@ export const ADMIN_ROUTES = {
 
 export const getProductDetailPath = (id: string | number) => `/products/${id}`;
 export const getAdminProductPath = (id: string | number) => `/admin/products/${id}`;
+

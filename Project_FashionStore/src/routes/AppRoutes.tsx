@@ -2,6 +2,8 @@ import React, { Suspense, lazy } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import MainLayout from '../layouts/MainLayout';
 import AdminLayout from '../layouts/AdminLayout';
+import ProtectedRoute from './ProtectedRoute';
+import AdminRoute from './AdminRoute';
 
 // Lazy load public pages
 const HomePage = lazy(() => import('../pages/HomePage'));
@@ -50,10 +52,10 @@ const AppRoutes: React.FC = () => {
       <Route path="/products" element={<MainLayout><Suspense fallback={<LoadingFallback />}><ProductsPage /></Suspense></MainLayout>} />
       <Route path="/products/:id" element={<MainLayout><Suspense fallback={<LoadingFallback />}><ProductDetailPage /></Suspense></MainLayout>} />
       <Route path="/cart" element={<MainLayout><Suspense fallback={<LoadingFallback />}><CartPage /></Suspense></MainLayout>} />
-      <Route path="/checkout" element={<MainLayout><Suspense fallback={<LoadingFallback />}><CheckoutPage /></Suspense></MainLayout>} />
+      <Route path="/checkout" element={<ProtectedRoute><MainLayout><Suspense fallback={<LoadingFallback />}><CheckoutPage /></Suspense></MainLayout></ProtectedRoute>} />
       <Route path="/order-success" element={<MainLayout><Suspense fallback={<LoadingFallback />}><OrderSuccessPage /></Suspense></MainLayout>} />
-      <Route path="/wishlist" element={<MainLayout><Suspense fallback={<LoadingFallback />}><WishlistPage /></Suspense></MainLayout>} />
-      <Route path="/profile" element={<MainLayout><Suspense fallback={<LoadingFallback />}><UserProfilePage /></Suspense></MainLayout>} />
+      <Route path="/wishlist" element={<ProtectedRoute><MainLayout><Suspense fallback={<LoadingFallback />}><WishlistPage /></Suspense></MainLayout></ProtectedRoute>} />
+      <Route path="/profile" element={<ProtectedRoute><MainLayout><Suspense fallback={<LoadingFallback />}><UserProfilePage /></Suspense></MainLayout></ProtectedRoute>} />
       <Route path="/about" element={<MainLayout><Suspense fallback={<LoadingFallback />}><AboutPage /></Suspense></MainLayout>} />
       <Route path="/contact" element={<MainLayout><Suspense fallback={<LoadingFallback />}><ContactPage /></Suspense></MainLayout>} />
 
@@ -62,13 +64,13 @@ const AppRoutes: React.FC = () => {
       <Route path="/register" element={<Suspense fallback={<LoadingFallback />}><RegisterPage /></Suspense>} />
 
       {/* Admin routes */}
-      <Route path="/admin" element={<AdminLayout><Suspense fallback={<AdminLoadingFallback />}><AdminDashboard /></Suspense></AdminLayout>} />
-      <Route path="/admin/products" element={<AdminLayout><Suspense fallback={<AdminLoadingFallback />}><AdminProducts /></Suspense></AdminLayout>} />
-      <Route path="/admin/orders" element={<AdminLayout><Suspense fallback={<AdminLoadingFallback />}><AdminOrders /></Suspense></AdminLayout>} />
-      <Route path="/admin/categories" element={<AdminLayout><Suspense fallback={<AdminLoadingFallback />}><AdminCategories /></Suspense></AdminLayout>} />
-      <Route path="/admin/users" element={<AdminLayout><Suspense fallback={<AdminLoadingFallback />}><AdminUsers /></Suspense></AdminLayout>} />
-      <Route path="/admin/analytics" element={<AdminLayout><Suspense fallback={<AdminLoadingFallback />}><AdminAnalytics /></Suspense></AdminLayout>} />
-      <Route path="/admin/settings" element={<AdminLayout><Suspense fallback={<AdminLoadingFallback />}><AdminSettings /></Suspense></AdminLayout>} />
+      <Route path="/admin" element={<AdminRoute><AdminLayout><Suspense fallback={<AdminLoadingFallback />}><AdminDashboard /></Suspense></AdminLayout></AdminRoute>} />
+      <Route path="/admin/products" element={<AdminRoute><AdminLayout><Suspense fallback={<AdminLoadingFallback />}><AdminProducts /></Suspense></AdminLayout></AdminRoute>} />
+      <Route path="/admin/orders" element={<AdminRoute><AdminLayout><Suspense fallback={<AdminLoadingFallback />}><AdminOrders /></Suspense></AdminLayout></AdminRoute>} />
+      <Route path="/admin/categories" element={<AdminRoute><AdminLayout><Suspense fallback={<AdminLoadingFallback />}><AdminCategories /></Suspense></AdminLayout></AdminRoute>} />
+      <Route path="/admin/users" element={<AdminRoute><AdminLayout><Suspense fallback={<AdminLoadingFallback />}><AdminUsers /></Suspense></AdminLayout></AdminRoute>} />
+      <Route path="/admin/analytics" element={<AdminRoute><AdminLayout><Suspense fallback={<AdminLoadingFallback />}><AdminAnalytics /></Suspense></AdminLayout></AdminRoute>} />
+      <Route path="/admin/settings" element={<AdminRoute><AdminLayout><Suspense fallback={<AdminLoadingFallback />}><AdminSettings /></Suspense></AdminLayout></AdminRoute>} />
 
       {/* 404 */}
       <Route path="*" element={<MainLayout><Suspense fallback={<LoadingFallback />}><NotFoundPage /></Suspense></MainLayout>} />

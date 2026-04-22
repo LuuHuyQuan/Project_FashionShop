@@ -113,7 +113,6 @@ const CheckoutPage: React.FC = () => {
       setErrors({ ...errors, [e.target.name]: '' });
     }
   };
-
   const validateStep1 = () => {
     const newErrors: Record<string, string> = {};
     if (!formData.fullName.trim()) newErrors.fullName = 'Vui lòng nhập họ tên';
@@ -127,7 +126,6 @@ const CheckoutPage: React.FC = () => {
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
-
   const validateStep2 = () => {
     const newErrors: Record<string, string> = {};
     if (paymentMethod === 'card') {

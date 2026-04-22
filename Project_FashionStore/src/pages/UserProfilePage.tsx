@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 import {
   User,
   Mail,
@@ -65,16 +66,17 @@ const menuItems = [
 
 const UserProfilePage: React.FC = () => {
   const navigate = useNavigate();
+  const { user, logout } = useAuth();
 
-  const user = {
-    name: 'Nguyễn Văn A',
-    email: 'nguyenvana@email.com',
-    phone: '0912 345 678',
-    address: '123 Đường ABC, Phường 1, Quận 1, TP.HCM',
+  const profile = {
+    name: user?.fullName ?? 'Khách hàng',
+    email: user?.email ?? '',
+    phone: user?.phone ?? '',
+    address: 'Chưa cập nhật địa chỉ',
     avatar: null,
-    memberSince: 'Tháng 01/2026',
-    level: 'Vàng',
-    points: 2450,
+    memberSince: 'Tài khoản đã kích hoạt',
+    level: user?.role === 'admin' ? 'Admin' : user?.role === 'vip' ? 'VIP' : 'Thành viên',
+    points: 0,
   };
 
   return (
@@ -123,30 +125,34 @@ const UserProfilePage: React.FC = () => {
             {/* User Info */}
             <div className="text-center md:text-left flex-1">
               <div className="flex items-center justify-center md:justify-start gap-3 mb-1">
-                <h1 className="text-3xl font-extrabold text-white">{user.name}</h1>
+                <h1 className="text-3xl font-extrabold text-white">{profile.name}</h1>
                 <span
                   className="px-3 py-1 rounded-full text-xs font-bold"
                   style={{ background: 'rgba(255,215,0,0.2)', color: '#ffd700', border: '1px solid rgba(255,215,0,0.3)' }}
                 >
-                  👑 {user.level}
+                  👑 {profile.level}
                 </span>
               </div>
-              <p className="text-white/60 text-sm mb-2">Thành viên từ {user.memberSince}</p>
+              <p className="text-white/60 text-sm mb-2">{profile.memberSince}</p>
               <div className="flex items-center justify-center md:justify-start gap-6 text-white/70 text-sm">
-                <span className="flex items-center gap-1.5"><Mail size={14} /> {user.email}</span>
-                <span className="flex items-center gap-1.5"><Phone size={14} /> {user.phone}</span>
+                 <span className="flex items-center gap-1.5"><Mail size={14} /> {profile.email}</span>
+                 <span className="flex items-center gap-1.5"><Phone size={14} /> {profile.phone}</span>
+
               </div>
             </div>
 
             {/* Points & Actions */}
             <div className="flex items-center gap-3">
               <div className="text-center px-5 py-3 rounded-2xl bg-white/10 backdrop-blur-sm">
-                <p className="text-2xl font-extrabold text-white">{user.points.toLocaleString()}</p>
+                <p className="text-2xl font-extrabold text-white">{profile.points.toLocaleString()}</p>
                 <p className="text-xs text-white/60">Điểm thưởng</p>
               </div>
               <button
                 className="p-3 rounded-xl bg-white/10 backdrop-blur-sm hover:bg-white/20 transition-colors"
-                onClick={() => navigate('/login')}
+                onClick={() => {
+                  logout();
+                  navigate('/login');
+                }}
               >
                 <LogOut size={20} className="text-white/80" />
               </button>
@@ -235,10 +241,10 @@ const UserProfilePage: React.FC = () => {
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                 {[
-                  { icon: User, label: 'Họ tên', value: user.name },
-                  { icon: Mail, label: 'Email', value: user.email },
-                  { icon: Phone, label: 'Số điện thoại', value: user.phone },
-                  { icon: MapPin, label: 'Địa chỉ', value: user.address },
+                  { icon: User, label: 'Họ tên', value: profile.name },
+                  { icon: Mail, label: 'Email', value: profile.email },
+                  { icon: Phone, label: 'Số điện thoại', value: profile.phone },
+                  { icon: MapPin, label: 'Địa chỉ', value: profile.address },
                 ].map((field) => (
                   <div key={field.label} className="flex items-start gap-3 p-4 rounded-xl" style={{ background: '#f8fafc' }}>
                     <div className="w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0" style={{ background: 'rgba(102,126,234,0.1)' }}>

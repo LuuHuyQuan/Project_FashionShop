@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 import {
   Mail,
   Lock,
@@ -15,6 +16,7 @@ import {
 
 const RegisterPage: React.FC = () => {
   const navigate = useNavigate();
+  const { register } = useAuth();
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
   const [formData, setFormData] = useState({
@@ -49,7 +51,7 @@ const RegisterPage: React.FC = () => {
     return { level: 4, label: 'Rất mạnh', color: '#667eea' };
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const newErrors: Record<string, string> = {};
     if (!formData.fullName.trim()) newErrors.fullName = 'Vui lòng nhập họ tên';
@@ -63,11 +65,20 @@ const RegisterPage: React.FC = () => {
     setErrors(newErrors);
 
     if (Object.keys(newErrors).length === 0) {
-      setIsLoading(true);
-      setTimeout(() => {
+      try {
+        setIsLoading(true);
+        await register({
+          fullName: formData.fullName.trim(),
+          email: formData.email.trim(),
+          phone: formData.phone.trim(),
+          password: formData.password,
+        });
+        navigate('/');
+      } catch (error) {
+        setErrors({ general: error instanceof Error ? error.message : 'Đăng ký thất bại' });
+      } finally {
         setIsLoading(false);
-        navigate('/login');
-      }, 1500);
+      }
     }
   };
 
@@ -161,6 +172,11 @@ const RegisterPage: React.FC = () => {
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-4">
+            {errors.general && (
+              <div className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm font-medium text-red-600">
+                {errors.general}
+              </div>
+            )}
             {/* Full Name */}
             <div>
               <label className="flex items-center gap-2 text-sm font-semibold text-slate-700 mb-2">

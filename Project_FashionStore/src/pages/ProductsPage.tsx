@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Filter, Grid, List, Star, Heart, ShoppingCart, Search, SlidersHorizontal, ChevronDown, X } from 'lucide-react';
-import { products as allProducts, categories as allCategories } from '../data/products.ts';
+import { products as allProducts } from '../data/products.ts';
 
 const categories = ['Tất cả', ...Array.from(new Set(allProducts.map(p => p.category)))];
 const priceRanges = ['Dưới 500.000đ', '500K – 1.000K', '1.000K – 2.000K', 'Trên 2.000K'];
@@ -261,7 +261,7 @@ const ProductsPage: React.FC = () => {
             {/* Products */}
             {viewMode === 'grid' ? (
               <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-                {filtered.map((product, idx) => {
+                {filtered.map((product) => {
                   const bs = badgeStyles[product.badge ?? ''];
                   const isWished = wishlist.includes(product.id);
                   return (
@@ -344,7 +344,7 @@ const ProductsPage: React.FC = () => {
             ) : (
               /* List view */
               <div className="space-y-4">
-                {filtered.map((product, idx) => {
+                {filtered.map((product) => {
                   const bs = badgeStyles[product.badge ?? ''];
                   const isWished = wishlist.includes(product.id);
                   return (

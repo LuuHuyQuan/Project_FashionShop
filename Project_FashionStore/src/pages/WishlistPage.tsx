@@ -1,76 +1,25 @@
 import React, { useState } from 'react';
-import { Heart, ShoppingCart, Trash2, Star, ArrowRight, Sparkles, X } from 'lucide-react';
+import { Heart, ShoppingCart, Star, ArrowRight, Sparkles, X } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { products } from '../data/products';
 
-const wishlistItems = [
-  {
-    id: 1,
-    name: 'Áo thun Premium Cotton',
-    price: 599000,
-    oldPrice: 799000,
-    rating: 5,
-    reviews: 284,
-    category: 'Áo thun',
-    gradient: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-    inStock: true,
-  },
-  {
-    id: 2,
-    name: 'Áo sơ mi Slim Fit',
-    price: 749000,
-    rating: 4,
-    reviews: 165,
-    category: 'Áo sơ mi',
-    gradient: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
-    inStock: true,
-  },
-  {
-    id: 3,
-    name: 'Quần jeans Skinny',
-    price: 899000,
-    rating: 5,
-    reviews: 213,
-    category: 'Quần jeans',
-    gradient: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)',
-    inStock: false,
-  },
-  {
-    id: 4,
-    name: 'Áo khoác Bomber',
-    price: 1299000,
-    oldPrice: 1599000,
-    rating: 4,
-    reviews: 98,
-    category: 'Áo khoác',
-    gradient: 'linear-gradient(135deg, #fa709a 0%, #fee140 100%)',
-    inStock: true,
-  },
-  {
-    id: 5,
-    name: 'Váy đầm Maxi',
-    price: 950000,
-    oldPrice: 1200000,
-    rating: 5,
-    reviews: 156,
-    category: 'Váy đầm',
-    gradient: 'linear-gradient(135deg, #a18cd1 0%, #fbc2eb 100%)',
-    inStock: true,
-  },
-  {
-    id: 6,
-    name: 'Áo polo Classic',
-    price: 450000,
-    rating: 4,
-    reviews: 89,
-    category: 'Áo polo',
-    gradient: 'linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)',
-    inStock: true,
-  },
-];
+const initialWishlistItems = products.slice(0, 6).map((p) => ({
+  id: p.id,
+  name: p.name,
+  price: p.price,
+  oldPrice: p.oldPrice,
+  rating: p.rating,
+  reviews: p.reviews,
+  category: p.category,
+  image: p.image,
+  inStock: true,
+}));
+
+initialWishlistItems[2] = { ...initialWishlistItems[2], inStock: false };
 
 const WishlistPage: React.FC = () => {
   const navigate = useNavigate();
-  const [items, setItems] = useState(wishlistItems);
+  const [items, setItems] = useState(initialWishlistItems);
   const [removingId, setRemovingId] = useState<number | null>(null);
 
   const removeItem = (id: number) => {
@@ -80,7 +29,6 @@ const WishlistPage: React.FC = () => {
       setRemovingId(null);
     }, 300);
   };
-
   if (items.length === 0) {
     return (
       <div style={{ background: 'linear-gradient(180deg, #f8fafc 0%, #eef2ff 100%)', minHeight: '100vh' }}>
@@ -88,9 +36,7 @@ const WishlistPage: React.FC = () => {
           <div className="max-w-lg mx-auto text-center">
             <div
               className="w-24 h-24 rounded-full flex items-center justify-center mx-auto mb-6"
-              style={{
-                background: 'linear-gradient(135deg, rgba(240,147,251,0.1), rgba(245,87,108,0.1))',
-              }}
+              style={{ background: 'linear-gradient(135deg, rgba(240,147,251,0.1), rgba(245,87,108,0.1))' }}
             >
               <Heart size={48} className="text-pink-300" />
             </div>
@@ -131,7 +77,9 @@ const WishlistPage: React.FC = () => {
               </div>
               <h1 className="text-3xl font-extrabold text-slate-900">Yêu thích</h1>
             </div>
-            <p className="text-slate-400 ml-[52px]">Bạn có {items.length} sản phẩm trong danh sách yêu thích</p>
+            <p className="text-slate-400 ml-[52px]">
+              Bạn có {items.length} sản phẩm trong danh sách yêu thích
+            </p>
           </div>
           <button
             onClick={() => navigate('/products')}
@@ -158,10 +106,16 @@ const WishlistPage: React.FC = () => {
               }}
             >
               {/* Image */}
-              <div className="relative aspect-[4/5] overflow-hidden cursor-pointer" onClick={() => navigate(`/products/${item.id}`)}>
-                <div className="absolute inset-0" style={{ background: item.gradient }} />
-                <div className="absolute inset-0 bg-black/5" />
-                <div className="absolute -bottom-12 -right-12 w-32 h-32 rounded-full bg-white/15" />
+              <div
+                className="relative aspect-[4/5] overflow-hidden cursor-pointer bg-slate-100"
+                onClick={() => navigate(`/products/${item.id}`)}
+              >
+                <img
+                  src={item.image}
+                  alt={item.name}
+                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
 
                 {/* Remove button */}
                 <button
@@ -179,7 +133,7 @@ const WishlistPage: React.FC = () => {
                   <Heart size={16} className="fill-red-500 text-red-500" />
                 </div>
 
-                {/* Badge */}
+                {/* Out of stock badge */}
                 {!item.inStock && (
                   <div
                     className="absolute bottom-4 left-4 px-3 py-1.5 rounded-full text-xs font-bold text-white z-10"
@@ -189,6 +143,7 @@ const WishlistPage: React.FC = () => {
                   </div>
                 )}
 
+                {/* Discount badge */}
                 {item.oldPrice && (
                   <div
                     className="absolute top-4 left-16 px-2.5 py-1 rounded-full text-xs font-bold z-10"

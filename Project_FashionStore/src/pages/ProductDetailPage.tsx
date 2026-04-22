@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { Star, Heart, ShoppingCart, Truck, Shield, Package, ChevronRight, Minus, Plus, Share2, Check } from 'lucide-react';
+import {
+  Star, Heart, ShoppingCart, Truck, Shield, Package,
+  ChevronRight, Minus, Plus, Share2, Check,
+} from 'lucide-react';
 import { getProductById, products } from '../data/products';
 import { useCart } from '../context/CartContext';
 
@@ -10,35 +13,23 @@ const ProductDetailPage: React.FC = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const { addToCart } = useCart();
-
-  // Get product data based on ID
   const productId = parseInt(id || '1');
   const productData = getProductById(productId);
-
-  // If product not found, use first product as fallback
+  const [selectedImage, setSelectedImage] = useState(0);
+  const [selectedSize, setSelectedSize] = useState('');
+  const [selectedColor, setSelectedColor] = useState('');
+  const [quantity, setQuantity] = useState(1);
+  const [isWished, setIsWished] = useState(false);
+  const [activeTab, setActiveTab] = useState('description');
   if (!productData) {
-    const fallbackProduct = products[0];
-
-    const [selectedImage, setSelectedImage] = useState(0);
-    const [selectedSize, setSelectedSize] = useState('');
-    const [selectedColor, setSelectedColor] = useState('');
-    const [quantity, setQuantity] = useState(1);
-    const [isWished, setIsWished] = useState(false);
-    const [activeTab, setActiveTab] = useState('description');
-
-    const handleAddToCart = () => {
-      if (!selectedSize || !selectedColor) {
-        alert('Vui lòng chọn size và màu sắc');
-        return;
-      }
-      alert(`Đã thêm ${quantity} sản phẩm vào giỏ hàng`);
-    };
-
     return (
       <div style={{ background: '#f8fafc', minHeight: '100vh' }}>
         <div className="container mx-auto px-6 py-8">
-          <p className="text-center text-slate-500">Sản phẩm không tồn tại</p>
-          <button onClick={() => navigate('/products')} className="mt-4 px-6 py-2 bg-purple-600 text-white rounded-lg mx-auto block">
+          <p className="text-center text-slate-500 text-lg">Sản phẩm không tồn tại</p>
+          <button
+            onClick={() => navigate('/products')}
+            className="mt-4 px-6 py-2 bg-purple-600 text-white rounded-lg mx-auto block hover:bg-purple-700 transition-colors"
+          >
             Quay lại trang sản phẩm
           </button>
         </div>
@@ -46,23 +37,13 @@ const ProductDetailPage: React.FC = () => {
     );
   }
 
-  const [selectedImage, setSelectedImage] = useState(0);
-  const [selectedSize, setSelectedSize] = useState('');
-  const [selectedColor, setSelectedColor] = useState('');
-  const [quantity, setQuantity] = useState(1);
-  const [isWished, setIsWished] = useState(false);
-  const [activeTab, setActiveTab] = useState('description');
-
   const handleAddToCart = () => {
     if (!selectedSize || !selectedColor) {
       alert('Vui lòng chọn size và màu sắc');
       return;
     }
-
-    if (productData) {
-      addToCart(productData, selectedSize, selectedColor, quantity);
-      alert(`Đã thêm ${quantity} sản phẩm "${productData.name}" (Size: ${selectedSize}, Màu: ${selectedColor}) vào giỏ hàng!`);
-    }
+    addToCart(productData, selectedSize, selectedColor, quantity);
+    alert(`Đã thêm ${quantity} "${productData.name}" (Size: ${selectedSize}, Màu: ${selectedColor}) vào giỏ hàng!`);
   };
 
   return (
@@ -78,16 +59,14 @@ const ProductDetailPage: React.FC = () => {
           <span className="text-slate-700">{productData.name}</span>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-16">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 mb-16">
 
           {/* Left: Images */}
-          <div className="max-w-md mx-auto lg:mx-0">
+          <div className="max-w-md mx-auto lg:mx-0 w-full">
             {/* Main image */}
             <div
-              className="rounded-3xl overflow-hidden mb-4 aspect-square relative"
-              style={{
-                maxHeight: '450px'
-              }}
+              className="rounded-3xl overflow-hidden mb-4 aspect-square relative bg-slate-100"
+              style={{ maxHeight: '450px' }}
             >
               <img
                 src={productData.images[selectedImage]}
@@ -145,11 +124,7 @@ const ProductDetailPage: React.FC = () => {
             <div className="flex items-center gap-4 mb-6">
               <div className="flex items-center gap-1">
                 {[...Array(5)].map((_, i) => (
-                  <Star
-                    key={i}
-                    size={16}
-                    className={i < productData.rating ? 'fill-yellow-400 text-yellow-400' : 'text-slate-200'}
-                  />
+                  <Star key={i} size={16} className={i < productData.rating ? 'fill-yellow-400 text-yellow-400' : 'text-slate-200'} />
                 ))}
               </div>
               <span className="text-sm text-slate-500">
@@ -176,7 +151,7 @@ const ProductDetailPage: React.FC = () => {
               )}
             </div>
 
-            {/* Color selection */}
+            {/* Color */}
             <div className="mb-5">
               <label className="block text-sm font-bold text-slate-700 mb-3">
                 Màu sắc: {selectedColor && <span className="text-slate-900">{selectedColor}</span>}
@@ -186,7 +161,7 @@ const ProductDetailPage: React.FC = () => {
                   <button
                     key={color.name}
                     onClick={() => setSelectedColor(color.name)}
-                    className="relative group"
+                    className="relative"
                     title={color.name}
                   >
                     <div
@@ -207,7 +182,7 @@ const ProductDetailPage: React.FC = () => {
               </div>
             </div>
 
-            {/* Size selection */}
+            {/* Size */}
             <div className="mb-6">
               <label className="block text-sm font-bold text-slate-700 mb-3">
                 Kích cỡ: {selectedSize && <span className="text-slate-900">{selectedSize}</span>}
@@ -278,8 +253,8 @@ const ProductDetailPage: React.FC = () => {
             {/* Features */}
             <div className="grid grid-cols-3 gap-4">
               {[
-                { icon: Truck, text: 'Miễn phí vận chuyển' },
-                { icon: Shield, text: 'Bảo hành 30 ngày' },
+                { icon: Truck,   text: 'Miễn phí vận chuyển' },
+                { icon: Shield,  text: 'Bảo hành 30 ngày' },
                 { icon: Package, text: 'Đóng gói cẩn thận' },
               ].map((feat, idx) => (
                 <div
@@ -300,32 +275,24 @@ const ProductDetailPage: React.FC = () => {
           <div className="flex gap-2 mb-6 border-b border-slate-200">
             {[
               { id: 'description', label: 'Mô tả' },
-              { id: 'features', label: 'Đặc điểm' },
-              { id: 'reviews', label: 'Đánh giá' },
+              { id: 'features',    label: 'Đặc điểm' },
+              { id: 'reviews',     label: 'Đánh giá' },
             ].map((tab) => (
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
                 className="px-6 py-3 font-semibold transition-all relative"
-                style={{
-                  color: activeTab === tab.id ? '#2563eb' : '#64748b',
-                }}
+                style={{ color: activeTab === tab.id ? '#2563eb' : '#64748b' }}
               >
                 {tab.label}
-                {activeTab === tab.id && (
-                  <div
-                    className="absolute bottom-0 left-0 right-0 h-0.5 bg-blue-600"
-                  />
-                )}
+                {activeTab === tab.id && <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-blue-600" />}
               </button>
             ))}
           </div>
 
           <div className="rounded-2xl p-8" style={{ background: '#fff', border: '1px solid #e2e8f0' }}>
             {activeTab === 'description' && (
-              <div>
-                <p className="text-slate-600 leading-relaxed">{productData.description}</p>
-              </div>
+              <p className="text-slate-600 leading-relaxed">{productData.description}</p>
             )}
             {activeTab === 'features' && (
               <ul className="space-y-3">

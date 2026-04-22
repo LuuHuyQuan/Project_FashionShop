@@ -42,7 +42,6 @@ const Header: React.FC = () => {
 
       <div className="container mx-auto flex h-16 items-center justify-between px-6">
 
-        {/* Logo */}
         <a href="/" className="flex items-center gap-2.5 flex-shrink-0">
           <div className="w-9 h-9 rounded-xl flex items-center justify-center bg-blue-600">
             <Sparkles size={17} className="text-white" />
@@ -52,7 +51,6 @@ const Header: React.FC = () => {
           </span>
         </a>
 
-        {/* Desktop nav */}
         <nav className="hidden md:flex items-center gap-1">
           {navLinks.map((link) => (
             <a
@@ -130,7 +128,6 @@ const Header: React.FC = () => {
         </div>
       </div>
 
-      {/* Mobile menu */}
       {mobileMenuOpen && (
         <div className="md:hidden border-t bg-white border-slate-200">
           <div className="container mx-auto px-6 py-4 space-y-1">

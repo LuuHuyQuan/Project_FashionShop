@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 import {
   LayoutDashboard,
   Package,
@@ -35,6 +36,7 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [notifCount] = useState(3);
   const location = useLocation();
+  const { user, logout } = useAuth();
 
   return (
     <div className="flex h-screen overflow-hidden" style={{ background: '#f1f5f9' }}>
@@ -140,17 +142,20 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
                 boxShadow: '0 2px 10px rgba(240,147,251,0.3)',
               }}
             >
-              A
+               {user?.fullName?.charAt(0).toUpperCase() || 'A'}
+
             </div>
             {sidebarOpen && (
               <>
                 <div className="flex-1 min-w-0">
-                  <p className="text-sm font-semibold text-slate-700 truncate leading-tight">Admin</p>
-                  <p className="text-xs truncate text-slate-400">admin@fashionstore.vn</p>
+                   <p className="text-sm font-semibold text-slate-700 truncate leading-tight">{user?.fullName || 'Admin'}</p>
+                   <p className="text-xs truncate text-slate-400">{user?.email || 'admin@fashionstore.vn'}</p>
+
                 </div>
-                <button className="text-slate-300 hover:text-red-400 transition-colors">
-                  <LogOut size={15} />
-                </button>
+                 <button onClick={logout} className="text-slate-300 hover:text-red-400 transition-colors">
+                   <LogOut size={15} />
+                 </button>
+
               </>
             )}
           </div>

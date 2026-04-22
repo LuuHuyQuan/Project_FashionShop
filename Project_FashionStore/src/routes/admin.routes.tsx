@@ -1,5 +1,5 @@
 import { lazy, Suspense } from 'react';
-import { RouteConfig } from './types';
+import type { RouteConfig } from './types';
 import AdminLoadingFallback from '../components/common/AdminLoadingFallback';
 
 // Lazy load admin components

@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import {
   Search,
   Users,
-  Edit2,
   Trash2,
   Eye,
   X,

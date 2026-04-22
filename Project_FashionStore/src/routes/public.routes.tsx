@@ -1,5 +1,5 @@
 import { lazy, Suspense } from 'react';
-import { RouteConfig } from './types';
+import type { RouteConfig } from './types';
 import LoadingFallback from '../components/common/LoadingFallback';
 
 // Lazy load components
@@ -7,6 +7,12 @@ const HomePage = lazy(() => import('../pages/HomePage'));
 const ProductsPage = lazy(() => import('../pages/ProductsPage'));
 const ProductDetailPage = lazy(() => import('../pages/ProductDetailPage'));
 const CartPage = lazy(() => import('../pages/CartPage'));
+const CheckoutPage = lazy(() => import('../pages/CheckoutPage'));
+const OrderSuccessPage = lazy(() => import('../pages/OrderSuccessPage'));
+const WishlistPage = lazy(() => import('../pages/WishlistPage'));
+const LoginPage = lazy(() => import('../pages/LoginPage'));
+const RegisterPage = lazy(() => import('../pages/RegisterPage'));
+const UserProfilePage = lazy(() => import('../pages/UserProfilePage'));
 const AboutPage = lazy(() => import('../pages/AboutPage'));
 const ContactPage = lazy(() => import('../pages/ContactPage'));
 const NotFoundPage = lazy(() => import('../pages/NotFoundPage'));
@@ -52,6 +58,52 @@ export const publicRoutes: RouteConfig[] = [
     meta: {
       title: 'Giỏ hàng - Fashion Store',
       description: 'Giỏ hàng của bạn',
+    },
+  },
+  {
+    path: '/checkout',
+    component: withSuspense(CheckoutPage),
+    meta: {
+      title: 'Thanh toán - Fashion Store',
+      description: 'Thanh toán đơn hàng',
+      requiresAuth: true,
+    },
+  },
+  {
+    path: '/order-success',
+    component: withSuspense(OrderSuccessPage),
+    meta: {
+      title: 'Đặt hàng thành công - Fashion Store',
+    },
+  },
+  {
+    path: '/wishlist',
+    component: withSuspense(WishlistPage),
+    meta: {
+      title: 'Yêu thích - Fashion Store',
+      requiresAuth: true,
+    },
+  },
+  {
+    path: '/profile',
+    component: withSuspense(UserProfilePage),
+    meta: {
+      title: 'Tài khoản của tôi - Fashion Store',
+      requiresAuth: true,
+    },
+  },
+  {
+    path: '/login',
+    component: withSuspense(LoginPage),
+    meta: {
+      title: 'Đăng nhập - Fashion Store',
+    },
+  },
+  {
+    path: '/register',
+    component: withSuspense(RegisterPage),
+    meta: {
+      title: 'Đăng ký - Fashion Store',
     },
   },
   {

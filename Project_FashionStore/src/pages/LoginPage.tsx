@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 import {
   Mail,
   Lock,
@@ -12,6 +13,8 @@ import {
 
 const LoginPage: React.FC = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const { login } = useAuth();
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({ email: '', password: '' });
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -24,7 +27,7 @@ const LoginPage: React.FC = () => {
     }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const newErrors: Record<string, string> = {};
     if (!formData.email.trim()) newErrors.email = 'Vui lòng nhập email';
@@ -32,11 +35,19 @@ const LoginPage: React.FC = () => {
     setErrors(newErrors);
 
     if (Object.keys(newErrors).length === 0) {
-      setIsLoading(true);
-      setTimeout(() => {
+      try {
+        setIsLoading(true);
+        await login({
+          email: formData.email.trim(),
+          password: formData.password,
+        });
+        const redirectTo = (location.state as { from?: { pathname?: string } } | null)?.from?.pathname;
+        navigate(redirectTo || '/');
+      } catch (error) {
+        setErrors({ general: error instanceof Error ? error.message : 'Đăng nhập thất bại' });
+      } finally {
         setIsLoading(false);
-        navigate('/');
-      }, 1500);
+      }
     }
   };
 
@@ -122,6 +133,11 @@ const LoginPage: React.FC = () => {
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-5">
+            {errors.general && (
+              <div className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm font-medium text-red-600">
+                {errors.general}
+              </div>
+            )}
             {/* Email */}
             <div>
               <label className="flex items-center gap-2 text-sm font-semibold text-slate-700 mb-2">

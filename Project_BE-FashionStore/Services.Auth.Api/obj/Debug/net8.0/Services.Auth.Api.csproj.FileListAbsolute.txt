@@ -1,0 +1,12 @@
+D:\PROJECT\Reactjs + .Net\Project_FashionStore\be\Project_FashionStore\Services.Auth.Api\bin\Debug\net8.0\Services.Auth.Api.deps.json
+D:\PROJECT\Reactjs + .Net\Project_FashionStore\be\Project_FashionStore\Services.Auth.Api\bin\Debug\net8.0\Services.Auth.Api.dll
+D:\PROJECT\Reactjs + .Net\Project_FashionStore\be\Project_FashionStore\Services.Auth.Api\bin\Debug\net8.0\Services.Auth.Api.pdb
+D:\PROJECT\Reactjs + .Net\Project_FashionStore\be\Project_FashionStore\Services.Auth.Api\obj\Debug\net8.0\Services.Auth.Api.GeneratedMSBuildEditorConfig.editorconfig
+D:\PROJECT\Reactjs + .Net\Project_FashionStore\be\Project_FashionStore\Services.Auth.Api\obj\Debug\net8.0\Services.Auth.Api.AssemblyInfoInputs.cache
+D:\PROJECT\Reactjs + .Net\Project_FashionStore\be\Project_FashionStore\Services.Auth.Api\obj\Debug\net8.0\Services.Auth.Api.AssemblyInfo.cs
+D:\PROJECT\Reactjs + .Net\Project_FashionStore\be\Project_FashionStore\Services.Auth.Api\obj\Debug\net8.0\Services.Auth.Api.csproj.CoreCompileInputs.cache
+D:\PROJECT\Reactjs + .Net\Project_FashionStore\be\Project_FashionStore\Services.Auth.Api\obj\Debug\net8.0\Services.Auth.Api.sourcelink.json
+D:\PROJECT\Reactjs + .Net\Project_FashionStore\be\Project_FashionStore\Services.Auth.Api\obj\Debug\net8.0\Services.Auth.Api.dll
+D:\PROJECT\Reactjs + .Net\Project_FashionStore\be\Project_FashionStore\Services.Auth.Api\obj\Debug\net8.0\refint\Services.Auth.Api.dll
+D:\PROJECT\Reactjs + .Net\Project_FashionStore\be\Project_FashionStore\Services.Auth.Api\obj\Debug\net8.0\Services.Auth.Api.pdb
+D:\PROJECT\Reactjs + .Net\Project_FashionStore\be\Project_FashionStore\Services.Auth.Api\obj\Debug\net8.0\ref\Services.Auth.Api.dll

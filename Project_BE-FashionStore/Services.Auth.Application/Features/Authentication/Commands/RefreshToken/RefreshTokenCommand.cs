@@ -1,6 +1,6 @@
 using MediatR;
-using Services.Auth.Application.Common.Models;
+using Services.Auth.Application.Features.Authentication.Common;
 
 namespace Services.Auth.Application.Features.Authentication.Commands.RefreshToken;
 
-public sealed record RefreshTokenCommand(string RefreshToken) : IRequest<AuthenticationResult>;
+public record RefreshTokenCommand(string RefreshToken) : IRequest<AuthResponse>;

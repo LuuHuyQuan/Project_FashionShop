@@ -1,7 +1,11 @@
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Services.Catalog.Api.DTOs;
-using Services.Catalog.Application.Abstractions.Persistence;
-using Services.Catalog.Domain.Entities;
+using Services.Catalog.Application.Features.ProductVariants.Commands.CreateProductVariant;
+using Services.Catalog.Application.Features.ProductVariants.Commands.DeleteProductVariant;
+using Services.Catalog.Application.Features.ProductVariants.Commands.UpdateProductVariant;
+using Services.Catalog.Application.Features.ProductVariants.Queries.GetProductVariantById;
+using Services.Catalog.Application.Features.ProductVariants.Queries.GetProductVariants;
 
 namespace Services.Catalog.Api.Controllers;
 
@@ -9,79 +13,79 @@ namespace Services.Catalog.Api.Controllers;
 [Route("api/[controller]")]
 public class ProductVariantsController : ControllerBase
 {
-    private readonly IProductVariantRepository _variantRepository;
+    private readonly ISender _sender;
 
-    public ProductVariantsController(IProductVariantRepository variantRepository)
+    public ProductVariantsController(ISender sender)
     {
-        _variantRepository = variantRepository;
+        _sender = sender;
     }
 
-    [HttpGet("{id}")]
-    public async Task<IActionResult> GetById(int id)
+    [HttpGet]
+    public async Task<IActionResult> GetAll(CancellationToken cancellationToken)
     {
-        var variant = await _variantRepository.GetByIdAsync(id);
-        if (variant == null)
-            return NotFound();
-        
-        return Ok(variant);
-    }
-
-    [HttpGet("sku/{sku}")]
-    public async Task<IActionResult> GetBySKU(string sku)
-    {
-        var variant = await _variantRepository.GetBySKUAsync(sku);
-        if (variant == null)
-            return NotFound();
-        
-        return Ok(variant);
-    }
-
-    [HttpGet("product/{productId}")]
-    public async Task<IActionResult> GetByProductId(int productId)
-    {
-        var variants = await _variantRepository.GetByProductIdAsync(productId);
+        var query = new GetProductVariantsQuery();
+        var variants = await _sender.Send(query, cancellationToken);
         return Ok(variants);
     }
 
-    [HttpPost]
-    public async Task<IActionResult> Create([FromBody] CreateProductVariantRequest request)
+    [HttpGet("{id}")]
+    public async Task<IActionResult> GetById(int id, CancellationToken cancellationToken)
     {
-        var variant = new ProductVariant
-        {
-            ProductId = request.ProductId,
-            ColorId = request.ColorId,
-            SizeId = request.SizeId,
-            SKU = request.SKU,
-            StockQuantity = request.StockQuantity,
-            PriceOverride = request.PriceOverride
-        };
+        var query = new GetProductVariantByIdQuery(id);
+        var variant = await _sender.Send(query, cancellationToken);
         
-        var created = await _variantRepository.CreateAsync(variant);
+        if (variant == null)
+            return NotFound();
+        
+        return Ok(variant);
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> Create([FromBody] CreateProductVariantRequest request, CancellationToken cancellationToken)
+    {
+        var command = new CreateProductVariantCommand(
+            request.ProductId,
+            request.ColorId,
+            request.SizeId,
+            request.SKU,
+            request.StockQuantity,
+            request.PriceOverride
+        );
+
+        var created = await _sender.Send(command, cancellationToken);
         return CreatedAtAction(nameof(GetById), new { id = created.Id }, created);
     }
 
     [HttpPut("{id}")]
-    public async Task<IActionResult> Update(int id, [FromBody] CreateProductVariantRequest request)
+    public async Task<IActionResult> Update(int id, [FromBody] CreateProductVariantRequest request, CancellationToken cancellationToken)
     {
-        var variant = await _variantRepository.GetByIdAsync(id);
-        if (variant == null)
+        var command = new UpdateProductVariantCommand(
+            id,
+            request.ProductId,
+            request.ColorId,
+            request.SizeId,
+            request.SKU,
+            request.StockQuantity,
+            request.PriceOverride
+        );
+
+        var success = await _sender.Send(command, cancellationToken);
+        
+        if (!success)
             return NotFound();
-        
-        variant.ProductId = request.ProductId;
-        variant.ColorId = request.ColorId;
-        variant.SizeId = request.SizeId;
-        variant.SKU = request.SKU;
-        variant.StockQuantity = request.StockQuantity;
-        variant.PriceOverride = request.PriceOverride;
-        
-        var updated = await _variantRepository.UpdateAsync(variant);
-        return Ok(updated);
+
+        return NoContent();
     }
 
     [HttpDelete("{id}")]
-    public async Task<IActionResult> Delete(int id)
+    public async Task<IActionResult> Delete(int id, CancellationToken cancellationToken)
     {
-        await _variantRepository.DeleteAsync(id);
+        var command = new DeleteProductVariantCommand(id);
+        var success = await _sender.Send(command, cancellationToken);
+        
+        if (!success)
+            return NotFound();
+
         return NoContent();
     }
 }

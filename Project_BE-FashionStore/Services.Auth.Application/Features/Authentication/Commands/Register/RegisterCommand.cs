@@ -1,11 +1,11 @@
 using MediatR;
-using Services.Auth.Application.Common.Models;
+using Services.Auth.Application.Features.Authentication.Common;
 
 namespace Services.Auth.Application.Features.Authentication.Commands.Register;
 
-public sealed record RegisterCommand(
+public record RegisterCommand(
     string FullName,
     string Email,
     string Phone,
-    string Password,
-    string Role = "customer") : IRequest<AuthenticationResult>;
+    string Password
+) : IRequest<AuthResponse>;

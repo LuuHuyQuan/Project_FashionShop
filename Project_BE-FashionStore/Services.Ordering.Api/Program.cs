@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
+using Services.Ordering.Application;
+using Services.Ordering.Infrastructure;
 using Services.Ordering.Infrastructure.Persistence;
-using Services.Ordering.Infrastructure.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,9 +9,11 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<OrderingDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("FashionStoreDb")));
 
-// Add Repositories
-builder.Services.AddScoped<ICartRepository, CartRepository>();
-builder.Services.AddScoped<IOrderRepository, OrderRepository>();
+// Add Application layer (MediatR)
+builder.Services.AddApplication();
+
+// Add Infrastructure layer (Repositories)
+builder.Services.AddInfrastructure(builder.Configuration);
 
 // Add Controllers
 builder.Services.AddControllers()

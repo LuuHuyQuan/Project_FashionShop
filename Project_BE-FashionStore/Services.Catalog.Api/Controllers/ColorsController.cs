@@ -1,7 +1,11 @@
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Services.Catalog.Api.DTOs;
-using Services.Catalog.Application.Abstractions.Persistence;
-using Services.Catalog.Domain.Entities;
+using Services.Catalog.Application.Features.Colors.Commands.CreateColor;
+using Services.Catalog.Application.Features.Colors.Commands.DeleteColor;
+using Services.Catalog.Application.Features.Colors.Commands.UpdateColor;
+using Services.Catalog.Application.Features.Colors.Queries.GetColorById;
+using Services.Catalog.Application.Features.Colors.Queries.GetColors;
 
 namespace Services.Catalog.Api.Controllers;
 
@@ -9,24 +13,27 @@ namespace Services.Catalog.Api.Controllers;
 [Route("api/[controller]")]
 public class ColorsController : ControllerBase
 {
-    private readonly IColorRepository _colorRepository;
+    private readonly ISender _sender;
 
-    public ColorsController(IColorRepository colorRepository)
+    public ColorsController(ISender sender)
     {
-        _colorRepository = colorRepository;
+        _sender = sender;
     }
 
     [HttpGet]
     public async Task<IActionResult> GetAll(CancellationToken cancellationToken)
     {
-        var colors = await _colorRepository.GetAllAsync(cancellationToken);
+        var query = new GetColorsQuery();
+        var colors = await _sender.Send(query, cancellationToken);
         return Ok(colors);
     }
 
     [HttpGet("{id}")]
     public async Task<IActionResult> GetById(int id, CancellationToken cancellationToken)
     {
-        var color = await _colorRepository.GetByIdAsync(id, cancellationToken);
+        var query = new GetColorByIdQuery(id);
+        var color = await _sender.Send(query, cancellationToken);
+        
         if (color == null)
             return NotFound();
         
@@ -36,38 +43,32 @@ public class ColorsController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> Create([FromBody] CreateColorRequest request, CancellationToken cancellationToken)
     {
-        var color = new Color
-        {
-            Name = request.Name,
-            HexCode = request.HexCode
-        };
-
-        var created = await _colorRepository.AddAsync(color, cancellationToken);
+        var command = new CreateColorCommand(request.Name, request.HexCode);
+        var created = await _sender.Send(command, cancellationToken);
         return CreatedAtAction(nameof(GetById), new { id = created.Id }, created);
     }
 
     [HttpPut("{id}")]
     public async Task<IActionResult> Update(int id, [FromBody] CreateColorRequest request, CancellationToken cancellationToken)
     {
-        var color = await _colorRepository.GetByIdAsync(id, cancellationToken);
-        if (color == null)
+        var command = new UpdateColorCommand(id, request.Name, request.HexCode);
+        var success = await _sender.Send(command, cancellationToken);
+        
+        if (!success)
             return NotFound();
 
-        color.Name = request.Name;
-        color.HexCode = request.HexCode;
-
-        await _colorRepository.UpdateAsync(color, cancellationToken);
         return NoContent();
     }
 
     [HttpDelete("{id}")]
     public async Task<IActionResult> Delete(int id, CancellationToken cancellationToken)
     {
-        var color = await _colorRepository.GetByIdAsync(id, cancellationToken);
-        if (color == null)
+        var command = new DeleteColorCommand(id);
+        var success = await _sender.Send(command, cancellationToken);
+        
+        if (!success)
             return NotFound();
 
-        await _colorRepository.DeleteAsync(id, cancellationToken);
         return NoContent();
     }
 }

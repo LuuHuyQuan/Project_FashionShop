@@ -1,6 +1,12 @@
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Services.Ordering.Infrastructure.Repositories;
-using Services.Ordering.Domain.Entities;
+using Services.Ordering.Application.Features.Orders.Commands.Checkout;
+using Services.Ordering.Application.Features.Orders.Commands.DeleteOrder;
+using Services.Ordering.Application.Features.Orders.Commands.UpdateOrderStatus;
+using Services.Ordering.Application.Features.Orders.Queries.GetMyOrders;
+using Services.Ordering.Application.Features.Orders.Queries.GetOrderByCode;
+using Services.Ordering.Application.Features.Orders.Queries.GetOrderById;
+using Services.Ordering.Application.Features.Orders.Queries.GetOrders;
 
 namespace Services.Ordering.Api.Controllers;
 
@@ -8,24 +14,27 @@ namespace Services.Ordering.Api.Controllers;
 [Route("api/[controller]")]
 public class OrdersController : ControllerBase
 {
-    private readonly IOrderRepository _orderRepository;
+    private readonly ISender _sender;
 
-    public OrdersController(IOrderRepository orderRepository)
+    public OrdersController(ISender sender)
     {
-        _orderRepository = orderRepository;
+        _sender = sender;
     }
 
     [HttpGet]
-    public async Task<IActionResult> GetAll()
+    public async Task<IActionResult> GetAll(CancellationToken cancellationToken)
     {
-        var orders = await _orderRepository.GetAllAsync();
+        var query = new GetOrdersQuery();
+        var orders = await _sender.Send(query, cancellationToken);
         return Ok(orders);
     }
 
     [HttpGet("{id}")]
-    public async Task<IActionResult> GetById(int id)
+    public async Task<IActionResult> GetById(int id, CancellationToken cancellationToken)
     {
-        var order = await _orderRepository.GetByIdAsync(id);
+        var query = new GetOrderByIdQuery(id);
+        var order = await _sender.Send(query, cancellationToken);
+        
         if (order == null)
             return NotFound();
         
@@ -33,9 +42,11 @@ public class OrdersController : ControllerBase
     }
 
     [HttpGet("code/{orderCode}")]
-    public async Task<IActionResult> GetByOrderCode(string orderCode)
+    public async Task<IActionResult> GetByOrderCode(string orderCode, CancellationToken cancellationToken)
     {
-        var order = await _orderRepository.GetByOrderCodeAsync(orderCode);
+        var query = new GetOrderByCodeQuery(orderCode);
+        var order = await _sender.Send(query, cancellationToken);
+        
         if (order == null)
             return NotFound();
         
@@ -43,50 +54,43 @@ public class OrdersController : ControllerBase
     }
 
     [HttpGet("user/{userId}")]
-    public async Task<IActionResult> GetByUserId(int userId)
+    public async Task<IActionResult> GetByUserId(int userId, CancellationToken cancellationToken)
     {
-        var orders = await _orderRepository.GetByUserIdAsync(userId);
+        var query = new GetMyOrdersQuery(userId);
+        var orders = await _sender.Send(query, cancellationToken);
         return Ok(orders);
     }
 
-    [HttpPost]
-    public async Task<IActionResult> Create([FromBody] Order order)
+    [HttpPost("checkout")]
+    public async Task<IActionResult> Checkout([FromBody] CheckoutCommand command, CancellationToken cancellationToken)
     {
-        // Generate order code
-        order.OrderCode = $"ORD{DateTime.UtcNow:yyyyMMddHHmmss}";
-        
-        var created = await _orderRepository.CreateAsync(order);
-        return CreatedAtAction(nameof(GetById), new { id = created.Id }, created);
-    }
-
-    [HttpPut("{id}")]
-    public async Task<IActionResult> Update(int id, [FromBody] Order order)
-    {
-        if (id != order.Id)
-            return BadRequest();
-        
-        var updated = await _orderRepository.UpdateAsync(order);
-        return Ok(updated);
+        var order = await _sender.Send(command, cancellationToken);
+        return CreatedAtAction(nameof(GetById), new { id = order.Id }, order);
     }
 
     [HttpPut("{id}/status")]
-    public async Task<IActionResult> UpdateStatus(int id, [FromBody] UpdateStatusRequest request)
+    public async Task<IActionResult> UpdateStatus(int id, [FromBody] UpdateStatusRequest request, CancellationToken cancellationToken)
     {
-        var order = await _orderRepository.GetByIdAsync(id);
+        var command = new UpdateOrderStatusCommand(id, request.Status);
+        var order = await _sender.Send(command, cancellationToken);
+        
         if (order == null)
             return NotFound();
-        
-        order.Status = request.Status;
-        var updated = await _orderRepository.UpdateAsync(order);
-        return Ok(updated);
+
+        return Ok(order);
     }
 
     [HttpDelete("{id}")]
-    public async Task<IActionResult> Delete(int id)
+    public async Task<IActionResult> Delete(int id, CancellationToken cancellationToken)
     {
-        await _orderRepository.DeleteAsync(id);
+        var command = new DeleteOrderCommand(id);
+        var success = await _sender.Send(command, cancellationToken);
+        
+        if (!success)
+            return NotFound();
+
         return NoContent();
     }
 }
 
-public record UpdateStatusRequest(string Status);
+public record UpdateStatusRequest(string Status, string? PaymentStatus);

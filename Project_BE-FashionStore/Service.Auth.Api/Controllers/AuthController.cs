@@ -1,7 +1,8 @@
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Services.Auth.Infrastructure.Repositories;
-using Services.Auth.Domain.Entities;
-using BCrypt.Net;
+using Services.Auth.Application.Features.Authentication.Commands.Login;
+using Services.Auth.Application.Features.Authentication.Commands.RefreshToken;
+using Services.Auth.Application.Features.Authentication.Commands.Register;
 
 namespace Service.Auth.Api.Controllers;
 
@@ -9,89 +10,59 @@ namespace Service.Auth.Api.Controllers;
 [Route("api/[controller]")]
 public class AuthController : ControllerBase
 {
-    private readonly IUserRepository _userRepository;
+    private readonly ISender _sender;
 
-    public AuthController(IUserRepository userRepository)
+    public AuthController(ISender sender)
     {
-        _userRepository = userRepository;
+        _sender = sender;
     }
 
     [HttpPost("register")]
-    public async Task<IActionResult> Register([FromBody] RegisterRequest request)
+    public async Task<IActionResult> Register([FromBody] RegisterRequest request, CancellationToken cancellationToken)
     {
-        // Check if email exists
-        if (await _userRepository.EmailExistsAsync(request.Email))
-            return BadRequest(new { message = "Email already exists" });
-
-        // Hash password
-        var passwordHash = BCrypt.Net.BCrypt.HashPassword(request.Password);
-
-        var user = new User
+        try
         {
-            FullName = request.FullName,
-            Email = request.Email,
-            Phone = request.Phone,
-            PasswordHash = passwordHash,
-            Role = "customer",
-            Status = "active"
-        };
-
-        var created = await _userRepository.CreateAsync(user);
-        
-        return Ok(new
+            var command = new RegisterCommand(request.FullName, request.Email, request.Phone, request.Password);
+            var response = await _sender.Send(command, cancellationToken);
+            return Ok(response);
+        }
+        catch (InvalidOperationException ex)
         {
-            id = created.Id,
-            fullName = created.FullName,
-            email = created.Email,
-            phone = created.Phone,
-            role = created.Role
-        });
+            return BadRequest(new { message = ex.Message });
+        }
     }
 
     [HttpPost("login")]
-    public async Task<IActionResult> Login([FromBody] LoginRequest request)
+    public async Task<IActionResult> Login([FromBody] LoginRequest request, CancellationToken cancellationToken)
     {
-        var user = await _userRepository.GetByEmailAsync(request.Email);
-        
-        if (user == null)
-            return Unauthorized(new { message = "Invalid email or password" });
-
-        // Verify password
-        if (!BCrypt.Net.BCrypt.Verify(request.Password, user.PasswordHash))
-            return Unauthorized(new { message = "Invalid email or password" });
-
-        if (user.Status != "active")
-            return Unauthorized(new { message = "Account is inactive" });
-
-        // TODO: Generate JWT token
-        return Ok(new
+        try
         {
-            id = user.Id,
-            fullName = user.FullName,
-            email = user.Email,
-            phone = user.Phone,
-            role = user.Role,
-            token = "JWT_TOKEN_HERE" // Implement JWT generation
-        });
+            var command = new LoginCommand(request.Email, request.Password);
+            var response = await _sender.Send(command, cancellationToken);
+            return Ok(response);
+        }
+        catch (UnauthorizedAccessException ex)
+        {
+            return Unauthorized(new { message = ex.Message });
+        }
     }
 
-    [HttpGet("users")]
-    public async Task<IActionResult> GetAllUsers()
+    [HttpPost("refresh")]
+    public async Task<IActionResult> RefreshToken([FromBody] RefreshRequest request, CancellationToken cancellationToken)
     {
-        var users = await _userRepository.GetAllAsync();
-        return Ok(users);
-    }
-
-    [HttpGet("users/{id}")]
-    public async Task<IActionResult> GetUserById(int id)
-    {
-        var user = await _userRepository.GetByIdAsync(id);
-        if (user == null)
-            return NotFound();
-        
-        return Ok(user);
+        try
+        {
+            var command = new RefreshTokenCommand(request.RefreshToken);
+            var response = await _sender.Send(command, cancellationToken);
+            return Ok(response);
+        }
+        catch (UnauthorizedAccessException ex)
+        {
+            return Unauthorized(new { message = ex.Message });
+        }
     }
 }
 
 public record RegisterRequest(string FullName, string Email, string Phone, string Password);
 public record LoginRequest(string Email, string Password);
+public record RefreshRequest(string RefreshToken);

@@ -1,6 +1,11 @@
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Services.Catalog.Infrastructure.Repositories;
-using Services.Catalog.Domain.Entities;
+using Services.Catalog.Api.DTOs;
+using Services.Catalog.Application.Features.Categories.Commands.CreateCategory;
+using Services.Catalog.Application.Features.Categories.Commands.DeleteCategory;
+using Services.Catalog.Application.Features.Categories.Commands.UpdateCategory;
+using Services.Catalog.Application.Features.Categories.Queries.GetCategories;
+using Services.Catalog.Application.Features.Categories.Queries.GetCategoryById;
 
 namespace Services.Catalog.Api.Controllers;
 
@@ -8,34 +13,27 @@ namespace Services.Catalog.Api.Controllers;
 [Route("api/[controller]")]
 public class CategoriesController : ControllerBase
 {
-    private readonly ICategoryRepository _categoryRepository;
+    private readonly ISender _sender;
 
-    public CategoriesController(ICategoryRepository categoryRepository)
+    public CategoriesController(ISender sender)
     {
-        _categoryRepository = categoryRepository;
+        _sender = sender;
     }
 
     [HttpGet]
-    public async Task<IActionResult> GetAll()
+    public async Task<IActionResult> GetAll(CancellationToken cancellationToken)
     {
-        var categories = await _categoryRepository.GetAllAsync();
+        var query = new GetCategoriesQuery();
+        var categories = await _sender.Send(query, cancellationToken);
         return Ok(categories);
     }
 
     [HttpGet("{id}")]
-    public async Task<IActionResult> GetById(int id)
+    public async Task<IActionResult> GetById(int id, CancellationToken cancellationToken)
     {
-        var category = await _categoryRepository.GetByIdAsync(id);
-        if (category == null)
-            return NotFound();
+        var query = new GetCategoryByIdQuery(id);
+        var category = await _sender.Send(query, cancellationToken);
         
-        return Ok(category);
-    }
-
-    [HttpGet("slug/{slug}")]
-    public async Task<IActionResult> GetBySlug(string slug)
-    {
-        var category = await _categoryRepository.GetBySlugAsync(slug);
         if (category == null)
             return NotFound();
         
@@ -43,26 +41,47 @@ public class CategoriesController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> Create([FromBody] Category category)
+    public async Task<IActionResult> Create([FromBody] CreateCategoryRequest request, CancellationToken cancellationToken)
     {
-        var created = await _categoryRepository.CreateAsync(category);
+        var command = new CreateCategoryCommand(
+            request.Name,
+            request.Slug,
+            request.Description,
+            request.Status
+        );
+
+        var created = await _sender.Send(command, cancellationToken);
         return CreatedAtAction(nameof(GetById), new { id = created.Id }, created);
     }
 
     [HttpPut("{id}")]
-    public async Task<IActionResult> Update(int id, [FromBody] Category category)
+    public async Task<IActionResult> Update(int id, [FromBody] CreateCategoryRequest request, CancellationToken cancellationToken)
     {
-        if (id != category.Id)
-            return BadRequest();
+        var command = new UpdateCategoryCommand(
+            id,
+            request.Name,
+            request.Slug,
+            request.Description,
+            request.Status
+        );
+
+        var success = await _sender.Send(command, cancellationToken);
         
-        var updated = await _categoryRepository.UpdateAsync(category);
-        return Ok(updated);
+        if (!success)
+            return NotFound();
+
+        return NoContent();
     }
 
     [HttpDelete("{id}")]
-    public async Task<IActionResult> Delete(int id)
+    public async Task<IActionResult> Delete(int id, CancellationToken cancellationToken)
     {
-        await _categoryRepository.DeleteAsync(id);
+        var command = new DeleteCategoryCommand(id);
+        var success = await _sender.Send(command, cancellationToken);
+        
+        if (!success)
+            return NotFound();
+
         return NoContent();
     }
 }

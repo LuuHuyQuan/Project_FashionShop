@@ -14,7 +14,6 @@ public class Product
     public decimal RatingAverage { get; set; } = 0;
     public int ReviewCount { get; set; } = 0;
     public int SoldCount { get; set; } = 0;
-    public bool IsActive { get; set; } = true;
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     public DateTime? UpdatedAt { get; set; }
     
@@ -28,7 +27,7 @@ public class Product
     // Constructors
     public Product() { }
 
-    public Product(int id, int categoryId, string name, string slug, decimal price, bool isActive, 
+    public Product(int id, int categoryId, string name, string slug, decimal price, string status = "active", 
                    string? description = null, decimal? oldPrice = null, string? badge = null)
     {
         Id = id;
@@ -36,27 +35,25 @@ public class Product
         Name = name;
         Slug = slug;
         Price = price;
-        IsActive = isActive;
+        Status = status;
         Description = description;
         OldPrice = oldPrice;
         Badge = badge;
-        Status = isActive ? "active" : "inactive";
         CreatedAt = DateTime.UtcNow;
     }
 
     // Methods
-    public void Update(int categoryId, string name, string slug, decimal price, bool isActive,
+    public void Update(int categoryId, string name, string slug, decimal price, string status,
                       string? description = null, decimal? oldPrice = null, string? badge = null)
     {
         CategoryId = categoryId;
         Name = name;
         Slug = slug;
         Price = price;
-        IsActive = isActive;
+        Status = status;
         Description = description;
         OldPrice = oldPrice;
         Badge = badge;
-        Status = isActive ? "active" : "inactive";
         UpdatedAt = DateTime.UtcNow;
     }
 }

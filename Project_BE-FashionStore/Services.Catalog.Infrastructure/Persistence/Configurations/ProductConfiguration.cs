@@ -51,8 +51,6 @@ public sealed class ProductConfiguration : IEntityTypeConfiguration<Product>
         builder.Property(x => x.SoldCount)
             .IsRequired();
 
-        builder.Ignore(x => x.IsActive);
-
         builder.Property(x => x.CreatedAt)
             .HasColumnName("CreatedAt")
             .IsRequired();

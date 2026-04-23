@@ -3,6 +3,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Services.Catalog.Application.Abstractions.Persistence;
 using Services.Catalog.Infrastructure.Persistence;
+using Services.Catalog.Infrastructure.Repositories;
 
 namespace Services.Catalog.Infrastructure;
 
@@ -18,7 +19,12 @@ public static class DependencyInjection
 
         services.AddScoped<IProductRepository, ProductRepository>();
         services.AddScoped<ICatalogLookupRepository, CatalogLookupRepository>();
-
+        services.AddScoped<ICategoryRepository, CategoryRepository>();
+        services.AddScoped<IProductVariantRepository, ProductVariantRepository>();
+        services.AddScoped<IProductImageRepository, ProductImageRepository>();
+        services.AddScoped<IColorRepository, ColorRepository>();
+        services.AddScoped<ISizeRepository, SizeRepository>();
+        
         return services;
     }
 }

@@ -63,10 +63,11 @@ public sealed class CatalogController : ControllerBase
     }
 
     [HttpPost("products/{id:int}/reviews")]
-    [Authorize]
+    // [Authorize] // TODO: Enable later
     public async Task<IActionResult> AddReview(int id, [FromBody] AddReviewCommand command, CancellationToken cancellationToken)
     {
-        var userId = GetCurrentUserId();
+        // var userId = GetCurrentUserId();
+        var userId = 1; // TODO: Get from JWT token
         return Ok(await _sender.Send(command with { UserId = userId, ProductId = id }, cancellationToken));
     }
 
@@ -85,7 +86,7 @@ public sealed class CatalogController : ControllerBase
     }
 
     [HttpPost("products")]
-    [Authorize(Roles = "admin")]
+    // [Authorize(Roles = "admin")] // TODO: Enable later
     public async Task<IActionResult> CreateProduct([FromBody] UpsertProductCommand command, CancellationToken cancellationToken)
     {
         var product = await _sender.Send(command with { Id = null }, cancellationToken);
@@ -93,7 +94,7 @@ public sealed class CatalogController : ControllerBase
     }
 
     [HttpPut("products/{id:int}")]
-    [Authorize(Roles = "admin")]
+    // [Authorize(Roles = "admin")] // TODO: Enable later
     public async Task<IActionResult> UpdateProduct(int id, [FromBody] UpsertProductCommand command, CancellationToken cancellationToken)
     {
         var product = await _sender.Send(command with { Id = id }, cancellationToken);
@@ -101,12 +102,12 @@ public sealed class CatalogController : ControllerBase
     }
 
     [HttpGet("management")]
-    [Authorize]
+    // [Authorize] // TODO: Enable later
     public IActionResult Management()
     {
         return Ok(new
         {
-            message = "Catalog management endpoint secured by JWT.",
+            message = "Catalog management endpoint (auth disabled for testing).",
             utc = DateTime.UtcNow
         });
     }

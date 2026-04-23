@@ -13,7 +13,7 @@ public sealed record UpsertProductCommand(
     decimal Price,
     decimal? OldPrice,
     string? Badge,
-    bool IsActive) : IRequest<ProductResponse>;
+    string Status) : IRequest<ProductResponse>;
 
 public sealed class UpsertProductCommandValidator : AbstractValidator<UpsertProductCommand>
 {

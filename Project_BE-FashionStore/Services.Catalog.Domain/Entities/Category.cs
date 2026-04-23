@@ -8,6 +8,5 @@ public class Category
     public string? Description { get; set; }
     public string Status { get; set; } = "active";
     
-    // Navigation
     public virtual ICollection<Product> Products { get; set; } = new List<Product>();
 }

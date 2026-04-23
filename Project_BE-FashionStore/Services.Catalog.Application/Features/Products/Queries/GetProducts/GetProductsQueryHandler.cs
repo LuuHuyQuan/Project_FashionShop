@@ -18,7 +18,7 @@ public sealed class GetProductsQueryHandler : IRequestHandler<GetProductsQuery, 
         var products = await _productRepository.GetAllAsync(cancellationToken);
 
         return products
-            .Where(product => request.IncludeInactive || product.IsActive)
+            .Where(product => request.IncludeInactive || product.Status == "active")
             .Select(product => new ProductResponse(
                 product.Id,
                 product.CategoryId,
@@ -32,7 +32,6 @@ public sealed class GetProductsQueryHandler : IRequestHandler<GetProductsQuery, 
                 product.RatingAverage,
                 product.ReviewCount,
                 product.SoldCount,
-                product.IsActive,
                 product.CreatedAt,
                 product.UpdatedAt))
             .ToArray();

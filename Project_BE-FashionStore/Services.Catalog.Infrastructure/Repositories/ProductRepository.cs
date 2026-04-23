@@ -1,20 +1,9 @@
 using Microsoft.EntityFrameworkCore;
+using Services.Catalog.Application.Abstractions.Persistence;
 using Services.Catalog.Domain.Entities;
 using Services.Catalog.Infrastructure.Persistence;
 
 namespace Services.Catalog.Infrastructure.Repositories;
-
-public interface IProductRepository
-{
-    Task<Product?> GetByIdAsync(int id);
-    Task<Product?> GetBySlugAsync(string slug);
-    Task<IEnumerable<Product>> GetAllAsync();
-    Task<IEnumerable<Product>> GetByCategoryAsync(int categoryId);
-    Task<IEnumerable<Product>> SearchAsync(string keyword);
-    Task<Product> CreateAsync(Product product);
-    Task<Product> UpdateAsync(Product product);
-    Task DeleteAsync(int id);
-}
 
 public class ProductRepository : IProductRepository
 {
@@ -25,7 +14,17 @@ public class ProductRepository : IProductRepository
         _context = context;
     }
 
-    public async Task<Product?> GetByIdAsync(int id)
+    public async Task<IReadOnlyCollection<Product>> GetAllAsync(CancellationToken cancellationToken = default)
+    {
+        return await _context.Products
+            .Include(p => p.Category)
+            .Include(p => p.ProductImages)
+            .Where(p => p.Status == "active")
+            .OrderByDescending(p => p.CreatedAt)
+            .ToListAsync(cancellationToken);
+    }
+
+    public async Task<Product?> GetByIdAsync(int id, CancellationToken cancellationToken = default)
     {
         return await _context.Products
             .Include(p => p.Category)
@@ -35,10 +34,10 @@ public class ProductRepository : IProductRepository
             .Include(p => p.ProductVariants)
                 .ThenInclude(pv => pv.Size)
             .Include(p => p.Reviews)
-            .FirstOrDefaultAsync(p => p.Id == id);
+            .FirstOrDefaultAsync(p => p.Id == id, cancellationToken);
     }
 
-    public async Task<Product?> GetBySlugAsync(string slug)
+    public async Task<Product?> GetBySlugAsync(string slug, CancellationToken cancellationToken = default)
     {
         return await _context.Products
             .Include(p => p.Category)
@@ -47,61 +46,19 @@ public class ProductRepository : IProductRepository
                 .ThenInclude(pv => pv.Color)
             .Include(p => p.ProductVariants)
                 .ThenInclude(pv => pv.Size)
-            .FirstOrDefaultAsync(p => p.Slug == slug);
+            .FirstOrDefaultAsync(p => p.Slug == slug, cancellationToken);
     }
 
-    public async Task<IEnumerable<Product>> GetAllAsync()
+    public async Task AddAsync(Product product, CancellationToken cancellationToken = default)
     {
-        return await _context.Products
-            .Include(p => p.Category)
-            .Include(p => p.ProductImages)
-            .Where(p => p.Status == "active")
-            .OrderByDescending(p => p.CreatedAt)
-            .ToListAsync();
+        await _context.Products.AddAsync(product, cancellationToken);
+        await _context.SaveChangesAsync(cancellationToken);
     }
 
-    public async Task<IEnumerable<Product>> GetByCategoryAsync(int categoryId)
-    {
-        return await _context.Products
-            .Include(p => p.Category)
-            .Include(p => p.ProductImages)
-            .Where(p => p.CategoryId == categoryId && p.Status == "active")
-            .OrderByDescending(p => p.CreatedAt)
-            .ToListAsync();
-    }
-
-    public async Task<IEnumerable<Product>> SearchAsync(string keyword)
-    {
-        return await _context.Products
-            .Include(p => p.Category)
-            .Include(p => p.ProductImages)
-            .Where(p => p.Name.Contains(keyword) && p.Status == "active")
-            .OrderByDescending(p => p.CreatedAt)
-            .ToListAsync();
-    }
-
-    public async Task<Product> CreateAsync(Product product)
-    {
-        _context.Products.Add(product);
-        await _context.SaveChangesAsync();
-        return product;
-    }
-
-    public async Task<Product> UpdateAsync(Product product)
+    public async Task UpdateAsync(Product product, CancellationToken cancellationToken = default)
     {
         product.UpdatedAt = DateTime.UtcNow;
         _context.Products.Update(product);
-        await _context.SaveChangesAsync();
-        return product;
-    }
-
-    public async Task DeleteAsync(int id)
-    {
-        var product = await _context.Products.FindAsync(id);
-        if (product != null)
-        {
-            _context.Products.Remove(product);
-            await _context.SaveChangesAsync();
-        }
+        await _context.SaveChangesAsync(cancellationToken);
     }
 }

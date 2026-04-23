@@ -1,5 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
-using Services.Catalog.Infrastructure.Repositories;
+using Services.Catalog.Application.Abstractions.Persistence;
 using Services.Catalog.Domain.Entities;
 
 namespace Services.Catalog.Api.Controllers;
@@ -42,25 +42,11 @@ public class ProductsController : ControllerBase
         return Ok(product);
     }
 
-    [HttpGet("category/{categoryId}")]
-    public async Task<IActionResult> GetByCategory(int categoryId)
-    {
-        var products = await _productRepository.GetByCategoryAsync(categoryId);
-        return Ok(products);
-    }
-
-    [HttpGet("search")]
-    public async Task<IActionResult> Search([FromQuery] string keyword)
-    {
-        var products = await _productRepository.SearchAsync(keyword);
-        return Ok(products);
-    }
-
     [HttpPost]
     public async Task<IActionResult> Create([FromBody] Product product)
     {
-        var created = await _productRepository.CreateAsync(product);
-        return CreatedAtAction(nameof(GetById), new { id = created.Id }, created);
+        await _productRepository.AddAsync(product);
+        return CreatedAtAction(nameof(GetById), new { id = product.Id }, product);
     }
 
     [HttpPut("{id}")]
@@ -69,14 +55,7 @@ public class ProductsController : ControllerBase
         if (id != product.Id)
             return BadRequest();
         
-        var updated = await _productRepository.UpdateAsync(product);
-        return Ok(updated);
-    }
-
-    [HttpDelete("{id}")]
-    public async Task<IActionResult> Delete(int id)
-    {
-        await _productRepository.DeleteAsync(id);
-        return NoContent();
+        await _productRepository.UpdateAsync(product);
+        return Ok(product);
     }
 }

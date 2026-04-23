@@ -1,18 +1,9 @@
 using Microsoft.EntityFrameworkCore;
+using Services.Catalog.Application.Abstractions.Persistence;
 using Services.Catalog.Domain.Entities;
 using Services.Catalog.Infrastructure.Persistence;
 
 namespace Services.Catalog.Infrastructure.Repositories;
-
-public interface ICategoryRepository
-{
-    Task<Category?> GetByIdAsync(int id);
-    Task<Category?> GetBySlugAsync(string slug);
-    Task<IEnumerable<Category>> GetAllAsync();
-    Task<Category> CreateAsync(Category category);
-    Task<Category> UpdateAsync(Category category);
-    Task DeleteAsync(int id);
-}
 
 public class CategoryRepository : ICategoryRepository
 {

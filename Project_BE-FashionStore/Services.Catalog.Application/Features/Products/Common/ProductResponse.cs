@@ -13,6 +13,5 @@ public sealed record ProductResponse(
     decimal RatingAverage,
     int ReviewCount,
     int SoldCount,
-    bool IsActive,
     DateTime CreatedAt,
     DateTime? UpdatedAt);

@@ -28,7 +28,7 @@ public sealed class UpsertProductCommandHandler : IRequestHandler<UpsertProductC
                 request.Name,
                 request.Slug,
                 request.Price,
-                request.IsActive,
+                request.Status,
                 request.Description,
                 request.OldPrice,
                 request.Badge);
@@ -49,7 +49,7 @@ public sealed class UpsertProductCommandHandler : IRequestHandler<UpsertProductC
                 request.Name,
                 request.Slug,
                 request.Price,
-                request.IsActive,
+                request.Status,
                 request.Description,
                 request.OldPrice,
                 request.Badge);
@@ -70,7 +70,6 @@ public sealed class UpsertProductCommandHandler : IRequestHandler<UpsertProductC
             product.RatingAverage,
             product.ReviewCount,
             product.SoldCount,
-            product.IsActive,
             product.CreatedAt,
             product.UpdatedAt);
     }

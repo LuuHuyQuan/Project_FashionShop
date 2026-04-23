@@ -31,7 +31,6 @@ public sealed class GetProductByIdQueryHandler : IRequestHandler<GetProductByIdQ
             product.RatingAverage,
             product.ReviewCount,
             product.SoldCount,
-            product.IsActive,
             product.CreatedAt,
             product.UpdatedAt);
     }

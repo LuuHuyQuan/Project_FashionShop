@@ -1,0 +1,12 @@
+D:\PROJECT\Reactjs + .Net\Project_FashionStore\Project_BE-FashionStore\BuldingBlock.Domain\bin\Debug\net8.0\BuldingBlock.Domain.deps.json
+D:\PROJECT\Reactjs + .Net\Project_FashionStore\Project_BE-FashionStore\BuldingBlock.Domain\bin\Debug\net8.0\BuldingBlock.Domain.dll
+D:\PROJECT\Reactjs + .Net\Project_FashionStore\Project_BE-FashionStore\BuldingBlock.Domain\bin\Debug\net8.0\BuldingBlock.Domain.pdb
+D:\PROJECT\Reactjs + .Net\Project_FashionStore\Project_BE-FashionStore\BuldingBlock.Domain\obj\Debug\net8.0\BuldingBlock.Domain.GeneratedMSBuildEditorConfig.editorconfig
+D:\PROJECT\Reactjs + .Net\Project_FashionStore\Project_BE-FashionStore\BuldingBlock.Domain\obj\Debug\net8.0\BuldingBlock.Domain.AssemblyInfoInputs.cache
+D:\PROJECT\Reactjs + .Net\Project_FashionStore\Project_BE-FashionStore\BuldingBlock.Domain\obj\Debug\net8.0\BuldingBlock.Domain.AssemblyInfo.cs
+D:\PROJECT\Reactjs + .Net\Project_FashionStore\Project_BE-FashionStore\BuldingBlock.Domain\obj\Debug\net8.0\BuldingBlock.Domain.csproj.CoreCompileInputs.cache
+D:\PROJECT\Reactjs + .Net\Project_FashionStore\Project_BE-FashionStore\BuldingBlock.Domain\obj\Debug\net8.0\BuldingBlock.Domain.sourcelink.json
+D:\PROJECT\Reactjs + .Net\Project_FashionStore\Project_BE-FashionStore\BuldingBlock.Domain\obj\Debug\net8.0\BuldingBlock.Domain.dll
+D:\PROJECT\Reactjs + .Net\Project_FashionStore\Project_BE-FashionStore\BuldingBlock.Domain\obj\Debug\net8.0\refint\BuldingBlock.Domain.dll
+D:\PROJECT\Reactjs + .Net\Project_FashionStore\Project_BE-FashionStore\BuldingBlock.Domain\obj\Debug\net8.0\BuldingBlock.Domain.pdb
+D:\PROJECT\Reactjs + .Net\Project_FashionStore\Project_BE-FashionStore\BuldingBlock.Domain\obj\Debug\net8.0\ref\BuldingBlock.Domain.dll

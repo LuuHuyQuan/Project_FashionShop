@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "RRKZZ38pyac=",
+  "dgSpecHash": "hK2DP1YNP1g=",
   "success": true,
-  "projectFilePath": "D:\\PROJECT\\Reactjs + .Net\\Project_FashionStore\\be\\Project_FashionStore\\Services.Ordering.Domain\\Services.Ordering.Domain.csproj",
+  "projectFilePath": "D:\\PROJECT\\Reactjs + .Net\\Project_FashionStore\\Project_BE-FashionStore\\Services.Ordering.Domain\\Services.Ordering.Domain.csproj",
   "expectedPackageFiles": [],
   "logs": []
 }

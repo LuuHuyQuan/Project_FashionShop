@@ -10,3 +10,15 @@ D:\PROJECT\Reactjs + .Net\Project_FashionStore\be\Project_FashionStore\Services.
 D:\PROJECT\Reactjs + .Net\Project_FashionStore\be\Project_FashionStore\Services.Catalog.Domain\obj\Debug\net8.0\refint\Services.Catalog.Domain.dll
 D:\PROJECT\Reactjs + .Net\Project_FashionStore\be\Project_FashionStore\Services.Catalog.Domain\obj\Debug\net8.0\Services.Catalog.Domain.pdb
 D:\PROJECT\Reactjs + .Net\Project_FashionStore\be\Project_FashionStore\Services.Catalog.Domain\obj\Debug\net8.0\ref\Services.Catalog.Domain.dll
+D:\PROJECT\Reactjs + .Net\Project_FashionStore\Project_BE-FashionStore\Services.Catalog.Domain\bin\Debug\net8.0\Services.Catalog.Domain.deps.json
+D:\PROJECT\Reactjs + .Net\Project_FashionStore\Project_BE-FashionStore\Services.Catalog.Domain\bin\Debug\net8.0\Services.Catalog.Domain.dll
+D:\PROJECT\Reactjs + .Net\Project_FashionStore\Project_BE-FashionStore\Services.Catalog.Domain\bin\Debug\net8.0\Services.Catalog.Domain.pdb
+D:\PROJECT\Reactjs + .Net\Project_FashionStore\Project_BE-FashionStore\Services.Catalog.Domain\obj\Debug\net8.0\Services.Catalog.Domain.GeneratedMSBuildEditorConfig.editorconfig
+D:\PROJECT\Reactjs + .Net\Project_FashionStore\Project_BE-FashionStore\Services.Catalog.Domain\obj\Debug\net8.0\Services.Catalog.Domain.AssemblyInfoInputs.cache
+D:\PROJECT\Reactjs + .Net\Project_FashionStore\Project_BE-FashionStore\Services.Catalog.Domain\obj\Debug\net8.0\Services.Catalog.Domain.AssemblyInfo.cs
+D:\PROJECT\Reactjs + .Net\Project_FashionStore\Project_BE-FashionStore\Services.Catalog.Domain\obj\Debug\net8.0\Services.Catalog.Domain.csproj.CoreCompileInputs.cache
+D:\PROJECT\Reactjs + .Net\Project_FashionStore\Project_BE-FashionStore\Services.Catalog.Domain\obj\Debug\net8.0\Services.Catalog.Domain.sourcelink.json
+D:\PROJECT\Reactjs + .Net\Project_FashionStore\Project_BE-FashionStore\Services.Catalog.Domain\obj\Debug\net8.0\Services.Catalog.Domain.dll
+D:\PROJECT\Reactjs + .Net\Project_FashionStore\Project_BE-FashionStore\Services.Catalog.Domain\obj\Debug\net8.0\refint\Services.Catalog.Domain.dll
+D:\PROJECT\Reactjs + .Net\Project_FashionStore\Project_BE-FashionStore\Services.Catalog.Domain\obj\Debug\net8.0\Services.Catalog.Domain.pdb
+D:\PROJECT\Reactjs + .Net\Project_FashionStore\Project_BE-FashionStore\Services.Catalog.Domain\obj\Debug\net8.0\ref\Services.Catalog.Domain.dll

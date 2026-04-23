@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "Yy7rMtILIeM=",
+  "dgSpecHash": "Oj2Jr3T9gDk=",
   "success": true,
-  "projectFilePath": "D:\\PROJECT\\Reactjs + .Net\\Project_FashionStore\\be\\Project_FashionStore\\Services.Catalog.Domain\\Services.Catalog.Domain.csproj",
+  "projectFilePath": "D:\\PROJECT\\Reactjs + .Net\\Project_FashionStore\\Project_BE-FashionStore\\Services.Catalog.Domain\\Services.Catalog.Domain.csproj",
   "expectedPackageFiles": [],
   "logs": []
 }

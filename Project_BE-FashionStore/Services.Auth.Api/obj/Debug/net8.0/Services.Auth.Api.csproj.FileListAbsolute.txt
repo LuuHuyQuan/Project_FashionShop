@@ -10,3 +10,15 @@ D:\PROJECT\Reactjs + .Net\Project_FashionStore\be\Project_FashionStore\Services.
 D:\PROJECT\Reactjs + .Net\Project_FashionStore\be\Project_FashionStore\Services.Auth.Api\obj\Debug\net8.0\refint\Services.Auth.Api.dll
 D:\PROJECT\Reactjs + .Net\Project_FashionStore\be\Project_FashionStore\Services.Auth.Api\obj\Debug\net8.0\Services.Auth.Api.pdb
 D:\PROJECT\Reactjs + .Net\Project_FashionStore\be\Project_FashionStore\Services.Auth.Api\obj\Debug\net8.0\ref\Services.Auth.Api.dll
+D:\PROJECT\Reactjs + .Net\Project_FashionStore\Project_BE-FashionStore\Services.Auth.Api\obj\Debug\net8.0\Services.Auth.Api.csproj.AssemblyReference.cache
+D:\PROJECT\Reactjs + .Net\Project_FashionStore\Project_BE-FashionStore\Services.Auth.Api\obj\Debug\net8.0\rpswa.dswa.cache.json
+D:\PROJECT\Reactjs + .Net\Project_FashionStore\Project_BE-FashionStore\Services.Auth.Api\obj\Debug\net8.0\Services.Auth.Api.GeneratedMSBuildEditorConfig.editorconfig
+D:\PROJECT\Reactjs + .Net\Project_FashionStore\Project_BE-FashionStore\Services.Auth.Api\obj\Debug\net8.0\Services.Auth.Api.AssemblyInfoInputs.cache
+D:\PROJECT\Reactjs + .Net\Project_FashionStore\Project_BE-FashionStore\Services.Auth.Api\obj\Debug\net8.0\Services.Auth.Api.AssemblyInfo.cs
+D:\PROJECT\Reactjs + .Net\Project_FashionStore\Project_BE-FashionStore\Services.Auth.Api\obj\Debug\net8.0\Services.Auth.Api.csproj.CoreCompileInputs.cache
+D:\PROJECT\Reactjs + .Net\Project_FashionStore\Project_BE-FashionStore\Services.Auth.Api\obj\Debug\net8.0\Services.Auth.API.MvcApplicationPartsAssemblyInfo.cs
+D:\PROJECT\Reactjs + .Net\Project_FashionStore\Project_BE-FashionStore\Services.Auth.Api\obj\Debug\net8.0\Services.Auth.API.MvcApplicationPartsAssemblyInfo.cache
+D:\PROJECT\Reactjs + .Net\Project_FashionStore\Project_BE-FashionStore\Services.Auth.Api\obj\Debug\net8.0\Services.Auth.Api.sourcelink.json
+D:\PROJECT\Reactjs + .Net\Project_FashionStore\Project_BE-FashionStore\Services.Auth.Api\obj\Debug\net8.0\Services.Auth.API.dll
+D:\PROJECT\Reactjs + .Net\Project_FashionStore\Project_BE-FashionStore\Services.Auth.Api\obj\Debug\net8.0\refint\Services.Auth.API.dll
+D:\PROJECT\Reactjs + .Net\Project_FashionStore\Project_BE-FashionStore\Services.Auth.Api\obj\Debug\net8.0\Services.Auth.API.pdb

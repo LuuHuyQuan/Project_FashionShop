@@ -4,6 +4,8 @@
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <RootNamespace>Services.Catalog.Domain</RootNamespace>
+    <AssemblyName>Services.Catalog.Domain</AssemblyName>
   </PropertyGroup>
 
 </Project>

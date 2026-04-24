@@ -14,11 +14,11 @@ public sealed class UpdateUserCommandHandler : IRequestHandler<UpdateUserCommand
 
     public async Task<Unit> Handle(UpdateUserCommand request, CancellationToken cancellationToken)
     {
-        var user = await _userRepository.GetByIdAsync(request.Id, cancellationToken)
+        var user = await _userRepository.GetByIdAsync(request.Id)
             ?? throw new KeyNotFoundException("User not found.");
 
         user.UpdateProfile(request.FullName, request.Phone, request.Role, request.Status);
-        await _userRepository.SaveChangesAsync(cancellationToken);
+        await _userRepository.UpdateAsync(user);
 
         return Unit.Value;
     }

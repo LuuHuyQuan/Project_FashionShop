@@ -4,10 +4,9 @@ namespace Services.Auth.Application.Abstractions.Persistence;
 
 public interface IUserRepository
 {
-    Task AddAsync(User user, CancellationToken cancellationToken = default);
-    Task<User?> GetByEmailAsync(string email, CancellationToken cancellationToken = default);
-    Task<User?> GetByIdAsync(int id, CancellationToken cancellationToken = default);
-    Task<bool> ExistsByEmailAsync(string email, CancellationToken cancellationToken = default);
-    void Remove(User user);
-    Task SaveChangesAsync(CancellationToken cancellationToken = default);
+    Task<User?> GetByIdAsync(int id);
+    Task<User?> GetByEmailAsync(string email);
+    Task<bool> EmailExistsAsync(string email);
+    Task<User> CreateAsync(User user);
+    Task<User> UpdateAsync(User user);
 }

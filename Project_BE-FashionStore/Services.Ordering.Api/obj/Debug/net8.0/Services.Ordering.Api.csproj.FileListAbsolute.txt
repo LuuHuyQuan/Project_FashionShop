@@ -150,4 +150,4 @@ D:\PROJECT\Reactjs + .Net\Project_FashionStore\Project_BE-FashionStore\Services.
 D:\PROJECT\Reactjs + .Net\Project_FashionStore\Project_BE-FashionStore\Services.Ordering.Api\obj\Debug\net8.0\Services.Ordering.Api.pdb
 D:\PROJECT\Reactjs + .Net\Project_FashionStore\Project_BE-FashionStore\Services.Ordering.Api\obj\Debug\net8.0\Services.Ordering.Api.genruntimeconfig.cache
 D:\PROJECT\Reactjs + .Net\Project_FashionStore\Project_BE-FashionStore\Services.Ordering.Api\obj\Debug\net8.0\ref\Services.Ordering.Api.dll
-D:\PROJECT\Reactjs + .Net\Project_FashionStore\Project_BE-FashionStore\Services.Ordering.Api\obj\Debug\net8.0\swae.build.ex.cache
+D:\PROJECT\Reactjs + .Net\Project_FashionStore\Project_BE-FashionStore\Services.Ordering.Api\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt

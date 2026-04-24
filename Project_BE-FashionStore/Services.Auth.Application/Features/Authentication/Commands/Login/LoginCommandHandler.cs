@@ -1,8 +1,8 @@
 using MediatR;
+using Services.Auth.Application.Abstractions.Persistence;
 using Services.Auth.Application.Features.Authentication.Common;
 using Services.Auth.Application.Services;
 using Services.Auth.Domain.Entities;
-using Services.Auth.Infrastructure.Repositories;
 
 namespace Services.Auth.Application.Features.Authentication.Commands.Login;
 
@@ -35,7 +35,7 @@ public class LoginCommandHandler : IRequestHandler<LoginCommand, AuthResponse>
         var accessToken = _jwtService.GenerateAccessToken(user);
         var refreshToken = _jwtService.GenerateRefreshToken();
 
-        var refreshTokenEntity = new RefreshToken
+        var refreshTokenEntity = new Domain.Entities.RefreshToken
         {
             UserId = user.Id,
             Token = refreshToken,

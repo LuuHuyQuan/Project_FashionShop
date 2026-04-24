@@ -198,11 +198,7 @@ const UserProfilePage: React.FC = () => {
               </nav>
             </div>
           </div>
-
-          {/* Right: Content */}
           <div className="lg:col-span-3 space-y-6">
-
-            {/* Stats Cards */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               {[
                 { label: 'Đơn hàng', value: '12', icon: ShoppingBag, gradient: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)', glow: 'rgba(102,126,234,0.2)' },
@@ -226,8 +222,6 @@ const UserProfilePage: React.FC = () => {
                 </div>
               ))}
             </div>
-
-            {/* Personal Info */}
             <div
               className="rounded-3xl p-6"
               style={{ background: '#fff', border: '1px solid #e2e8f0', boxShadow: '0 4px 24px rgba(0,0,0,0.05)' }}
@@ -258,8 +252,6 @@ const UserProfilePage: React.FC = () => {
                 ))}
               </div>
             </div>
-
-            {/* Recent Orders */}
             <div
               className="rounded-3xl p-6"
               style={{ background: '#fff', border: '1px solid #e2e8f0', boxShadow: '0 4px 24px rgba(0,0,0,0.05)' }}
@@ -311,5 +303,4 @@ const UserProfilePage: React.FC = () => {
     </div>
   );
 };
-
 export default UserProfilePage;

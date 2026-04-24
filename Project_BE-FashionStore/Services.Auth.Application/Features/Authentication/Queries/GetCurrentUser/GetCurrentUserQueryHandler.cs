@@ -14,7 +14,7 @@ public sealed class GetCurrentUserQueryHandler : IRequestHandler<GetCurrentUserQ
 
     public async Task<CurrentUserResponse> Handle(GetCurrentUserQuery request, CancellationToken cancellationToken)
     {
-        var user = await _userRepository.GetByIdAsync(request.UserId, cancellationToken)
+        var user = await _userRepository.GetByIdAsync(request.UserId)
             ?? throw new KeyNotFoundException("User not found.");
 
         return new CurrentUserResponse(

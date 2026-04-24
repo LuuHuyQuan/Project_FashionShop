@@ -13,18 +13,28 @@ public sealed class RefreshTokenRepository : IRefreshTokenRepository
         _dbContext = dbContext;
     }
 
-    public async Task AddAsync(RefreshToken refreshToken, CancellationToken cancellationToken = default)
+    public async Task<RefreshToken?> GetByTokenAsync(string token)
     {
-        await _dbContext.RefreshTokens.AddAsync(refreshToken, cancellationToken);
+        return await _dbContext.RefreshTokens
+            .FirstOrDefaultAsync(x => x.Token == token && x.RevokedAt == null);
     }
 
-    public Task<RefreshToken?> GetByTokenAsync(string token, CancellationToken cancellationToken = default)
+    public async Task<RefreshToken> CreateAsync(RefreshToken refreshToken)
     {
-        return _dbContext.RefreshTokens.FirstOrDefaultAsync(x => x.Token == token, cancellationToken);
+        await _dbContext.RefreshTokens.AddAsync(refreshToken);
+        await _dbContext.SaveChangesAsync();
+        return refreshToken;
     }
 
-    public Task SaveChangesAsync(CancellationToken cancellationToken = default)
+    public async Task RevokeAsync(string token)
     {
-        return _dbContext.SaveChangesAsync(cancellationToken);
+        var refreshToken = await _dbContext.RefreshTokens
+            .FirstOrDefaultAsync(x => x.Token == token);
+        
+        if (refreshToken != null)
+        {
+            refreshToken.Revoke();
+            await _dbContext.SaveChangesAsync();
+        }
     }
 }

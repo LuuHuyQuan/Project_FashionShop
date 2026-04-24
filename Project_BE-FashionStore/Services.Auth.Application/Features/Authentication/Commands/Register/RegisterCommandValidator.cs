@@ -23,9 +23,5 @@ public sealed class RegisterCommandValidator : AbstractValidator<RegisterCommand
         RuleFor(x => x.Password)
             .NotEmpty()
             .MinimumLength(6);
-
-        RuleFor(x => x.Role)
-            .NotEmpty()
-            .MaximumLength(20);
     }
 }

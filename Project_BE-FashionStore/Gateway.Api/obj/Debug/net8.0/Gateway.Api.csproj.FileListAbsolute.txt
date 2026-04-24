@@ -45,10 +45,10 @@ D:\PROJECT\Reactjs + .Net\Project_FashionStore\Project_BE-FashionStore\Gateway.A
 D:\PROJECT\Reactjs + .Net\Project_FashionStore\Project_BE-FashionStore\Gateway.Api\obj\Debug\net8.0\staticwebassets.build.json.cache
 D:\PROJECT\Reactjs + .Net\Project_FashionStore\Project_BE-FashionStore\Gateway.Api\obj\Debug\net8.0\staticwebassets.development.json
 D:\PROJECT\Reactjs + .Net\Project_FashionStore\Project_BE-FashionStore\Gateway.Api\obj\Debug\net8.0\staticwebassets.build.endpoints.json
-D:\PROJECT\Reactjs + .Net\Project_FashionStore\Project_BE-FashionStore\Gateway.Api\obj\Debug\net8.0\swae.build.ex.cache
 D:\PROJECT\Reactjs + .Net\Project_FashionStore\Project_BE-FashionStore\Gateway.Api\obj\Debug\net8.0\Gateway..CF3EF8A1.Up2Date
 D:\PROJECT\Reactjs + .Net\Project_FashionStore\Project_BE-FashionStore\Gateway.Api\obj\Debug\net8.0\Gateway.API.dll
 D:\PROJECT\Reactjs + .Net\Project_FashionStore\Project_BE-FashionStore\Gateway.Api\obj\Debug\net8.0\refint\Gateway.API.dll
 D:\PROJECT\Reactjs + .Net\Project_FashionStore\Project_BE-FashionStore\Gateway.Api\obj\Debug\net8.0\Gateway.API.pdb
 D:\PROJECT\Reactjs + .Net\Project_FashionStore\Project_BE-FashionStore\Gateway.Api\obj\Debug\net8.0\Gateway.Api.genruntimeconfig.cache
 D:\PROJECT\Reactjs + .Net\Project_FashionStore\Project_BE-FashionStore\Gateway.Api\obj\Debug\net8.0\ref\Gateway.API.dll
+D:\PROJECT\Reactjs + .Net\Project_FashionStore\Project_BE-FashionStore\Gateway.Api\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt

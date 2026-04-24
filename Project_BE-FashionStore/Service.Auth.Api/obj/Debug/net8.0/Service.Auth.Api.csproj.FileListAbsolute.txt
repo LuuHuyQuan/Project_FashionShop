@@ -14,7 +14,6 @@ D:\PROJECT\Reactjs + .Net\Project_FashionStore\Project_BE-FashionStore\Service.A
 D:\PROJECT\Reactjs + .Net\Project_FashionStore\Project_BE-FashionStore\Service.Auth.Api\bin\Debug\net8.0\Humanizer.dll
 D:\PROJECT\Reactjs + .Net\Project_FashionStore\Project_BE-FashionStore\Service.Auth.Api\bin\Debug\net8.0\MediatR.dll
 D:\PROJECT\Reactjs + .Net\Project_FashionStore\Project_BE-FashionStore\Service.Auth.Api\bin\Debug\net8.0\MediatR.Contracts.dll
-D:\PROJECT\Reactjs + .Net\Project_FashionStore\Project_BE-FashionStore\Service.Auth.Api\bin\Debug\net8.0\MediatR.Extensions.Microsoft.DependencyInjection.dll
 D:\PROJECT\Reactjs + .Net\Project_FashionStore\Project_BE-FashionStore\Service.Auth.Api\bin\Debug\net8.0\Microsoft.Bcl.AsyncInterfaces.dll
 D:\PROJECT\Reactjs + .Net\Project_FashionStore\Project_BE-FashionStore\Service.Auth.Api\bin\Debug\net8.0\Microsoft.CodeAnalysis.dll
 D:\PROJECT\Reactjs + .Net\Project_FashionStore\Project_BE-FashionStore\Service.Auth.Api\bin\Debug\net8.0\Microsoft.CodeAnalysis.CSharp.dll
@@ -152,10 +151,11 @@ D:\PROJECT\Reactjs + .Net\Project_FashionStore\Project_BE-FashionStore\Service.A
 D:\PROJECT\Reactjs + .Net\Project_FashionStore\Project_BE-FashionStore\Service.Auth.Api\obj\Debug\net8.0\staticwebassets.build.json.cache
 D:\PROJECT\Reactjs + .Net\Project_FashionStore\Project_BE-FashionStore\Service.Auth.Api\obj\Debug\net8.0\staticwebassets.development.json
 D:\PROJECT\Reactjs + .Net\Project_FashionStore\Project_BE-FashionStore\Service.Auth.Api\obj\Debug\net8.0\staticwebassets.build.endpoints.json
-D:\PROJECT\Reactjs + .Net\Project_FashionStore\Project_BE-FashionStore\Service.Auth.Api\obj\Debug\net8.0\swae.build.ex.cache
 D:\PROJECT\Reactjs + .Net\Project_FashionStore\Project_BE-FashionStore\Service.Auth.Api\obj\Debug\net8.0\Service..C36AE14B.Up2Date
 D:\PROJECT\Reactjs + .Net\Project_FashionStore\Project_BE-FashionStore\Service.Auth.Api\obj\Debug\net8.0\Service.Auth.Api.dll
 D:\PROJECT\Reactjs + .Net\Project_FashionStore\Project_BE-FashionStore\Service.Auth.Api\obj\Debug\net8.0\refint\Service.Auth.Api.dll
 D:\PROJECT\Reactjs + .Net\Project_FashionStore\Project_BE-FashionStore\Service.Auth.Api\obj\Debug\net8.0\Service.Auth.Api.pdb
 D:\PROJECT\Reactjs + .Net\Project_FashionStore\Project_BE-FashionStore\Service.Auth.Api\obj\Debug\net8.0\Service.Auth.Api.genruntimeconfig.cache
 D:\PROJECT\Reactjs + .Net\Project_FashionStore\Project_BE-FashionStore\Service.Auth.Api\obj\Debug\net8.0\ref\Service.Auth.Api.dll
+D:\PROJECT\Reactjs + .Net\Project_FashionStore\Project_BE-FashionStore\Service.Auth.Api\bin\Debug\net8.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+D:\PROJECT\Reactjs + .Net\Project_FashionStore\Project_BE-FashionStore\Service.Auth.Api\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt

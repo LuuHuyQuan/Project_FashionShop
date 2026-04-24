@@ -327,6 +327,16 @@
   },
   {
     "ContainingType": "Services.Catalog.Api.Controllers.ProductImagesController",
+    "Method": "GetAll",
+    "RelativePath": "api/ProductImages",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Services.Catalog.Api.Controllers.ProductImagesController",
     "Method": "Create",
     "RelativePath": "api/ProductImages",
     "HttpMethod": "POST",
@@ -388,22 +398,6 @@
     "Parameters": [
       {
         "Name": "id",
-        "Type": "System.Int32",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "Services.Catalog.Api.Controllers.ProductImagesController",
-    "Method": "GetByProductId",
-    "RelativePath": "api/ProductImages/product/{productId}",
-    "HttpMethod": "GET",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "productId",
         "Type": "System.Int32",
         "IsRequired": true
       }
@@ -491,6 +485,16 @@
   },
   {
     "ContainingType": "Services.Catalog.Api.Controllers.ProductVariantsController",
+    "Method": "GetAll",
+    "RelativePath": "api/ProductVariants",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Services.Catalog.Api.Controllers.ProductVariantsController",
     "Method": "Create",
     "RelativePath": "api/ProductVariants",
     "HttpMethod": "POST",
@@ -553,38 +557,6 @@
       {
         "Name": "id",
         "Type": "System.Int32",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "Services.Catalog.Api.Controllers.ProductVariantsController",
-    "Method": "GetByProductId",
-    "RelativePath": "api/ProductVariants/product/{productId}",
-    "HttpMethod": "GET",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "productId",
-        "Type": "System.Int32",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "Services.Catalog.Api.Controllers.ProductVariantsController",
-    "Method": "GetBySKU",
-    "RelativePath": "api/ProductVariants/sku/{sku}",
-    "HttpMethod": "GET",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "sku",
-        "Type": "System.String",
         "IsRequired": true
       }
     ],

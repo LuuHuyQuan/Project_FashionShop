@@ -14,35 +14,33 @@ public sealed class UserRepository : IUserRepository, IReadOnlyUserRepository
         _dbContext = dbContext;
     }
 
-    public async Task AddAsync(User user, CancellationToken cancellationToken = default)
+    public async Task<User?> GetByIdAsync(int id)
     {
-        await _dbContext.Users.AddAsync(user, cancellationToken);
-        await _dbContext.SaveChangesAsync(cancellationToken);
+        return await _dbContext.Users.FirstOrDefaultAsync(x => x.Id == id);
     }
 
-    public Task<User?> GetByEmailAsync(string email, CancellationToken cancellationToken = default)
+    public async Task<User?> GetByEmailAsync(string email)
     {
-        return _dbContext.Users.FirstOrDefaultAsync(x => x.Email == email, cancellationToken);
+        return await _dbContext.Users.FirstOrDefaultAsync(x => x.Email == email);
     }
 
-    public Task<User?> GetByIdAsync(int id, CancellationToken cancellationToken = default)
+    public async Task<bool> EmailExistsAsync(string email)
     {
-        return _dbContext.Users.FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
+        return await _dbContext.Users.AnyAsync(x => x.Email == email);
     }
 
-    public Task<bool> ExistsByEmailAsync(string email, CancellationToken cancellationToken = default)
+    public async Task<User> CreateAsync(User user)
     {
-        return _dbContext.Users.AnyAsync(x => x.Email == email, cancellationToken);
+        await _dbContext.Users.AddAsync(user);
+        await _dbContext.SaveChangesAsync();
+        return user;
     }
 
-    public void Remove(User user)
+    public async Task<User> UpdateAsync(User user)
     {
-        _dbContext.Users.Remove(user);
-    }
-
-    public Task SaveChangesAsync(CancellationToken cancellationToken = default)
-    {
-        return _dbContext.SaveChangesAsync(cancellationToken);
+        _dbContext.Users.Update(user);
+        await _dbContext.SaveChangesAsync();
+        return user;
     }
 
     public async Task<IReadOnlyCollection<UserResponse>> GetUsersAsync(CancellationToken cancellationToken = default)

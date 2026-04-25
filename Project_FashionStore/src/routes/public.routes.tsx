@@ -3,21 +3,22 @@ import type { RouteConfig } from './types';
 import LoadingFallback from '../components/common/LoadingFallback';
 
 // Lazy load components
-const HomePage = lazy(() => import('../pages/HomePage'));
-const ProductsPage = lazy(() => import('../pages/ProductsPage'));
-const ProductDetailPage = lazy(() => import('../pages/ProductDetailPage'));
-const CartPage = lazy(() => import('../pages/CartPage'));
-const CheckoutPage = lazy(() => import('../pages/CheckoutPage'));
-const OrderSuccessPage = lazy(() => import('../pages/OrderSuccessPage'));
-const WishlistPage = lazy(() => import('../pages/WishlistPage'));
-const LoginPage = lazy(() => import('../pages/LoginPage'));
-const RegisterPage = lazy(() => import('../pages/RegisterPage'));
-const UserProfilePage = lazy(() => import('../pages/UserProfilePage'));
-const AboutPage = lazy(() => import('../pages/AboutPage'));
-const ContactPage = lazy(() => import('../pages/ContactPage'));
-const NotFoundPage = lazy(() => import('../pages/NotFoundPage'));
+const HomePage = lazy(() => import('../pages/users/HomePage'));
+const ProductsPage = lazy(() => import('../pages/users/ProductsPage'));
+const ProductDetailPage = lazy(() => import('../pages/users/ProductDetailPage'));
+const CartPage = lazy(() => import('../pages/users/CartPage'));
+const CheckoutPage = lazy(() => import('../pages/users/CheckoutPage'));
+const OrderSuccessPage = lazy(() => import('../pages/users/OrderSuccessPage'));
+const WishlistPage = lazy(() => import('../pages/users/WishlistPage'));
+const LoginPage = lazy(() => import('../pages/users/LoginPage'));
+const RegisterPage = lazy(() => import('../pages/users/RegisterPage'));
+const UserProfilePage = lazy(() => import('../pages/users/UserProfilePage'));
+const AboutPage = lazy(() => import('../pages/users/AboutPage'));
+const ContactPage = lazy(() => import('../pages/users/ContactPage'));
+const NotFoundPage = lazy(() => import('../pages/users/NotFoundPage'));
+const TestLoginPage = lazy(() => import('../pages/users/TestLoginPage'));
+const TestAuthPage = lazy(() => import('../pages/users/TestAuthPage'));
 
-// Wrapper component with Suspense
 const withSuspense = (Component: React.LazyExoticComponent<React.ComponentType<any>>) => {
   return () => (
     <Suspense fallback={<LoadingFallback />}>
@@ -104,6 +105,20 @@ export const publicRoutes: RouteConfig[] = [
     component: withSuspense(RegisterPage),
     meta: {
       title: 'Đăng ký - Fashion Store',
+    },
+  },
+  {
+    path: '/test-login',
+    component: withSuspense(TestLoginPage),
+    meta: {
+      title: 'Test Login API - Fashion Store',
+    },
+  },
+  {
+    path: '/test-auth',
+    component: withSuspense(TestAuthPage),
+    meta: {
+      title: 'Test Auth API - Fashion Store',
     },
   },
   {

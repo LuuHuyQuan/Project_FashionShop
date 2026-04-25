@@ -47,6 +47,7 @@ public class CategoriesController : ControllerBase
             request.Name,
             request.Slug,
             request.Description,
+            request.Image,
             request.Status
         );
 
@@ -62,6 +63,7 @@ public class CategoriesController : ControllerBase
             request.Name,
             request.Slug,
             request.Description,
+            request.Image,
             request.Status
         );
 

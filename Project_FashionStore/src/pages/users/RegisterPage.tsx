@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext';
+import { useAuth } from '../../context/AuthContext';
 import {
   Mail,
   Lock,
@@ -85,10 +85,9 @@ const RegisterPage: React.FC = () => {
   const passwordStrength = getPasswordStrength();
 
   const inputClass = (field: string) =>
-    `w-full px-4 py-3.5 rounded-xl text-sm font-medium transition-all duration-200 outline-none ${
-      errors[field]
-        ? 'border-2 border-red-400 bg-red-50/50'
-        : 'border-2 border-slate-200 bg-white focus:border-purple-500 focus:ring-2 focus:ring-purple-100 hover:border-slate-300'
+    `w-full px-4 py-3.5 rounded-xl text-sm font-medium transition-all duration-200 outline-none ${errors[field]
+      ? 'border-2 border-red-400 bg-red-50/50'
+      : 'border-2 border-slate-200 bg-white focus:border-purple-500 focus:ring-2 focus:ring-purple-100 hover:border-slate-300'
     }`;
 
   return (

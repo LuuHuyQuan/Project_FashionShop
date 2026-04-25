@@ -4,8 +4,6 @@ import { Users, Target, Award, Heart, TrendingUp, Globe } from 'lucide-react';
 const AboutPage: React.FC = () => {
   return (
     <div style={{ background: '#f8fafc' }}>
-
-      {/* Hero */}
       <section className="relative overflow-hidden py-24" style={{ background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)' }}>
         <div className="absolute inset-0 opacity-10" style={{ backgroundImage: 'linear-gradient(rgba(255,255,255,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.5) 1px, transparent 1px)', backgroundSize: '60px 60px' }} />
         <div className="container mx-auto px-6 relative z-10">

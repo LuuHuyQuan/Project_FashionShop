@@ -1,11 +1,11 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ShoppingBag, Trash2, Plus, Minus, Tag, ArrowRight } from 'lucide-react';
-import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card';
-import { Input } from '../components/ui/input';
-import { Separator } from '../components/ui/separator';
-import { Badge } from '../components/ui/badge';
-import { useCart } from '../context/CartContext';
+import { Card, CardContent, CardHeader, CardTitle } from '../../components/ui/card';
+import { Input } from '../../components/ui/input';
+import { Separator } from '../../components/ui/separator';
+import { Badge } from '../../components/ui/badge';
+import { useCart } from '../../context/CartContext';
 
 const CartPage: React.FC = () => {
   const navigate = useNavigate();

@@ -21,6 +21,7 @@ public class CreateCategoryCommandHandler : IRequestHandler<CreateCategoryComman
             Name = request.Name,
             Slug = request.Slug,
             Description = request.Description,
+            Image = request.Image,
             Status = request.Status
         };
 
@@ -31,6 +32,7 @@ public class CreateCategoryCommandHandler : IRequestHandler<CreateCategoryComman
             created.Name,
             created.Slug,
             created.Description,
+            created.Image,
             created.Status
         );
     }

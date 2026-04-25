@@ -25,6 +25,7 @@ public class GetCategoryByIdQueryHandler : IRequestHandler<GetCategoryByIdQuery,
             category.Name,
             category.Slug,
             category.Description,
+            category.Image,
             category.Status
         );
     }

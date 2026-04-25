@@ -5,14 +5,14 @@ import {
   Sparkles, ChevronRight, Heart, ShoppingCart,
   Flame, Zap, ChevronLeft,
 } from 'lucide-react';
-import { categories as allCategories, getFeaturedProducts } from '../data/products';
+import { categories as allCategories, getFeaturedProducts } from '../../data/products';
 
 const featuredProducts = getFeaturedProducts(5);
 
 const badgeColors: Record<string, { bg: string; text: string }> = {
-  Sale:  { bg: 'linear-gradient(135deg, #f5576c, #ef4444)', text: '#fff' },
-  New:   { bg: 'linear-gradient(135deg, #43e97b, #38f9d7)', text: '#075538' },
-  Hot:   { bg: 'linear-gradient(135deg, #fa709a, #fee140)', text: '#fff' },
+  Sale: { bg: 'linear-gradient(135deg, #f5576c, #ef4444)', text: '#fff' },
+  New: { bg: 'linear-gradient(135deg, #43e97b, #38f9d7)', text: '#075538' },
+  Hot: { bg: 'linear-gradient(135deg, #fa709a, #fee140)', text: '#fff' },
   Trend: { bg: 'linear-gradient(135deg, #a18cd1, #fbc2eb)', text: '#fff' },
 };
 
@@ -122,9 +122,9 @@ const HomePage: React.FC = () => {
         <div className="container mx-auto px-6">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {[
-              { icon: Truck,   title: 'Miễn phí vận chuyển', desc: 'Đơn hàng trên 500.000đ',         gradient: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)', glow: 'rgba(79,172,254,0.2)' },
-              { icon: Shield,  title: 'Bảo hành chính hãng',  desc: 'Đổi trả trong 30 ngày',          gradient: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)', glow: 'rgba(102,126,234,0.2)' },
-              { icon: Package, title: 'Đóng gói cẩn thận',    desc: 'Sản phẩm được bảo vệ tốt nhất', gradient: 'linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)', glow: 'rgba(67,233,123,0.2)' },
+              { icon: Truck, title: 'Miễn phí vận chuyển', desc: 'Đơn hàng trên 500.000đ', gradient: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)', glow: 'rgba(79,172,254,0.2)' },
+              { icon: Shield, title: 'Bảo hành chính hãng', desc: 'Đổi trả trong 30 ngày', gradient: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)', glow: 'rgba(102,126,234,0.2)' },
+              { icon: Package, title: 'Đóng gói cẩn thận', desc: 'Sản phẩm được bảo vệ tốt nhất', gradient: 'linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)', glow: 'rgba(67,233,123,0.2)' },
             ].map((feat) => (
               <div
                 key={feat.title}

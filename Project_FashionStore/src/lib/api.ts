@@ -2,7 +2,7 @@ export interface ApiError {
   message: string;
 }
 
-const API_BASE_URL = 'http://localhost:5158/api';
+const API_BASE_URL = import.meta.env.VITE_API_AUTH_URL || 'https://localhost:7264/api';
 
 async function request<T>(path: string, options: RequestInit = {}): Promise<T> {
   const response = await fetch(`${API_BASE_URL}${path}`, {
@@ -17,9 +17,8 @@ async function request<T>(path: string, options: RequestInit = {}): Promise<T> {
     let message = 'Đã có lỗi xảy ra';
     try {
       const error = await response.json();
-      message = error.message ?? message;
+      message = error.message ?? error.title ?? message;
     } catch {
-      // ignore json parse error
     }
     throw new Error(message);
   }
@@ -33,14 +32,19 @@ export interface AuthUser {
   email: string;
   phone: string;
   role: string;
-  status: string;
+  status?: string;
 }
 
 export interface AuthResponse {
   accessToken: string;
   refreshToken: string;
-  expiresAt: string;
+  expiresAt?: string;
   user: AuthUser;
+  id?: number;
+  fullName?: string;
+  email?: string;
+  phone?: string;
+  role?: string;
 }
 
 export interface RegisterPayload {
@@ -56,22 +60,65 @@ export interface LoginPayload {
 }
 
 export const authApi = {
-  register: (payload: RegisterPayload) =>
-    request<AuthResponse>('/auth/register', {
+  register: async (payload: RegisterPayload): Promise<AuthResponse> => {
+    const response = await request<{
+      id: number;
+      fullName: string;
+      email: string;
+      phone: string;
+      role: string;
+      accessToken: string;
+      refreshToken: string;
+    }>('/Auth/register', {
       method: 'POST',
       body: JSON.stringify(payload),
-    }),
+    });
 
-  login: (payload: LoginPayload) =>
-    request<AuthResponse>('/auth/login', {
-      method: 'POST',
-      body: JSON.stringify(payload),
-    }),
-
-  me: (accessToken: string) =>
-    request<AuthUser>('/auth/me', {
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
+    return {
+      accessToken: response.accessToken,
+      refreshToken: response.refreshToken,
+      expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString(),
+      user: {
+        id: response.id,
+        fullName: response.fullName,
+        email: response.email,
+        phone: response.phone,
+        role: response.role,
+        status: 'active',
       },
-    }),
+    };
+  },
+
+  login: async (payload: LoginPayload): Promise<AuthResponse> => {
+    const response = await request<{
+      id: number;
+      fullName: string;
+      email: string;
+      phone: string;
+      role: string;
+      accessToken: string;
+      refreshToken: string;
+    }>('/Auth/login', {
+      method: 'POST',
+      body: JSON.stringify(payload),
+    });
+
+    return {
+      accessToken: response.accessToken,
+      refreshToken: response.refreshToken,
+      expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString(),
+      user: {
+        id: response.id,
+        fullName: response.fullName,
+        email: response.email,
+        phone: response.phone,
+        role: response.role,
+        status: 'active',
+      },
+    };
+  },
+
+  me: async (_accessToken: string): Promise<AuthUser> => {
+    throw new Error('Not implemented');
+  },
 };

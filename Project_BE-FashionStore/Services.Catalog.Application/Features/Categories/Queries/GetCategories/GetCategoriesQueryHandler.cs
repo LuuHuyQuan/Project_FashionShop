@@ -22,6 +22,7 @@ public class GetCategoriesQueryHandler : IRequestHandler<GetCategoriesQuery, IEn
             c.Name,
             c.Slug,
             c.Description,
+            c.Image,
             c.Status
         ));
     }

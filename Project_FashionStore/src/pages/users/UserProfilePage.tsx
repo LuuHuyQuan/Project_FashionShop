@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext';
+import { useAuth } from '../../context/AuthContext';
 import {
   User,
   Mail,
@@ -135,8 +135,8 @@ const UserProfilePage: React.FC = () => {
               </div>
               <p className="text-white/60 text-sm mb-2">{profile.memberSince}</p>
               <div className="flex items-center justify-center md:justify-start gap-6 text-white/70 text-sm">
-                 <span className="flex items-center gap-1.5"><Mail size={14} /> {profile.email}</span>
-                 <span className="flex items-center gap-1.5"><Phone size={14} /> {profile.phone}</span>
+                <span className="flex items-center gap-1.5"><Mail size={14} /> {profile.email}</span>
+                <span className="flex items-center gap-1.5"><Phone size={14} /> {profile.phone}</span>
 
               </div>
             </div>

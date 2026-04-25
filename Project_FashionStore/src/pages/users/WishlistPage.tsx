@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Heart, ShoppingCart, Star, ArrowRight, Sparkles, X } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-import { products } from '../data/products';
+import { products } from '../../data/products';
 
 const initialWishlistItems = products.slice(0, 6).map((p) => ({
   id: p.id,
@@ -96,9 +96,8 @@ const WishlistPage: React.FC = () => {
           {items.map((item) => (
             <div
               key={item.id}
-              className={`group rounded-3xl overflow-hidden transition-all duration-300 ${
-                removingId === item.id ? 'opacity-0 scale-95' : 'opacity-100'
-              }`}
+              className={`group rounded-3xl overflow-hidden transition-all duration-300 ${removingId === item.id ? 'opacity-0 scale-95' : 'opacity-100'
+                }`}
               style={{
                 background: '#fff',
                 border: '1px solid #e2e8f0',

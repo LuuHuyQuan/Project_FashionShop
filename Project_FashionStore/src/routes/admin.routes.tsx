@@ -5,10 +5,10 @@ import AdminLoadingFallback from '../components/common/AdminLoadingFallback';
 // Lazy load admin components
 const AdminDashboard = lazy(() => import('../pages/admin/AdminDashboard'));
 const AdminProducts = lazy(() => import('../pages/admin/AdminProducts'));
-const AdminOrders = lazy(() => import('../pages/admin/AdminOrders'));
-const AdminCategories = lazy(() => import('../pages/admin/AdminCategories'));
-const AdminUsers = lazy(() => import('../pages/admin/AdminUsers'));
-const AdminAnalytics = lazy(() => import('../pages/admin/AdminAnalytics'));
+const AdminOrders = lazy(() => import('../pages/admin/Order/AdminOrders'));
+const AdminCategories = lazy(() => import('../pages/admin/Category/AdminCategories'));
+const AdminUsers = lazy(() => import('../pages/admin/User/AdminUsers'));
+const AdminAnalytics = lazy(() => import('../pages/admin/Command/AdminAnalytics'));
 const AdminSettings = lazy(() => import('../pages/admin/AdminSettings'));
 
 // Wrapper component with Suspense

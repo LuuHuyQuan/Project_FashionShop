@@ -26,6 +26,7 @@ public class CatalogDbContext : DbContext
             entity.HasKey(e => e.Id);
             entity.Property(e => e.Name).HasMaxLength(150).IsRequired();
             entity.Property(e => e.Slug).HasMaxLength(180).IsRequired();
+            entity.Property(e => e.Image).HasColumnType("NVARCHAR(MAX)");
             entity.Property(e => e.Status).HasMaxLength(20).IsRequired().HasDefaultValue("active");
             entity.HasIndex(e => e.Slug).IsUnique();
         });

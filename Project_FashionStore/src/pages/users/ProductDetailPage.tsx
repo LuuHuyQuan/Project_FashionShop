@@ -4,8 +4,8 @@ import {
   Star, Heart, ShoppingCart, Truck, Shield, Package,
   ChevronRight, Minus, Plus, Share2, Check,
 } from 'lucide-react';
-import { getProductById, products } from '../data/products';
-import { useCart } from '../context/CartContext';
+import { getProductById, products } from '../../data/products';
+import { useCart } from '../../context/CartContext';
 
 const relatedProducts = products.slice(0, 4);
 
@@ -253,8 +253,8 @@ const ProductDetailPage: React.FC = () => {
             {/* Features */}
             <div className="grid grid-cols-3 gap-4">
               {[
-                { icon: Truck,   text: 'Miễn phí vận chuyển' },
-                { icon: Shield,  text: 'Bảo hành 30 ngày' },
+                { icon: Truck, text: 'Miễn phí vận chuyển' },
+                { icon: Shield, text: 'Bảo hành 30 ngày' },
                 { icon: Package, text: 'Đóng gói cẩn thận' },
               ].map((feat, idx) => (
                 <div
@@ -275,8 +275,8 @@ const ProductDetailPage: React.FC = () => {
           <div className="flex gap-2 mb-6 border-b border-slate-200">
             {[
               { id: 'description', label: 'Mô tả' },
-              { id: 'features',    label: 'Đặc điểm' },
-              { id: 'reviews',     label: 'Đánh giá' },
+              { id: 'features', label: 'Đặc điểm' },
+              { id: 'reviews', label: 'Đánh giá' },
             ].map((tab) => (
               <button
                 key={tab.id}

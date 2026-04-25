@@ -49,17 +49,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         return;
       }
 
-      try {
-        const currentUser = await authApi.me(stored.accessToken);
-        setUser(currentUser);
-        setAccessToken(stored.accessToken);
-        setRefreshToken(stored.refreshToken);
-        saveAuth({ ...stored, user: currentUser });
-      } catch {
-        clearAuth();
-      } finally {
-        setIsLoading(false);
-      }
+      // Restore from localStorage without calling /me endpoint
+      setUser(stored.user);
+      setAccessToken(stored.accessToken);
+      setRefreshToken(stored.refreshToken);
+      setIsLoading(false);
     };
 
     bootstrap();

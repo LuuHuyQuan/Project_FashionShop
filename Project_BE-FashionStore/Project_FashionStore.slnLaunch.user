@@ -1,0 +1,23 @@
+[
+  {
+    "Name": "New Profile",
+    "Projects": [
+      {
+        "Path": "Services.Catalog.Api\\Services.Catalog.Api.csproj",
+        "Action": "Start"
+      },
+      {
+        "Path": "Services.Ordering.Api\\Services.Ordering.Api.csproj",
+        "Action": "Start"
+      },
+      {
+        "Path": "Service.Auth.Api\\Service.Auth.Api.csproj",
+        "Action": "Start"
+      },
+      {
+        "Path": "Gateway.Api\\Gateway.Api.csproj",
+        "Action": "Start"
+      }
+    ]
+  }
+]

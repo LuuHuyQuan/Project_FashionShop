@@ -6,27 +6,27 @@ import ProtectedRoute from './ProtectedRoute';
 import AdminRoute from './AdminRoute';
 
 // Lazy load public pages
-const HomePage = lazy(() => import('../pages/HomePage'));
-const ProductsPage = lazy(() => import('../pages/ProductsPage'));
-const ProductDetailPage = lazy(() => import('../pages/ProductDetailPage'));
-const CartPage = lazy(() => import('../pages/CartPage'));
-const CheckoutPage = lazy(() => import('../pages/CheckoutPage'));
-const OrderSuccessPage = lazy(() => import('../pages/OrderSuccessPage'));
-const WishlistPage = lazy(() => import('../pages/WishlistPage'));
-const LoginPage = lazy(() => import('../pages/LoginPage'));
-const RegisterPage = lazy(() => import('../pages/RegisterPage'));
-const UserProfilePage = lazy(() => import('../pages/UserProfilePage'));
-const AboutPage = lazy(() => import('../pages/AboutPage'));
-const ContactPage = lazy(() => import('../pages/ContactPage'));
-const NotFoundPage = lazy(() => import('../pages/NotFoundPage'));
+const HomePage = lazy(() => import('../pages/users/HomePage'));
+const ProductsPage = lazy(() => import('../pages/users/ProductsPage'));
+const ProductDetailPage = lazy(() => import('../pages/users/ProductDetailPage'));
+const CartPage = lazy(() => import('../pages/users/CartPage'));
+const CheckoutPage = lazy(() => import('../pages/users/CheckoutPage'));
+const OrderSuccessPage = lazy(() => import('../pages/users/OrderSuccessPage'));
+const WishlistPage = lazy(() => import('../pages/users/WishlistPage'));
+const LoginPage = lazy(() => import('../pages/users/LoginPage'));
+const RegisterPage = lazy(() => import('../pages/users/RegisterPage'));
+const UserProfilePage = lazy(() => import('../pages/users/UserProfilePage'));
+const AboutPage = lazy(() => import('../pages/users/AboutPage'));
+const ContactPage = lazy(() => import('../pages/users/ContactPage'));
+const NotFoundPage = lazy(() => import('../pages/users/NotFoundPage'));
 
 // Lazy load admin pages
 const AdminDashboard = lazy(() => import('../pages/admin/AdminDashboard'));
 const AdminProducts = lazy(() => import('../pages/admin/AdminProducts'));
-const AdminOrders = lazy(() => import('../pages/admin/AdminOrders'));
-const AdminCategories = lazy(() => import('../pages/admin/AdminCategories'));
-const AdminUsers = lazy(() => import('../pages/admin/AdminUsers'));
-const AdminAnalytics = lazy(() => import('../pages/admin/AdminAnalytics'));
+const AdminOrders = lazy(() => import('../pages/admin/Order/AdminOrders'));
+const AdminCategories = lazy(() => import('../pages/admin/Category/AdminCategories'));
+const AdminUsers = lazy(() => import('../pages/admin/User/AdminUsers'));
+const AdminAnalytics = lazy(() => import('../pages/admin/Command/AdminAnalytics'));
 const AdminSettings = lazy(() => import('../pages/admin/AdminSettings'));
 
 const LoadingFallback = () => (

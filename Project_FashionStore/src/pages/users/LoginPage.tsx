@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext';
+import { useAuth } from '../../context/AuthContext';
 import {
   Mail,
   Lock,
@@ -151,11 +151,10 @@ const LoginPage: React.FC = () => {
                 value={formData.email}
                 onChange={handleChange}
                 placeholder="email@example.com"
-                className={`w-full px-4 py-3.5 rounded-xl text-sm font-medium transition-all duration-200 outline-none ${
-                  errors.email
+                className={`w-full px-4 py-3.5 rounded-xl text-sm font-medium transition-all duration-200 outline-none ${errors.email
                     ? 'border-2 border-red-400 bg-red-50/50'
                     : 'border-2 border-slate-200 bg-white focus:border-purple-500 focus:ring-2 focus:ring-purple-100 hover:border-slate-300'
-                }`}
+                  }`}
               />
               {errors.email && <p className="text-red-500 text-xs mt-1.5 font-medium">{errors.email}</p>}
             </div>
@@ -174,11 +173,10 @@ const LoginPage: React.FC = () => {
                   value={formData.password}
                   onChange={handleChange}
                   placeholder="••••••••"
-                  className={`w-full px-4 py-3.5 pr-12 rounded-xl text-sm font-medium transition-all duration-200 outline-none ${
-                    errors.password
+                  className={`w-full px-4 py-3.5 pr-12 rounded-xl text-sm font-medium transition-all duration-200 outline-none ${errors.password
                       ? 'border-2 border-red-400 bg-red-50/50'
                       : 'border-2 border-slate-200 bg-white focus:border-purple-500 focus:ring-2 focus:ring-purple-100 hover:border-slate-300'
-                  }`}
+                    }`}
                 />
                 <button
                   type="button"

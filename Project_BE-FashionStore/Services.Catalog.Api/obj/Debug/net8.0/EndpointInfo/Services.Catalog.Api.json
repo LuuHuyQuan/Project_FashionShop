@@ -1058,6 +1058,10 @@
             "type": "string",
             "nullable": true
           },
+          "image": {
+            "type": "string",
+            "nullable": true
+          },
           "status": {
             "type": "string",
             "nullable": true
@@ -1109,6 +1113,10 @@
             "nullable": true
           },
           "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "image": {
             "type": "string",
             "nullable": true
           },

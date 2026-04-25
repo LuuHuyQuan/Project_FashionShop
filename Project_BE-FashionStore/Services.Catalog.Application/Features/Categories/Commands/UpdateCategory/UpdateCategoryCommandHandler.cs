@@ -22,6 +22,7 @@ public class UpdateCategoryCommandHandler : IRequestHandler<UpdateCategoryComman
         category.Name = request.Name;
         category.Slug = request.Slug;
         category.Description = request.Description;
+        category.Image = request.Image;
         category.Status = request.Status;
 
         await _categoryRepository.UpdateAsync(category);

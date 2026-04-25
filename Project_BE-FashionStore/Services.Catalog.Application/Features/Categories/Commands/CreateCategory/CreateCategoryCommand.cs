@@ -7,5 +7,6 @@ public record CreateCategoryCommand(
     string Name,
     string Slug,
     string? Description,
+    string? Image,
     string Status
 ) : IRequest<CategoryResponse>;

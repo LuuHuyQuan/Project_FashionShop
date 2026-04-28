@@ -21,13 +21,13 @@ const ContactPage = lazy(() => import('../pages/users/ContactPage'));
 const NotFoundPage = lazy(() => import('../pages/users/NotFoundPage'));
 
 // Lazy load admin pages
-const AdminDashboard = lazy(() => import('../pages/admin/AdminDashboard'));
-const AdminProducts = lazy(() => import('../pages/admin/AdminProducts'));
+const AdminDashboard = lazy(() => import('../pages/admin/Command/AdminDashboard'));
+const AdminProducts = lazy(() => import('../pages/admin/Product/AdminProducts'));
 const AdminOrders = lazy(() => import('../pages/admin/Order/AdminOrders'));
 const AdminCategories = lazy(() => import('../pages/admin/Category/AdminCategories'));
 const AdminUsers = lazy(() => import('../pages/admin/User/AdminUsers'));
 const AdminAnalytics = lazy(() => import('../pages/admin/Command/AdminAnalytics'));
-const AdminSettings = lazy(() => import('../pages/admin/AdminSettings'));
+const AdminSettings = lazy(() => import('../pages/admin/Command/AdminSettings'));
 
 const LoadingFallback = () => (
   <div className="flex h-[60vh] w-full items-center justify-center">

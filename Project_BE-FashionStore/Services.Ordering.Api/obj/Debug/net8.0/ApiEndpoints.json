@@ -111,6 +111,64 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "Services.Ordering.Api.Controllers.DashboardController",
+    "Method": "GetRecentOrders",
+    "RelativePath": "api/Dashboard/recent-orders",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "limit",
+        "Type": "System.Int32",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Services.Ordering.Api.Controllers.DashboardController",
+    "Method": "GetRevenueChart",
+    "RelativePath": "api/Dashboard/revenue-chart",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "days",
+        "Type": "System.Int32",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Services.Ordering.Api.Controllers.DashboardController",
+    "Method": "GetStats",
+    "RelativePath": "api/Dashboard/stats",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Services.Ordering.Api.Controllers.DashboardController",
+    "Method": "GetTopProducts",
+    "RelativePath": "api/Dashboard/top-products",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "limit",
+        "Type": "System.Int32",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "Services.Ordering.Api.Controllers.OrdersController",
     "Method": "GetAll",
     "RelativePath": "api/Orders",

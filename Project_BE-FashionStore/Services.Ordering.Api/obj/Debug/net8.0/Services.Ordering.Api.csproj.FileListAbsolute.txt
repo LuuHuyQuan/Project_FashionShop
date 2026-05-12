@@ -133,7 +133,6 @@ D:\PROJECT\Reactjs + .Net\Project_FashionStore\Project_BE-FashionStore\Services.
 D:\PROJECT\Reactjs + .Net\Project_FashionStore\Project_BE-FashionStore\Services.Ordering.Api\obj\Debug\net8.0\ref\Services.Ordering.Api.dll
 D:\PROJECT\Reactjs + .Net\Project_FashionStore\Project_BE-FashionStore\Services.Ordering.Api\bin\Debug\net8.0\BuldingBlock.Domain.dll
 D:\PROJECT\Reactjs + .Net\Project_FashionStore\Project_BE-FashionStore\Services.Ordering.Api\bin\Debug\net8.0\BuldingBlock.Domain.pdb
-D:\PROJECT\Reactjs + .Net\Project_FashionStore\Project_BE-FashionStore\Services.Ordering.Api\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt
 D:\PROJECT\Reactjs + .Net\Project_FashionStore\Project_BE-FashionStore\Services.Ordering.Api\bin\Debug\net8.0\Microsoft.Bcl.Cryptography.dll
 D:\PROJECT\Reactjs + .Net\Project_FashionStore\Project_BE-FashionStore\Services.Ordering.Api\bin\Debug\net8.0\Microsoft.Data.SqlClient.Extensions.Abstractions.dll
 D:\PROJECT\Reactjs + .Net\Project_FashionStore\Project_BE-FashionStore\Services.Ordering.Api\bin\Debug\net8.0\Microsoft.Data.SqlClient.Internal.Logging.dll
@@ -163,3 +162,4 @@ D:\PROJECT\Reactjs + .Net\Project_FashionStore\Project_BE-FashionStore\Services.
 D:\PROJECT\Reactjs + .Net\Project_FashionStore\Project_BE-FashionStore\Services.Ordering.Api\bin\Debug\net8.0\runtimes\win\lib\net8.0\Microsoft.Data.SqlClient.dll
 D:\PROJECT\Reactjs + .Net\Project_FashionStore\Project_BE-FashionStore\Services.Ordering.Api\bin\Debug\net8.0\runtimes\win\lib\net8.0\System.Diagnostics.EventLog.dll
 D:\PROJECT\Reactjs + .Net\Project_FashionStore\Project_BE-FashionStore\Services.Ordering.Api\bin\Debug\net8.0\runtimes\win\lib\net8.0\System.Security.Cryptography.Pkcs.dll
+D:\PROJECT\Reactjs + .Net\Project_FashionStore\Project_BE-FashionStore\Services.Ordering.Api\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt

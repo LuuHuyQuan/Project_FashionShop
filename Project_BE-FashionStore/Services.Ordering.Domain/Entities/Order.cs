@@ -20,11 +20,9 @@ public class Order
     public decimal ShippingFee { get; set; } = 0;
     public decimal DiscountAmount { get; set; } = 0;
     public decimal TotalAmount { get; set; }
-    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     public DateTime CreatedAtUtc { get; set; } = DateTime.UtcNow;
     
     public virtual ICollection<OrderItem> OrderItems { get; set; } = new List<OrderItem>();
-    public IReadOnlyCollection<OrderItem> Items => OrderItems.ToList();
 
     public Order() { }
 
@@ -49,7 +47,6 @@ public class Order
         Ward = ward;
         Note = note;
         Status = "pending";
-        CreatedAt = DateTime.UtcNow;
         CreatedAtUtc = DateTime.UtcNow;
         
         OrderItems = items.ToList();

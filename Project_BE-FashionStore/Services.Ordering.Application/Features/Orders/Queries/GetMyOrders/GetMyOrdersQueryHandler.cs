@@ -38,7 +38,7 @@ public sealed class GetMyOrdersQueryHandler : IRequestHandler<GetMyOrdersQuery, 
                 order.DiscountAmount,
                 order.TotalAmount,
                 order.CreatedAtUtc,
-                order.Items.Select(item => new OrderItemResponse(
+                order.OrderItems.Select(item => new OrderItemResponse(
                     item.Id,
                     item.ProductId,
                     item.ProductVariantId,

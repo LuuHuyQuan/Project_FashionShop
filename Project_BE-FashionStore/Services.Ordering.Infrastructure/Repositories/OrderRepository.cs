@@ -33,7 +33,7 @@ public class OrderRepository : IOrderRepository
         return await _context.Orders
             .Include(o => o.OrderItems)
             .Where(o => o.UserId == userId)
-            .OrderByDescending(o => o.CreatedAt)
+            .OrderByDescending(o => o.CreatedAtUtc)
             .ToListAsync(cancellationToken);
     }
 
@@ -41,7 +41,7 @@ public class OrderRepository : IOrderRepository
     {
         return await _context.Orders
             .Include(o => o.OrderItems)
-            .OrderByDescending(o => o.CreatedAt)
+            .OrderByDescending(o => o.CreatedAtUtc)
             .ToListAsync(cancellationToken);
     }
 

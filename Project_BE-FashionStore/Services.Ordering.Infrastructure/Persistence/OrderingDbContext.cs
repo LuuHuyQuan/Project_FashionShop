@@ -61,7 +61,7 @@ public class OrderingDbContext : DbContext
             entity.Property(e => e.ShippingFee).HasColumnType("decimal(18,2)").IsRequired().HasDefaultValue(0);
             entity.Property(e => e.DiscountAmount).HasColumnType("decimal(18,2)").IsRequired().HasDefaultValue(0);
             entity.Property(e => e.TotalAmount).HasColumnType("decimal(18,2)").IsRequired();
-            entity.Property(e => e.CreatedAt).IsRequired().HasDefaultValueSql("SYSUTCDATETIME()");
+            entity.Property(e => e.CreatedAtUtc).HasColumnName("CreatedAt").IsRequired().HasDefaultValueSql("SYSUTCDATETIME()");
             entity.HasIndex(e => e.OrderCode).IsUnique();
             entity.HasIndex(e => e.UserId);
         });
@@ -136,7 +136,7 @@ public class OrderingDbContext : DbContext
             entity.Property(e => e.Ward).HasMaxLength(100);
             entity.Property(e => e.IsDefault).IsRequired().HasDefaultValue(false);
             entity.HasIndex(e => e.UserId);
-            entity.Ignore(e => e.FullAddress); // Computed property
+            entity.Ignore(e => e.FullAddress);
         });
     }
 }

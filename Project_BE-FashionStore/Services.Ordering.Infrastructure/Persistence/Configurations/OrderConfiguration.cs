@@ -84,11 +84,8 @@ public sealed class OrderConfiguration : IEntityTypeConfiguration<Order>
         builder.HasIndex(x => x.OrderCode)
             .IsUnique();
 
-        builder.Navigation(x => x.Items)
-            .UsePropertyAccessMode(PropertyAccessMode.Field);
-
-        builder.HasMany(x => x.Items)
-            .WithOne()
+        builder.HasMany(x => x.OrderItems)
+            .WithOne(x => x.Order)
             .HasForeignKey(x => x.OrderId)
             .OnDelete(DeleteBehavior.Cascade);
     }

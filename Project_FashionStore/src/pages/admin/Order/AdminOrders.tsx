@@ -55,24 +55,43 @@ const AdminOrders: React.FC = () => {
         console.log('Orders received:', apiOrders);
 
         // Transform API response to match UI format
-        const transformedOrders: Order[] = apiOrders.map(order => ({
-          id: order.orderCode,
-          customer: order.shippingName,
-          email: order.shippingEmail,
-          phone: order.shippingPhone,
-          items: order.items.map(item => ({
-            name: item.productNameSnapshot,
-            qty: item.quantity,
-            price: item.unitPrice
-          })),
-          total: order.totalAmount,
-          status: order.status.toLowerCase() as OrderStatus,
-          address: [order.shippingAddress, order.ward, order.district, order.city]
-            .filter(Boolean)
-            .join(', '),
-          date: new Date(order.createdAt).toLocaleDateString('vi-VN'),
-          paymentMethod: order.paymentMethod
-        }));
+        const transformedOrders: Order[] = apiOrders.map(order => {
+          console.log('Order date:', order.orderCode, order.createdAtUtc);
+
+          // Parse date safely
+          let dateStr = 'N/A';
+          try {
+            const date = new Date(order.createdAtUtc);
+            if (!isNaN(date.getTime())) {
+              dateStr = date.toLocaleDateString('vi-VN', {
+                day: '2-digit',
+                month: '2-digit',
+                year: 'numeric'
+              });
+            }
+          } catch (e) {
+            console.error('Date error:', e);
+          }
+
+          return {
+            id: order.orderCode,
+            customer: order.shippingName,
+            email: order.shippingEmail,
+            phone: order.shippingPhone,
+            items: order.items.map(item => ({
+              name: item.productNameSnapshot,
+              qty: item.quantity,
+              price: item.unitPrice
+            })),
+            total: order.totalAmount,
+            status: order.status.toLowerCase() as OrderStatus,
+            address: [order.shippingAddress, order.ward, order.district, order.city]
+              .filter(Boolean)
+              .join(', '),
+            date: dateStr,
+            paymentMethod: order.paymentMethod
+          };
+        });
 
         setOrders(transformedOrders);
       } catch (error) {
@@ -423,3 +442,4 @@ const AdminOrders: React.FC = () => {
 };
 
 export default AdminOrders;
+

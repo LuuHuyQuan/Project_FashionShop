@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
-import { orderingService, type RecentOrder } from '../../services/orderingService';
+import { orderingService, type RecentOrder, type OrderResponse } from '../../services/orderingService';
 import {
   User,
   Mail,
@@ -21,14 +21,17 @@ import {
   Shield,
   Gift,
   Clock,
+  X,
 } from 'lucide-react';
 
 const UserProfilePage: React.FC = () => {
   const navigate = useNavigate();
   const { user, logout } = useAuth();
   const [recentOrders, setRecentOrders] = useState<RecentOrder[]>([]);
+  const [allOrders, setAllOrders] = useState<OrderResponse[]>([]);
   const [loading, setLoading] = useState(true);
   const [totalOrders, setTotalOrders] = useState(0);
+  const [showAllOrders, setShowAllOrders] = useState(false);
 
   useEffect(() => {
     const fetchOrders = async () => {
@@ -37,6 +40,7 @@ const UserProfilePage: React.FC = () => {
           console.log('Fetching orders for userId:', user.id);
           const orders = await orderingService.getUserOrders(user.id);
           console.log('Orders received:', orders);
+          setAllOrders(orders); // Lưu tất cả đơn hàng
           setTotalOrders(orders.length);
           // Lấy 3 đơn gần nhất và format
           const formattedOrders = orders.slice(0, 3).map(order => ({
@@ -48,7 +52,7 @@ const UserProfilePage: React.FC = () => {
             paymentMethod: order.paymentMethod,
             paymentStatus: order.paymentStatus,
             totalAmount: order.totalAmount,
-            createdAt: order.createdAt,
+            createdAt: order.createdAtUtc,
             itemCount: order.items.length
           }));
           setRecentOrders(formattedOrders);
@@ -77,7 +81,7 @@ const UserProfilePage: React.FC = () => {
   };
 
   const menuItems = [
-    { icon: Package, label: 'Đơn hàng của tôi', count: totalOrders, href: '#orders' },
+    { icon: Package, label: 'Đơn hàng của tôi', count: totalOrders, href: '#orders', onClick: () => setShowAllOrders(true) },
     { icon: Heart, label: 'Sản phẩm yêu thích', count: 12, href: '/wishlist' },
     { icon: MapPin, label: 'Sổ địa chỉ', count: 2, href: '#address' },
     { icon: CreditCard, label: 'Phương thức thanh toán', count: 1, href: '#payment' },
@@ -339,3 +343,4 @@ const UserProfilePage: React.FC = () => {
   );
 };
 export default UserProfilePage;
+

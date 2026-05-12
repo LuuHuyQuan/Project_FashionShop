@@ -73,7 +73,7 @@ export interface OrderResponse {
   shippingFee: number;
   discountAmount: number;
   totalAmount: number;
-  createdAt: string;
+  createdAtUtc: string;
   items: OrderItemResponse[];
 }
 

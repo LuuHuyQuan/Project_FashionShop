@@ -220,5 +220,31 @@
       }
     ],
     "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Services.Ordering.Api.Controllers.VouchersController",
+    "Method": "GetActiveVouchers",
+    "RelativePath": "api/Vouchers/active",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Services.Ordering.Api.Controllers.VouchersController",
+    "Method": "ValidateVoucher",
+    "RelativePath": "api/Vouchers/validate",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "Services.Ordering.Api.Controllers.ValidateVoucherRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
   }
 ]

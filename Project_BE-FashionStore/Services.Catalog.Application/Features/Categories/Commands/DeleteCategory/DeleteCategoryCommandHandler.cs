@@ -19,6 +19,12 @@ public class DeleteCategoryCommandHandler : IRequestHandler<DeleteCategoryComman
         if (category == null)
             return false;
 
+        // Check if category has products
+        if (category.Products != null && category.Products.Any())
+        {
+            throw new InvalidOperationException($"Không thể xóa danh mục '{category.Name}' vì còn {category.Products.Count} sản phẩm đang sử dụng danh mục này.");
+        }
+
         await _categoryRepository.DeleteAsync(request.Id);
         return true;
     }

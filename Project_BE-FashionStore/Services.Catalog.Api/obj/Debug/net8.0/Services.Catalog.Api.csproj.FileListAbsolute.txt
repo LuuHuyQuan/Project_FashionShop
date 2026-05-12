@@ -150,4 +150,6 @@ D:\PROJECT\Reactjs + .Net\Project_FashionStore\Project_BE-FashionStore\Services.
 D:\PROJECT\Reactjs + .Net\Project_FashionStore\Project_BE-FashionStore\Services.Catalog.Api\obj\Debug\net8.0\Services.Catalog.Api.pdb
 D:\PROJECT\Reactjs + .Net\Project_FashionStore\Project_BE-FashionStore\Services.Catalog.Api\obj\Debug\net8.0\Services.Catalog.Api.genruntimeconfig.cache
 D:\PROJECT\Reactjs + .Net\Project_FashionStore\Project_BE-FashionStore\Services.Catalog.Api\obj\Debug\net8.0\ref\Services.Catalog.Api.dll
+D:\PROJECT\Reactjs + .Net\Project_FashionStore\Project_BE-FashionStore\Services.Catalog.Api\bin\Debug\net8.0\BuldingBlock.Domain.dll
+D:\PROJECT\Reactjs + .Net\Project_FashionStore\Project_BE-FashionStore\Services.Catalog.Api\bin\Debug\net8.0\BuldingBlock.Domain.pdb
 D:\PROJECT\Reactjs + .Net\Project_FashionStore\Project_BE-FashionStore\Services.Catalog.Api\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt

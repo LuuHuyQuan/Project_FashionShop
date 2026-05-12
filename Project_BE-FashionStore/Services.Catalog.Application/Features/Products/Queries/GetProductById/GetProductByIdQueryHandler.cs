@@ -21,6 +21,7 @@ public sealed class GetProductByIdQueryHandler : IRequestHandler<GetProductByIdQ
         return new ProductResponse(
             product.Id,
             product.CategoryId,
+            product.Category?.Name ?? string.Empty,
             product.Name,
             product.Slug,
             product.Description,
@@ -32,6 +33,23 @@ public sealed class GetProductByIdQueryHandler : IRequestHandler<GetProductByIdQ
             product.ReviewCount,
             product.SoldCount,
             product.CreatedAt,
-            product.UpdatedAt);
+            product.UpdatedAt,
+            product.ProductImages?.Select(img => new ProductImageResponse(
+                img.Id,
+                img.Url,
+                img.IsThumbnail,
+                img.SortOrder
+            )).OrderBy(img => img.SortOrder).ToList() ?? new List<ProductImageResponse>(),
+            product.ProductVariants?.Select(v => new ProductVariantResponse(
+                v.Id,
+                v.SKU,
+                v.ColorId,
+                v.Color?.Name ?? string.Empty,
+                v.Color?.HexCode ?? string.Empty,
+                v.SizeId,
+                v.Size?.Name ?? string.Empty,
+                v.StockQuantity,
+                v.PriceOverride
+            )).ToList() ?? new List<ProductVariantResponse>());
     }
 }

@@ -84,7 +84,18 @@
           }
         }
       },
+      "BuldingBlock.Domain/1.0.0": {
+        "runtime": {
+          "BuldingBlock.Domain.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
+      },
       "Services.Catalog.Domain/1.0.0": {
+        "dependencies": {
+          "BuldingBlock.Domain": "1.0.0"
+        },
         "runtime": {
           "Services.Catalog.Domain.dll": {
             "assemblyVersion": "1.0.0.0",
@@ -143,6 +154,11 @@
       "hashPath": "microsoft.extensions.dependencyinjection.abstractions.7.0.0.nupkg.sha512"
     },
     "BuildingBlocks.Contracts/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "BuldingBlock.Domain/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

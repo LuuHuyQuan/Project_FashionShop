@@ -16,3 +16,5 @@ D:\PROJECT\Reactjs + .Net\Project_FashionStore\Project_BE-FashionStore\Services.
 D:\PROJECT\Reactjs + .Net\Project_FashionStore\Project_BE-FashionStore\Services.Catalog.Application\obj\Debug\net8.0\refint\Services.Catalog.Application.dll
 D:\PROJECT\Reactjs + .Net\Project_FashionStore\Project_BE-FashionStore\Services.Catalog.Application\obj\Debug\net8.0\Services.Catalog.Application.pdb
 D:\PROJECT\Reactjs + .Net\Project_FashionStore\Project_BE-FashionStore\Services.Catalog.Application\obj\Debug\net8.0\ref\Services.Catalog.Application.dll
+D:\PROJECT\Reactjs + .Net\Project_FashionStore\Project_BE-FashionStore\Services.Catalog.Application\bin\Debug\net8.0\BuldingBlock.Domain.dll
+D:\PROJECT\Reactjs + .Net\Project_FashionStore\Project_BE-FashionStore\Services.Catalog.Application\bin\Debug\net8.0\BuldingBlock.Domain.pdb

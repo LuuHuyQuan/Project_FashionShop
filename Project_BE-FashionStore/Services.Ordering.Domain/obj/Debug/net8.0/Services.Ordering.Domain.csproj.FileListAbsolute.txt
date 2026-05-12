@@ -10,3 +10,7 @@ D:\PROJECT\Reactjs + .Net\Project_FashionStore\Project_BE-FashionStore\Services.
 D:\PROJECT\Reactjs + .Net\Project_FashionStore\Project_BE-FashionStore\Services.Ordering.Domain\obj\Debug\net8.0\refint\Services.Ordering.Domain.dll
 D:\PROJECT\Reactjs + .Net\Project_FashionStore\Project_BE-FashionStore\Services.Ordering.Domain\obj\Debug\net8.0\Services.Ordering.Domain.pdb
 D:\PROJECT\Reactjs + .Net\Project_FashionStore\Project_BE-FashionStore\Services.Ordering.Domain\obj\Debug\net8.0\ref\Services.Ordering.Domain.dll
+D:\PROJECT\Reactjs + .Net\Project_FashionStore\Project_BE-FashionStore\Services.Ordering.Domain\obj\Debug\net8.0\Services.Ordering.Domain.csproj.AssemblyReference.cache
+D:\PROJECT\Reactjs + .Net\Project_FashionStore\Project_BE-FashionStore\Services.Ordering.Domain\bin\Debug\net8.0\BuldingBlock.Domain.dll
+D:\PROJECT\Reactjs + .Net\Project_FashionStore\Project_BE-FashionStore\Services.Ordering.Domain\bin\Debug\net8.0\BuldingBlock.Domain.pdb
+D:\PROJECT\Reactjs + .Net\Project_FashionStore\Project_BE-FashionStore\Services.Ordering.Domain\obj\Debug\net8.0\Services.83318C4F.Up2Date

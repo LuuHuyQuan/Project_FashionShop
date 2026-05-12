@@ -60,6 +60,7 @@ public sealed class UpsertProductCommandHandler : IRequestHandler<UpsertProductC
         return new ProductResponse(
             product.Id,
             product.CategoryId,
+            product.Category?.Name ?? string.Empty,
             product.Name,
             product.Slug,
             product.Description,
@@ -71,6 +72,8 @@ public sealed class UpsertProductCommandHandler : IRequestHandler<UpsertProductC
             product.ReviewCount,
             product.SoldCount,
             product.CreatedAt,
-            product.UpdatedAt);
+            product.UpdatedAt,
+            new List<ProductImageResponse>(),
+            new List<ProductVariantResponse>());
     }
 }

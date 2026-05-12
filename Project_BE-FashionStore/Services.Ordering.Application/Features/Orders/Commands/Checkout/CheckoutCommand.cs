@@ -6,15 +6,16 @@ namespace Services.Ordering.Application.Features.Orders.Commands.Checkout;
 
 public sealed record CheckoutItemRequest(
     int ProductId,
+    int ProductVariantId,
     string ProductNameSnapshot,
+    string ColorSnapshot,
+    string SizeSnapshot,
     decimal UnitPrice,
-    int Quantity,
-    int? ProductVariantId = null,
-    string? ColorSnapshot = null,
-    string? SizeSnapshot = null);
+    int Quantity);
 
 public sealed record CheckoutCommand(
     int UserId,
+    int? VoucherId,
     string ShippingName,
     string ShippingPhone,
     string ShippingEmail,
@@ -24,9 +25,7 @@ public sealed record CheckoutCommand(
     string? Ward,
     string? Note,
     string PaymentMethod,
-    string PaymentStatus,
     decimal ShippingFee,
-    decimal DiscountAmount,
     IReadOnlyCollection<CheckoutItemRequest> Items) : IRequest<OrderResponse>;
 
 public sealed class CheckoutCommandValidator : AbstractValidator<CheckoutCommand>
@@ -43,18 +42,17 @@ public sealed class CheckoutCommandValidator : AbstractValidator<CheckoutCommand
         RuleFor(x => x.Ward).MaximumLength(100).When(x => !string.IsNullOrWhiteSpace(x.Ward));
         RuleFor(x => x.Note).MaximumLength(1000).When(x => !string.IsNullOrWhiteSpace(x.Note));
         RuleFor(x => x.PaymentMethod).NotEmpty().MaximumLength(20);
-        RuleFor(x => x.PaymentStatus).NotEmpty().MaximumLength(20);
         RuleFor(x => x.ShippingFee).GreaterThanOrEqualTo(0);
-        RuleFor(x => x.DiscountAmount).GreaterThanOrEqualTo(0);
         RuleFor(x => x.Items).NotEmpty();
         RuleForEach(x => x.Items).ChildRules(item =>
         {
             item.RuleFor(x => x.ProductId).GreaterThan(0);
+            item.RuleFor(x => x.ProductVariantId).GreaterThan(0);
             item.RuleFor(x => x.ProductNameSnapshot).NotEmpty().MaximumLength(200);
+            item.RuleFor(x => x.ColorSnapshot).NotEmpty().MaximumLength(50);
+            item.RuleFor(x => x.SizeSnapshot).NotEmpty().MaximumLength(20);
             item.RuleFor(x => x.UnitPrice).GreaterThan(0);
             item.RuleFor(x => x.Quantity).GreaterThan(0);
-            item.RuleFor(x => x.ColorSnapshot).MaximumLength(50).When(x => !string.IsNullOrWhiteSpace(x.ColorSnapshot));
-            item.RuleFor(x => x.SizeSnapshot).MaximumLength(20).When(x => !string.IsNullOrWhiteSpace(x.SizeSnapshot));
         });
     }
 }

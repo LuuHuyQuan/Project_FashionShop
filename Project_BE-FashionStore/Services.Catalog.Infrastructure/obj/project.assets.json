@@ -1560,6 +1560,16 @@
           "bin/placeholder/BuildingBlocks.Contracts.dll": {}
         }
       },
+      "BuldingBlock.Domain/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v8.0",
+        "compile": {
+          "bin/placeholder/BuldingBlock.Domain.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/BuldingBlock.Domain.dll": {}
+        }
+      },
       "Services.Catalog.Application/1.0.0": {
         "type": "project",
         "framework": ".NETCoreApp,Version=v8.0",
@@ -1579,6 +1589,9 @@
       "Services.Catalog.Domain/1.0.0": {
         "type": "project",
         "framework": ".NETCoreApp,Version=v8.0",
+        "dependencies": {
+          "BuldingBlock.Domain": "1.0.0"
+        },
         "compile": {
           "bin/placeholder/Services.Catalog.Domain.dll": {}
         },
@@ -4205,6 +4218,11 @@
       "path": "../BuildingBlocks.Contracts/BuildingBlocks.Contracts.csproj",
       "msbuildProject": "../BuildingBlocks.Contracts/BuildingBlocks.Contracts.csproj"
     },
+    "BuldingBlock.Domain/1.0.0": {
+      "type": "project",
+      "path": "../BuldingBlock.Domain/BuldingBlock.Domain.csproj",
+      "msbuildProject": "../BuldingBlock.Domain/BuldingBlock.Domain.csproj"
+    },
     "Services.Catalog.Application/1.0.0": {
       "type": "project",
       "path": "../Services.Catalog.Application/Services.Catalog.Application.csproj",
@@ -4281,7 +4299,7 @@
         "auditLevel": "low",
         "auditMode": "direct"
       },
-      "SdkAnalysisLevel": "9.0.300"
+      "SdkAnalysisLevel": "10.0.200"
     },
     "frameworks": {
       "net8.0": {
@@ -4318,7 +4336,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.312/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.201/PortableRuntimeIdentifierGraph.json"
       }
     }
   }

@@ -16,7 +16,14 @@ public sealed class AddReviewCommandHandler : IRequestHandler<AddReviewCommand, 
 
     public async Task<ReviewResponse> Handle(AddReviewCommand request, CancellationToken cancellationToken)
     {
-        var review = new Review(request.UserId, request.ProductId, request.Rating, request.Comment);
+        var review = new Review
+        {
+            UserId = request.UserId,
+            ProductId = request.ProductId,
+            Rating = request.Rating,
+            Comment = request.Comment,
+            CreatedAt = DateTime.Now
+        };
         await _lookupRepository.AddReviewAsync(review, cancellationToken);
         await _lookupRepository.SaveChangesAsync(cancellationToken);
 

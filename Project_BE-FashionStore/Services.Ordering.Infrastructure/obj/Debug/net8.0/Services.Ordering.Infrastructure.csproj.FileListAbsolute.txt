@@ -20,3 +20,5 @@ D:\PROJECT\Reactjs + .Net\Project_FashionStore\Project_BE-FashionStore\Services.
 D:\PROJECT\Reactjs + .Net\Project_FashionStore\Project_BE-FashionStore\Services.Ordering.Infrastructure\obj\Debug\net8.0\Services.Ordering.Infrastructure.pdb
 D:\PROJECT\Reactjs + .Net\Project_FashionStore\Project_BE-FashionStore\Services.Ordering.Infrastructure\obj\Debug\net8.0\Services.Ordering.Infrastructure.genruntimeconfig.cache
 D:\PROJECT\Reactjs + .Net\Project_FashionStore\Project_BE-FashionStore\Services.Ordering.Infrastructure\obj\Debug\net8.0\ref\Services.Ordering.Infrastructure.dll
+D:\PROJECT\Reactjs + .Net\Project_FashionStore\Project_BE-FashionStore\Services.Ordering.Infrastructure\bin\Debug\net8.0\BuldingBlock.Domain.dll
+D:\PROJECT\Reactjs + .Net\Project_FashionStore\Project_BE-FashionStore\Services.Ordering.Infrastructure\bin\Debug\net8.0\BuldingBlock.Domain.pdb

@@ -30,7 +30,7 @@ public class CategoryRepository : ICategoryRepository
     public async Task<IEnumerable<Category>> GetAllAsync()
     {
         return await _context.Categories
-            .Where(c => c.Status == "active")
+            .OrderBy(c => c.Name)
             .ToListAsync();
     }
 

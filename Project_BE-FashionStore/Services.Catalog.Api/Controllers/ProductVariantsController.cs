@@ -88,4 +88,70 @@ public class ProductVariantsController : ControllerBase
 
         return NoContent();
     }
+
+    /// <summary>
+    /// Check stock availability by variant ID
+    /// </summary>
+    [HttpGet("{id}/stock")]
+    public async Task<IActionResult> CheckStockByVariantId(int id, CancellationToken cancellationToken)
+    {
+        var query = new GetProductVariantByIdQuery(id);
+        var variant = await _sender.Send(query, cancellationToken);
+        
+        if (variant == null)
+        {
+            return NotFound(new StockCheckResponse
+            {
+                Available = false,
+                StockQuantity = 0,
+                Message = "Không tìm thấy sản phẩm"
+            });
+        }
+
+        return Ok(new StockCheckResponse
+        {
+            Available = variant.StockQuantity > 0,
+            StockQuantity = variant.StockQuantity,
+            VariantId = variant.Id,
+            Message = variant.StockQuantity > 0 ? "Còn hàng" : "Hết hàng"
+        });
+    }
+
+    /// <summary>
+    /// Check stock availability by product, color, and size
+    /// </summary>
+    [HttpGet("check-stock")]
+    public async Task<IActionResult> CheckStock(
+        [FromQuery] int productId, 
+        [FromQuery] int colorId, 
+        [FromQuery] int sizeId, 
+        CancellationToken cancellationToken)
+    {
+        var query = new GetProductVariantsQuery();
+        var variants = await _sender.Send(query, cancellationToken);
+        
+        var variant = variants.FirstOrDefault(v => 
+            v.ProductId == productId && 
+            v.ColorId == colorId && 
+            v.SizeId == sizeId
+        );
+        
+        if (variant == null)
+        {
+            return NotFound(new StockCheckResponse
+            {
+                Available = false,
+                StockQuantity = 0,
+                Message = "Không tìm thấy biến thể sản phẩm"
+            });
+        }
+
+        return Ok(new StockCheckResponse
+        {
+            Available = variant.StockQuantity > 0,
+            StockQuantity = variant.StockQuantity,
+            VariantId = variant.Id,
+            Message = variant.StockQuantity > 0 ? "Còn hàng" : "Hết hàng"
+        });
+    }
 }

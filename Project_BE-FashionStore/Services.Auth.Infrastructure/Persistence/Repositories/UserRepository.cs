@@ -24,6 +24,13 @@ public sealed class UserRepository : IUserRepository, IReadOnlyUserRepository
         return await _dbContext.Users.FirstOrDefaultAsync(x => x.Email == email);
     }
 
+    public async Task<IEnumerable<User>> GetAllAsync()
+    {
+        return await _dbContext.Users
+            .OrderByDescending(x => x.CreatedAt)
+            .ToListAsync();
+    }
+
     public async Task<bool> EmailExistsAsync(string email)
     {
         return await _dbContext.Users.AnyAsync(x => x.Email == email);
@@ -41,6 +48,16 @@ public sealed class UserRepository : IUserRepository, IReadOnlyUserRepository
         _dbContext.Users.Update(user);
         await _dbContext.SaveChangesAsync();
         return user;
+    }
+
+    public async Task DeleteAsync(int id)
+    {
+        var user = await _dbContext.Users.FindAsync(id);
+        if (user != null)
+        {
+            _dbContext.Users.Remove(user);
+            await _dbContext.SaveChangesAsync();
+        }
     }
 
     public async Task<IReadOnlyCollection<UserResponse>> GetUsersAsync(CancellationToken cancellationToken = default)

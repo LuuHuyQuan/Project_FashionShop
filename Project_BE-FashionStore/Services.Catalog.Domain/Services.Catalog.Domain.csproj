@@ -8,4 +8,8 @@
     <AssemblyName>Services.Catalog.Domain</AssemblyName>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\BuldingBlock.Domain\BuldingBlock.Domain.csproj" />
+  </ItemGroup>
+
 </Project>

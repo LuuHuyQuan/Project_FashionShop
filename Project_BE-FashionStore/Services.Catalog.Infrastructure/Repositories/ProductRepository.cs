@@ -19,8 +19,14 @@ public class ProductRepository : IProductRepository
         return await _context.Products
             .Include(p => p.Category)
             .Include(p => p.ProductImages)
+            .Include(p => p.ProductVariants)
+                .ThenInclude(pv => pv.Color)
+            .Include(p => p.ProductVariants)
+                .ThenInclude(pv => pv.Size)
+            .AsSplitQuery()
             .Where(p => p.Status == "active")
             .OrderByDescending(p => p.CreatedAt)
+            .AsNoTracking()
             .ToListAsync(cancellationToken);
     }
 

@@ -17,11 +17,35 @@ public sealed class GetProductsQueryHandler : IRequestHandler<GetProductsQuery, 
     {
         var products = await _productRepository.GetAllAsync(cancellationToken);
 
-        return products
-            .Where(product => request.IncludeInactive || product.Status == "active")
-            .Select(product => new ProductResponse(
+        var result = new List<ProductResponse>();
+
+        foreach (var product in products)
+        {
+            if (!request.IncludeInactive && product.Status != "active")
+                continue;
+
+            var images = product.ProductImages?
+                .Select(img => new ProductImageResponse(img.Id, img.Url, img.IsThumbnail, img.SortOrder))
+                .OrderBy(img => img.SortOrder)
+                .ToList() ?? new List<ProductImageResponse>();
+
+            var variants = product.ProductVariants?
+                .Select(v => new ProductVariantResponse(
+                    v.Id,
+                    v.SKU,
+                    v.ColorId,
+                    v.Color?.Name ?? string.Empty,
+                    v.Color?.HexCode ?? string.Empty,
+                    v.SizeId,
+                    v.Size?.Name ?? string.Empty,
+                    v.StockQuantity,
+                    v.PriceOverride))
+                .ToList() ?? new List<ProductVariantResponse>();
+
+            result.Add(new ProductResponse(
                 product.Id,
                 product.CategoryId,
+                product.Category?.Name ?? string.Empty,
                 product.Name,
                 product.Slug,
                 product.Description,
@@ -33,7 +57,11 @@ public sealed class GetProductsQueryHandler : IRequestHandler<GetProductsQuery, 
                 product.ReviewCount,
                 product.SoldCount,
                 product.CreatedAt,
-                product.UpdatedAt))
-            .ToArray();
+                product.UpdatedAt,
+                images,
+                variants));
+        }
+
+        return result.ToArray();
     }
 }

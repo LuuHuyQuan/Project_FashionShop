@@ -22,3 +22,7 @@ D:\PROJECT\Reactjs + .Net\Project_FashionStore\Project_BE-FashionStore\Services.
 D:\PROJECT\Reactjs + .Net\Project_FashionStore\Project_BE-FashionStore\Services.Catalog.Domain\obj\Debug\net8.0\refint\Services.Catalog.Domain.dll
 D:\PROJECT\Reactjs + .Net\Project_FashionStore\Project_BE-FashionStore\Services.Catalog.Domain\obj\Debug\net8.0\Services.Catalog.Domain.pdb
 D:\PROJECT\Reactjs + .Net\Project_FashionStore\Project_BE-FashionStore\Services.Catalog.Domain\obj\Debug\net8.0\ref\Services.Catalog.Domain.dll
+D:\PROJECT\Reactjs + .Net\Project_FashionStore\Project_BE-FashionStore\Services.Catalog.Domain\obj\Debug\net8.0\Services.Catalog.Domain.csproj.AssemblyReference.cache
+D:\PROJECT\Reactjs + .Net\Project_FashionStore\Project_BE-FashionStore\Services.Catalog.Domain\bin\Debug\net8.0\BuldingBlock.Domain.dll
+D:\PROJECT\Reactjs + .Net\Project_FashionStore\Project_BE-FashionStore\Services.Catalog.Domain\bin\Debug\net8.0\BuldingBlock.Domain.pdb
+D:\PROJECT\Reactjs + .Net\Project_FashionStore\Project_BE-FashionStore\Services.Catalog.Domain\obj\Debug\net8.0\Services.50CDE0B1.Up2Date

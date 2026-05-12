@@ -11,6 +11,9 @@ public class OrderingDbContext : DbContext
     public DbSet<CartItem> CartItems { get; set; }
     public DbSet<Order> Orders { get; set; }
     public DbSet<OrderItem> OrderItems { get; set; }
+    public DbSet<Voucher> Vouchers { get; set; }
+    public DbSet<VoucherUsage> VoucherUsages { get; set; }
+    public DbSet<Address> Addresses { get; set; }
     
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -79,6 +82,61 @@ public class OrderingDbContext : DbContext
                 .WithMany(o => o.OrderItems)
                 .HasForeignKey(e => e.OrderId)
                 .OnDelete(DeleteBehavior.Cascade);
+        });
+        
+        modelBuilder.Entity<Voucher>(entity =>
+        {
+            entity.ToTable("Vouchers");
+            entity.HasKey(e => e.Id);
+            entity.Property(e => e.Code).IsRequired().HasMaxLength(50);
+            entity.HasIndex(e => e.Code).IsUnique();
+            entity.Property(e => e.Name).IsRequired().HasMaxLength(200);
+            entity.Property(e => e.DiscountType).IsRequired().HasMaxLength(20);
+            entity.Property(e => e.DiscountValue).HasColumnType("decimal(18,2)").IsRequired();
+            entity.Property(e => e.MinOrderAmount).HasColumnType("decimal(18,2)");
+            entity.Property(e => e.MaxDiscountAmount).HasColumnType("decimal(18,2)");
+            entity.Property(e => e.UsedQuantity).IsRequired().HasDefaultValue(0);
+            entity.Property(e => e.Status).IsRequired().HasMaxLength(20).HasDefaultValue("active");
+            entity.Property(e => e.StartDate).IsRequired();
+            entity.Property(e => e.EndDate).IsRequired();
+            entity.Property(e => e.CreatedAt).IsRequired().HasDefaultValueSql("SYSUTCDATETIME()");
+            entity.Ignore(e => e.RemainingQuantity); // Computed property
+            entity.HasCheckConstraint("CK_Vouchers_DiscountType", "[DiscountType] IN ('percentage', 'fixed')");
+            entity.HasCheckConstraint("CK_Vouchers_Status", "[Status] IN ('active', 'inactive', 'expired')");
+            entity.HasCheckConstraint("CK_Vouchers_Dates", "[EndDate] > [StartDate]");
+        });
+        
+        modelBuilder.Entity<VoucherUsage>(entity =>
+        {
+            entity.ToTable("VoucherUsages");
+            entity.HasKey(e => e.Id);
+            entity.Property(e => e.UsedAt).IsRequired().HasDefaultValueSql("SYSUTCDATETIME()");
+            entity.HasIndex(e => e.VoucherId);
+            entity.HasIndex(e => e.UserId);
+            entity.HasIndex(e => e.OrderId);
+            entity.HasOne(e => e.Voucher)
+                .WithMany(v => v.VoucherUsages)
+                .HasForeignKey(e => e.VoucherId)
+                .OnDelete(DeleteBehavior.Restrict);
+            entity.HasOne(e => e.Order)
+                .WithMany()
+                .HasForeignKey(e => e.OrderId)
+                .OnDelete(DeleteBehavior.Restrict);
+        });
+        
+        modelBuilder.Entity<Address>(entity =>
+        {
+            entity.ToTable("Addresses");
+            entity.HasKey(e => e.Id);
+            entity.Property(e => e.RecipientName).IsRequired().HasMaxLength(200);
+            entity.Property(e => e.Phone).IsRequired().HasMaxLength(20);
+            entity.Property(e => e.AddressLine).IsRequired().HasMaxLength(500);
+            entity.Property(e => e.City).HasMaxLength(100);
+            entity.Property(e => e.District).HasMaxLength(100);
+            entity.Property(e => e.Ward).HasMaxLength(100);
+            entity.Property(e => e.IsDefault).IsRequired().HasDefaultValue(false);
+            entity.HasIndex(e => e.UserId);
+            entity.Ignore(e => e.FullAddress); // Computed property
         });
     }
 }

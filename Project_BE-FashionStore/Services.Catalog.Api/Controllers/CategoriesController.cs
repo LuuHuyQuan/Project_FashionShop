@@ -78,12 +78,19 @@ public class CategoriesController : ControllerBase
     [HttpDelete("{id}")]
     public async Task<IActionResult> Delete(int id, CancellationToken cancellationToken)
     {
-        var command = new DeleteCategoryCommand(id);
-        var success = await _sender.Send(command, cancellationToken);
-        
-        if (!success)
-            return NotFound();
+        try
+        {
+            var command = new DeleteCategoryCommand(id);
+            var success = await _sender.Send(command, cancellationToken);
+            
+            if (!success)
+                return NotFound(new { message = "Không tìm thấy danh mục" });
 
-        return NoContent();
+            return NoContent();
+        }
+        catch (InvalidOperationException ex)
+        {
+            return BadRequest(new { message = ex.Message });
+        }
     }
 }

@@ -456,6 +456,11 @@
             "type": "integer",
             "format": "int32"
           },
+          "voucherId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
           "shippingName": {
             "type": "string",
             "nullable": true
@@ -492,15 +497,7 @@
             "type": "string",
             "nullable": true
           },
-          "paymentStatus": {
-            "type": "string",
-            "nullable": true
-          },
           "shippingFee": {
-            "type": "number",
-            "format": "double"
-          },
-          "discountAmount": {
             "type": "number",
             "format": "double"
           },
@@ -521,7 +518,19 @@
             "type": "integer",
             "format": "int32"
           },
+          "productVariantId": {
+            "type": "integer",
+            "format": "int32"
+          },
           "productNameSnapshot": {
+            "type": "string",
+            "nullable": true
+          },
+          "colorSnapshot": {
+            "type": "string",
+            "nullable": true
+          },
+          "sizeSnapshot": {
             "type": "string",
             "nullable": true
           },
@@ -532,19 +541,6 @@
           "quantity": {
             "type": "integer",
             "format": "int32"
-          },
-          "productVariantId": {
-            "type": "integer",
-            "format": "int32",
-            "nullable": true
-          },
-          "colorSnapshot": {
-            "type": "string",
-            "nullable": true
-          },
-          "sizeSnapshot": {
-            "type": "string",
-            "nullable": true
           }
         },
         "additionalProperties": false

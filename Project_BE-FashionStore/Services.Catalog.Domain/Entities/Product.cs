@@ -18,11 +18,11 @@ public class Product
     public DateTime? UpdatedAt { get; set; }
     
     // Navigation
-    public virtual Category Category { get; set; } = null!;
-    public virtual ICollection<ProductImage> ProductImages { get; set; } = new List<ProductImage>();
-    public virtual ICollection<ProductVariant> ProductVariants { get; set; } = new List<ProductVariant>();
-    public virtual ICollection<Review> Reviews { get; set; } = new List<Review>();
-    public virtual ICollection<WishlistItem> WishlistItems { get; set; } = new List<WishlistItem>();
+    public Category Category { get; set; } = null!;
+    public ICollection<ProductImage> ProductImages { get; set; } = new List<ProductImage>();
+    public ICollection<ProductVariant> ProductVariants { get; set; } = new List<ProductVariant>();
+    public ICollection<Review> Reviews { get; set; } = new List<Review>();
+    public ICollection<WishlistItem> WishlistItems { get; set; } = new List<WishlistItem>();
 
     // Constructors
     public Product() { }

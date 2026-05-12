@@ -17,6 +17,21 @@ export interface Product {
   sizes: string[];
   colors: { name: string; value: string }[];
   images: string[];
+  stockQuantity?: number; // Total stock across all variants
+  variants?: ProductVariant[]; // Available variants with stock
+}
+
+export interface ProductVariant {
+  id: number;
+  productId: number;
+  colorId: number;
+  sizeId: number;
+  sku: string;
+  stockQuantity: number;
+  priceOverride?: number;
+  colorName?: string;
+  sizeName?: string;
+  colorHexCode?: string;
 }
 
 export interface Category {

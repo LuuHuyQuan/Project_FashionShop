@@ -3,7 +3,7 @@ import type { RouteConfig } from './types';
 import AdminLoadingFallback from '../components/common/AdminLoadingFallback';
 
 // Lazy load admin components
-const AdminDashboard = lazy(() => import('../pages/admin/Command/AdminDashboard'));
+const AdminDashboard = lazy(() => import('../pages/admin/Command/AdminDashboardSimple'));
 const AdminProducts = lazy(() => import('../pages/admin/Product/AdminProducts'));
 const ProductImagesVariants = lazy(() => import('../pages/admin/Product/ProductImagesVariants'));
 const AdminOrders = lazy(() => import('../pages/admin/Order/AdminOrders'));

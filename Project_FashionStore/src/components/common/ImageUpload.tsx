@@ -188,7 +188,6 @@ export const MultipleImageUpload: React.FC<MultipleImageUploadProps> = ({
   onChange,
   label = 'Chọn nhiều ảnh',
   maxImages = 5,
-  maxSize = 5,
   compress = true,
   className = '',
 }) => {

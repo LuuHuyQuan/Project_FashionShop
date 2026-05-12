@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { orderingService, Address, CreateAddressRequest, UpdateAddressRequest } from '../services';
+import { orderingService, type Address, type CreateAddressRequest, type UpdateAddressRequest } from '../services';
 
 export const useAddresses = (userId?: number) => {
   const [addresses, setAddresses] = useState<Address[]>([]);

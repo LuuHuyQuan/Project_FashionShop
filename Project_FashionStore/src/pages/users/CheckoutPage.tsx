@@ -20,36 +20,9 @@ import {
   Clock,
   Package,
 } from 'lucide-react';
-
-const cartItems = [
-  {
-    id: 1,
-    name: 'Áo thun Premium Cotton',
-    price: 599000,
-    quantity: 2,
-    size: 'L',
-    color: 'Đen',
-    gradient: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-  },
-  {
-    id: 2,
-    name: 'Quần jeans Skinny Fit',
-    price: 899000,
-    quantity: 1,
-    size: 'M',
-    color: 'Xanh đậm',
-    gradient: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)',
-  },
-  {
-    id: 3,
-    name: 'Áo khoác Bomber',
-    price: 1299000,
-    quantity: 1,
-    size: 'XL',
-    color: 'Xám',
-    gradient: 'linear-gradient(135deg, #fa709a 0%, #fee140 100%)',
-  },
-];
+import { useCart } from '../../context/CartContext';
+import { orderingService, type CheckoutRequest } from '../../services/orderingService';
+import { swal } from '../../utils/swal';
 
 const paymentMethods = [
   {
@@ -84,8 +57,11 @@ const paymentMethods = [
 
 const CheckoutPage: React.FC = () => {
   const navigate = useNavigate();
+  const { cartItems, clearCart } = useCart();
   const [step, setStep] = useState(1);
-  const [paymentMethod, setPaymentMethod] = useState('cod');
+  const [paymentMethod, setPaymentMethod] = useState('COD');
+  const [appliedVoucher] = useState<any>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState({
     fullName: '',
     phone: '',
@@ -104,7 +80,7 @@ const CheckoutPage: React.FC = () => {
 
   const subtotal = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
   const shipping = subtotal > 500000 ? 0 : 30000;
-  const discount = 50000;
+  const discount = appliedVoucher ? (appliedVoucher.discountAmount || 0) : 0;
   const total = subtotal + shipping - discount;
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
@@ -148,15 +124,103 @@ const CheckoutPage: React.FC = () => {
     }
   };
 
-  const handlePlaceOrder = () => {
-    navigate('/order-success');
+  const handlePlaceOrder = async () => {
+    // Validate cart items
+    if (cartItems.length === 0) {
+      await swal.warning('Giỏ hàng trống', 'Vui lòng thêm sản phẩm vào giỏ hàng');
+      return;
+    }
+
+    // Validate all items have variantId
+    const invalidItems = cartItems.filter(item => !item.variantId);
+    if (invalidItems.length > 0) {
+      await swal.error(
+        'Lỗi giỏ hàng',
+        'Một số sản phẩm trong giỏ hàng không hợp lệ. Vui lòng xóa và thêm lại.'
+      );
+      return;
+    }
+
+    setIsSubmitting(true);
+
+    try {
+      // Prepare order items from cart
+      const orderItems = cartItems.map(item => ({
+        productId: item.id,
+        productVariantId: item.variantId!,
+        productNameSnapshot: item.name,
+        colorSnapshot: item.selectedColor,
+        sizeSnapshot: item.selectedSize,
+        unitPrice: item.price,
+        quantity: item.quantity,
+      }));
+
+      // Prepare checkout request
+      const checkoutRequest = {
+        userId: 1, // TODO: Get from auth context
+        voucherId: appliedVoucher?.id,
+        shippingName: formData.fullName,
+        shippingPhone: formData.phone,
+        shippingEmail: formData.email,
+        shippingAddress: formData.address,
+        city: formData.city,
+        district: formData.district,
+        ward: formData.ward,
+        note: formData.note,
+        paymentMethod: paymentMethod,
+        shippingFee: shipping,
+        items: orderItems,  // Backend expects "items" (lowercase)
+      };
+
+      // DEBUG: Log request data
+      console.log('=== CHECKOUT REQUEST ===');
+      console.log('Request:', JSON.stringify(checkoutRequest, null, 2));
+      console.log('Order Items:', orderItems);
+      console.log('========================');
+
+      // Call API
+      const order = await orderingService.checkout(checkoutRequest);
+
+      // Clear cart
+      clearCart();
+
+      // Show success and redirect
+      await swal.success('Đặt hàng thành công!', `Mã đơn hàng: ${order.orderCode}`);
+      navigate(`/order-success?orderCode=${order.orderCode}`);
+
+    } catch (error: any) {
+      console.error('=== CHECKOUT ERROR ===');
+      console.error('Error:', error);
+      console.error('Response:', error.response);
+      console.error('Response Data:', error.response?.data);
+      console.error('Response Status:', error.response?.status);
+      console.error('Response Headers:', error.response?.headers);
+      console.error('======================');
+
+      const errorMessage = error.response?.data?.message ||
+        error.response?.data?.title ||
+        error.response?.data?.errors ||
+        'Không thể tạo đơn hàng. Vui lòng thử lại sau.';
+
+      // If validation errors, show details
+      if (error.response?.data?.errors) {
+        console.error('Validation Errors:', error.response.data.errors);
+        const validationErrors = Object.entries(error.response.data.errors)
+          .map(([field, messages]: [string, any]) => `${field}: ${Array.isArray(messages) ? messages.join(', ') : messages}`)
+          .join('\n');
+        await swal.error('Lỗi validation', validationErrors);
+      } else {
+        await swal.error('Đặt hàng thất bại', typeof errorMessage === 'string' ? errorMessage : JSON.stringify(errorMessage));
+      }
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const inputClass = (field: string) =>
-    `w-full px-4 py-3.5 rounded-xl text-sm font-medium transition-all duration-200 outline-none ${
-      errors[field]
-        ? 'border-2 border-red-400 bg-red-50/50 focus:border-red-500 focus:ring-2 focus:ring-red-200'
-        : 'border-2 border-slate-200 bg-white focus:border-purple-500 focus:ring-2 focus:ring-purple-100 hover:border-slate-300'
+    `w-full px-4 py-3.5 rounded-xl text-sm font-medium transition-all duration-200 outline-none ${errors[field]
+      ? 'border-2 border-red-400 bg-red-50/50 focus:border-red-500 focus:ring-2 focus:ring-red-200'
+      : 'border-2 border-slate-200 bg-white focus:border-purple-500 focus:ring-2 focus:ring-purple-100 hover:border-slate-300'
     }`;
 
   return (
@@ -685,12 +749,11 @@ const CheckoutPage: React.FC = () => {
                     {cartItems.map((item) => (
                       <div key={item.id} className="flex items-center gap-4">
                         <div
-                          className="w-14 h-14 rounded-xl flex-shrink-0"
-                          style={{ background: item.gradient }}
+                          className="w-14 h-14 rounded-xl flex-shrink-0 bg-gradient-to-br from-purple-500 to-blue-500"
                         />
                         <div className="flex-1 min-w-0">
                           <p className="text-sm font-bold text-slate-800 truncate">{item.name}</p>
-                          <p className="text-xs text-slate-400">{item.size} · {item.color} · x{item.quantity}</p>
+                          <p className="text-xs text-slate-400">{item.selectedSize} · {item.selectedColor} · x{item.quantity}</p>
                         </div>
                         <p className="text-sm font-bold text-slate-900">
                           {(item.price * item.quantity).toLocaleString('vi-VN')}đ
@@ -711,14 +774,15 @@ const CheckoutPage: React.FC = () => {
                   </button>
                   <button
                     onClick={handlePlaceOrder}
-                    className="flex items-center gap-3 px-10 py-4 rounded-2xl font-bold text-white text-base transition-all hover:scale-105"
+                    disabled={isSubmitting}
+                    className="flex items-center gap-3 px-10 py-4 rounded-2xl font-bold text-white text-base transition-all hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed"
                     style={{
                       background: 'linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)',
                       boxShadow: '0 8px 32px rgba(67,233,123,0.4)',
                     }}
                   >
                     <Lock size={18} />
-                    Đặt hàng · {total.toLocaleString('vi-VN')}đ
+                    {isSubmitting ? 'Đang xử lý...' : `Đặt hàng · ${total.toLocaleString('vi-VN')}đ`}
                   </button>
                 </div>
               </div>
@@ -737,8 +801,7 @@ const CheckoutPage: React.FC = () => {
                 {cartItems.map((item) => (
                   <div key={item.id} className="flex items-center gap-3">
                     <div
-                      className="w-12 h-12 rounded-xl flex-shrink-0"
-                      style={{ background: item.gradient }}
+                      className="w-12 h-12 rounded-xl flex-shrink-0 bg-gradient-to-br from-purple-500 to-blue-500"
                     />
                     <div className="flex-1 min-w-0">
                       <p className="text-sm font-semibold text-slate-800 truncate">{item.name}</p>

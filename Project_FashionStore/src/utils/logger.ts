@@ -73,7 +73,7 @@ class Logger {
   /**
    * Send errors to logging service (placeholder for production)
    */
-  private sendToLoggingService(level: LogLevel, args: any[]): void {
+  private sendToLoggingService(_level: LogLevel, _args: any[]): void {
     // TODO: Implement integration with logging service
     // Examples: Sentry, LogRocket, Datadog, etc.
     // 

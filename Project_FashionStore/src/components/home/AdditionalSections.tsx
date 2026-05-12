@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ArrowRight, Star, Flame, Sparkles, Shield } from 'lucide-react';
+import { ArrowRight, Sparkles, Shield } from 'lucide-react';
 
 export const NewArrivalsSection: React.FC = () => {
   const navigate = useNavigate();

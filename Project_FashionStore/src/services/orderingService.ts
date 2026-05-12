@@ -19,6 +19,8 @@ export interface Cart {
 }
 
 export interface CheckoutRequest {
+  userId: number;
+  voucherId?: number;
   shippingName: string;
   shippingPhone: string;
   shippingEmail: string;
@@ -28,6 +30,18 @@ export interface CheckoutRequest {
   ward?: string;
   note?: string;
   paymentMethod: string;
+  shippingFee: number;
+  items: CheckoutOrderItem[];  // Changed from orderItems to items
+}
+
+export interface CheckoutOrderItem {
+  productId: number;
+  productVariantId: number;
+  productNameSnapshot: string;
+  colorSnapshot: string;
+  sizeSnapshot: string;
+  unitPrice: number;
+  quantity: number;
 }
 
 export interface Order {

@@ -1,4 +1,4 @@
-import type { Product as BackendProduct } from '../services/catalogService';
+import type { Product as BackendProduct, ProductVariant } from '../services/catalogService';
 
 // Map backend product to display format
 export interface DisplayProduct {
@@ -17,6 +17,7 @@ export interface DisplayProduct {
   reviews: number;
   sold: number;
   status: string;
+  variants?: ProductVariant[]; // Product variants with stock
 }
 
 export function mapProduct(product: BackendProduct): DisplayProduct {
@@ -43,6 +44,7 @@ export function mapProduct(product: BackendProduct): DisplayProduct {
     reviews: product.reviewCount,
     sold: product.soldCount,
     status: product.status,
+    variants: product.variants, // Include variants
   };
 }
 

@@ -61,6 +61,11 @@ const AdminDashboard: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [dashboardData, setDashboardData] = useState<DashboardData | null>(null);
 
+  // Extract data for easier access
+  const recentOrders = dashboardData?.recentOrders || [];
+  const topProducts = dashboardData?.topProducts || [];
+  const stats = dashboardData?.stats;
+
   useEffect(() => {
     fetchDashboardData();
   }, []);

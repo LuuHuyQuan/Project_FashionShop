@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Plus, Edit2, Trash2, Tags, Search, X, ChevronDown, ImageIcon } from 'lucide-react';
-import { catalogService, CreateCategoryRequest, UpdateCategoryRequest } from '../../../services/catalogService';
+import { catalogService, type CreateCategoryRequest, type UpdateCategoryRequest } from '../../../services/catalogService';
 import type { Category } from '../../../services/catalogService';
 
 interface CategoryUI extends Category {

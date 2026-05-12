@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { catalogService, Review, CreateReviewRequest, UpdateReviewRequest } from '../services';
+import { catalogService, type Review, type CreateReviewRequest, type UpdateReviewRequest } from '../services';
 
 export const useReviews = (productId?: number) => {
   const [reviews, setReviews] = useState<Review[]>([]);

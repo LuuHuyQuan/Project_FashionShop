@@ -1,4 +1,4 @@
-import { orderingApi, catalogApi, authApi } from '../lib/axios';
+import { orderingApi, catalogApi } from '../lib/axios';
 
 // Dashboard Statistics Types
 export interface DashboardStats {

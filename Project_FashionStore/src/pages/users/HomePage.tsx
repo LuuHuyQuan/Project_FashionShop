@@ -12,11 +12,15 @@ import {
   BrandStorySection,
   QualityGuaranteeSection
 } from '../../components/home/AdditionalSections';
-import { logger } from '../../utils/logger';
-import { BADGE_COLORS } from '../../constants/theme';
-import { PAGINATION } from '../../constants/config';
 
-const badgeColors = BADGE_COLORS;
+const badgeColors: Record<string, { bg: string; text: string }> = {
+  Sale: { bg: 'linear-gradient(135deg, #f5576c, #ef4444)', text: '#fff' },
+  New: { bg: 'linear-gradient(135deg, #43e97b, #38f9d7)', text: '#075538' },
+  Hot: { bg: 'linear-gradient(135deg, #fa709a, #fee140)', text: '#fff' },
+  Trend: { bg: 'linear-gradient(135deg, #a18cd1, #fbc2eb)', text: '#fff' },
+};
+
+const ITEMS_PER_PAGE = 5;
 
 const HomePage: React.FC = () => {
   const navigate = useNavigate();
@@ -35,18 +39,18 @@ const HomePage: React.FC = () => {
           catalogService.getProducts()
         ]);
 
-        logger.dev('Categories fetched:', categoriesData);
-        logger.dev('Products fetched:', productsData);
+        console.log('Categories fetched:', categoriesData);
+        console.log('Products fetched:', productsData);
 
         const activeCategories = categoriesData.filter(c => c.status === 'active');
-        const activeProducts = productsData.filter(p => p.status === 'active').slice(0, PAGINATION.ITEMS_PER_PAGE);
+        const activeProducts = productsData.filter(p => p.status === 'active').slice(0, 5);
 
         setCategories(activeCategories);
         const mappedProducts = mapProducts(activeProducts);
-        logger.dev('Mapped products:', mappedProducts);
+        console.log('Mapped products:', mappedProducts);
         setFeaturedProducts(mappedProducts);
       } catch (error) {
-        logger.error('Error fetching data:', error);
+        console.error('Error fetching data:', error);
         // Fallback to empty arrays on error
         setCategories([]);
         setFeaturedProducts([]);

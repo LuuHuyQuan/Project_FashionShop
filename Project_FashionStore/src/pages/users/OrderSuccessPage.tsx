@@ -18,7 +18,10 @@ const OrderSuccessPage: React.FC = () => {
   const navigate = useNavigate();
   const [showConfetti, setShowConfetti] = useState(true);
   const [copied, setCopied] = useState(false);
-  const orderId = `FS-${Date.now().toString().slice(-8)}`;
+
+  // Tạo mã đơn hàng đơn giản
+  const now = new Date();
+  const orderId = `FS-${now.getFullYear()}${(now.getMonth() + 1).toString().padStart(2, '0')}${now.getDate().toString().padStart(2, '0')}-${now.getHours()}${now.getMinutes()}${now.getSeconds()}`;
 
   useEffect(() => {
     const timer = setTimeout(() => setShowConfetti(false), 4000);
@@ -57,33 +60,36 @@ const OrderSuccessPage: React.FC = () => {
   return (
     <div style={{ background: 'linear-gradient(180deg, #f0fdf4 0%, #f8fafc 30%, #eef2ff 100%)', minHeight: '100vh' }}>
 
-      {/* Confetti effect */}
+      {/* Confetti effect - Đơn giản hóa */}
       {showConfetti && (
         <div className="fixed inset-0 pointer-events-none z-50 overflow-hidden">
-          {[...Array(50)].map((_, i) => (
-            <div
-              key={i}
-              className="absolute animate-float"
-              style={{
-                left: `${Math.random() * 100}%`,
-                top: `-${Math.random() * 20}%`,
-                width: `${Math.random() * 10 + 5}px`,
-                height: `${Math.random() * 10 + 5}px`,
-                background: [
-                  '#667eea', '#764ba2', '#f093fb', '#f5576c', '#43e97b',
-                  '#38f9d7', '#4facfe', '#fee140', '#fa709a', '#fbc2eb',
-                ][Math.floor(Math.random() * 10)],
-                borderRadius: Math.random() > 0.5 ? '50%' : '2px',
-                animation: `confetti-fall ${2 + Math.random() * 3}s linear forwards`,
-                animationDelay: `${Math.random() * 2}s`,
-                opacity: 0.8,
-              }}
-            />
-          ))}
+          {[...Array(30)].map((_, i) => {
+            const colors = ['#667eea', '#764ba2', '#43e97b', '#38f9d7', '#f093fb'];
+            const left = (i * 3.3) % 100;
+            const delay = (i % 5) * 0.4;
+
+            return (
+              <div
+                key={i}
+                className="absolute"
+                style={{
+                  left: `${left}%`,
+                  top: '-10px',
+                  width: '8px',
+                  height: '8px',
+                  background: colors[i % 5],
+                  borderRadius: '50%',
+                  animation: `confetti-fall 3s linear forwards`,
+                  animationDelay: `${delay}s`,
+                  opacity: 0.8,
+                }}
+              />
+            );
+          })}
           <style>{`
             @keyframes confetti-fall {
-              0% { transform: translateY(-10vh) rotate(0deg); opacity: 1; }
-              100% { transform: translateY(110vh) rotate(720deg); opacity: 0; }
+              0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+              100% { transform: translateY(100vh) rotate(360deg); opacity: 0; }
             }
           `}</style>
         </div>
@@ -174,8 +180,8 @@ const OrderSuccessPage: React.FC = () => {
                         background: step.done
                           ? 'linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)'
                           : step.active
-                          ? 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)'
-                          : '#e2e8f0',
+                            ? 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)'
+                            : '#e2e8f0',
                         boxShadow: step.active ? '0 4px 16px rgba(102,126,234,0.3)' : 'none',
                       }}
                     >

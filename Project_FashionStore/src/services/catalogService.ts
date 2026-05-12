@@ -198,6 +198,19 @@ export const catalogService = {
     const response = await catalogApi.get<boolean>(`/wishlist/check?userId=${userId}&productId=${productId}`);
     return response.data;
   },
+
+  // Stock Management
+  checkStock: async (productId: number, colorId: number, sizeId: number) => {
+    const response = await catalogApi.get<StockCheckResponse>(
+      `/ProductVariants/check-stock?productId=${productId}&colorId=${colorId}&sizeId=${sizeId}`
+    );
+    return response.data;
+  },
+
+  checkStockByVariantId: async (variantId: number) => {
+    const response = await catalogApi.get<StockCheckResponse>(`/ProductVariants/${variantId}/stock`);
+    return response.data;
+  },
 };
 
 // Request types for Create/Update
@@ -276,4 +289,12 @@ export interface WishlistItem {
 export interface AddToWishlistRequest {
   userId: number;
   productId: number;
+}
+
+// Stock check types
+export interface StockCheckResponse {
+  available: boolean;
+  stockQuantity: number;
+  variantId?: number;
+  message?: string;
 }

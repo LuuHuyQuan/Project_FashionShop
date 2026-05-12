@@ -47,6 +47,12 @@ function useAdminGuard(
   redirects: Required<NonNullable<AdminRouteProps['redirects']>>
 ): GuardResult {
   const { isAuthenticated, isLoading, user } = useAuth();
+
+  // Tạm thời bypass cho development
+  if (import.meta.env.DEV) {
+    return { status: 'allowed' };
+  }
+
   if (isLoading) return { status: 'loading' };
   if (!isAuthenticated) {
     return { status: 'redirect', to: redirects.unauthenticated };

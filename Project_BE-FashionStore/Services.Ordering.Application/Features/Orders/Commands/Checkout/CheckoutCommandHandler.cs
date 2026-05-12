@@ -18,7 +18,7 @@ public sealed class CheckoutCommandHandler : IRequestHandler<CheckoutCommand, Or
 
     public async Task<OrderResponse> Handle(CheckoutCommand request, CancellationToken cancellationToken)
     {
-        var connectionString = _configuration.GetConnectionString("DefaultConnection");
+        var connectionString = _configuration.GetConnectionString("FashionStoreDb");
 
         using var connection = new SqlConnection(connectionString);
         await connection.OpenAsync(cancellationToken);
@@ -55,12 +55,12 @@ public sealed class CheckoutCommandHandler : IRequestHandler<CheckoutCommand, Or
 
         command.Parameters.AddWithValue("@OrderItemsJson", orderItemsJson);
 
-        // Execute stored procedure
+        // Execute stored procedure and read result
         using var reader = await command.ExecuteReaderAsync(cancellationToken);
 
         if (!await reader.ReadAsync(cancellationToken))
         {
-            throw new Exception("Failed to create order");
+            throw new Exception("Failed to create order - No data returned from stored procedure");
         }
 
         // Map result to OrderResponse
@@ -88,6 +88,9 @@ public sealed class CheckoutCommandHandler : IRequestHandler<CheckoutCommand, Or
         var orderItemsJsonColumn = reader.IsDBNull(reader.GetOrdinal("OrderItemsJson")) 
             ? "[]" 
             : reader.GetString(reader.GetOrdinal("OrderItemsJson"));
+
+        // Close reader before deserializing
+        await reader.CloseAsync();
 
         var orderItems = JsonSerializer.Deserialize<List<OrderItemDto>>(orderItemsJsonColumn) ?? new List<OrderItemDto>();
 

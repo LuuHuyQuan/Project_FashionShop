@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { catalogService, WishlistItem, AddToWishlistRequest } from '../services';
+import { catalogService, type WishlistItem, type AddToWishlistRequest } from '../services';
 
 export const useWishlist = (userId?: number) => {
   const [wishlist, setWishlist] = useState<WishlistItem[]>([]);

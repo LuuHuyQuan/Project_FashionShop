@@ -8,6 +8,8 @@ import { catalogService } from '../../services/catalogService';
 import { mapProduct, mapProducts, type DisplayProduct } from '../../utils/productMapper';
 import { useCart } from '../../context/CartContext';
 import { swal } from '../../utils/swal';
+import { useStockCheck } from '../../hooks/useStockCheck';
+import { StockBadge } from '../../components/common/StockBadge';
 
 const ProductDetailPage: React.FC = () => {
   const { id } = useParams();
@@ -22,15 +24,46 @@ const ProductDetailPage: React.FC = () => {
   const [quantity, setQuantity] = useState(1);
   const [isWished, setIsWished] = useState(false);
   const [activeTab, setActiveTab] = useState('description');
+  const [selectedVariantId, setSelectedVariantId] = useState<number | undefined>(undefined);
+  const [selectedColorId, setSelectedColorId] = useState<number | undefined>(undefined);
+  const [selectedSizeId, setSelectedSizeId] = useState<number | undefined>(undefined);
 
-  // Available colors and sizes (hardcoded for now, will be from variants later)
-  const availableColors = [
-    { name: 'Đen', value: '#000000' },
-    { name: 'Trắng', value: '#FFFFFF' },
-    { name: 'Xanh', value: '#3B82F6' },
-    { name: 'Đỏ', value: '#EF4444' },
-  ];
-  const availableSizes = ['S', 'M', 'L', 'XL', 'XXL'];
+  // Lấy màu sắc và size từ variants của sản phẩm
+  const availableColors = React.useMemo(() => {
+    if (!productData?.variants) return [];
+    const uniqueColors = new Map<string, { id: number; hex: string }>();
+    productData.variants.forEach((v: any) => {
+      if (v.colorName && !uniqueColors.has(v.colorName)) {
+        uniqueColors.set(v.colorName, { id: v.colorId, hex: v.colorHexCode || '#000000' });
+      }
+    });
+    return Array.from(uniqueColors.entries()).map(([name, data]) => ({
+      name,
+      id: data.id,
+      value: data.hex
+    }));
+  }, [productData]);
+
+  const availableSizes = React.useMemo(() => {
+    if (!productData?.variants) return [];
+    const uniqueSizes = new Map<string, number>();
+    productData.variants.forEach((v: any) => {
+      if (v.sizeName && !uniqueSizes.has(v.sizeName)) {
+        uniqueSizes.set(v.sizeName, v.sizeId);
+      }
+    });
+    return Array.from(uniqueSizes.entries()).map(([name, id]) => ({
+      name,
+      id
+    }));
+  }, [productData]);
+
+  const { loading: stockLoading, isAvailable, stockQuantity } = useStockCheck({
+    productId: parseInt(id || '0'),
+    variantId: selectedVariantId,
+    colorId: selectedColorId,
+    sizeId: selectedSizeId,
+  });
   const productFeatures = [
     'Chất liệu cao cấp, bền đẹp',
     'Thiết kế hiện đại, thời trang',
@@ -38,6 +71,22 @@ const ProductDetailPage: React.FC = () => {
     'Phù hợp với mọi dáng người',
     'Giặt máy an toàn'
   ];
+
+  // Update selected variant when color or size changes
+  useEffect(() => {
+    if (productData && selectedColor && selectedSize) {
+      const variant = productData.variants?.find(
+        (v: any) => v.colorName === selectedColor && v.sizeName === selectedSize
+      );
+      setSelectedVariantId(variant?.id);
+      setSelectedColorId(variant?.colorId);
+      setSelectedSizeId(variant?.sizeId);
+    } else {
+      setSelectedVariantId(undefined);
+      setSelectedColorId(undefined);
+      setSelectedSizeId(undefined);
+    }
+  }, [selectedColor, selectedSize, productData]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -243,16 +292,16 @@ const ProductDetailPage: React.FC = () => {
                 <div className="flex gap-2 flex-wrap">
                   {availableSizes.map((size) => (
                     <button
-                      key={size}
-                      onClick={() => setSelectedSize(size)}
+                      key={size.name}
+                      onClick={() => setSelectedSize(size.name)}
                       className="w-12 h-12 rounded-lg text-sm font-bold transition-all"
                       style={
-                        selectedSize === size
+                        selectedSize === size.name
                           ? { background: '#2563eb', color: '#fff' }
                           : { background: '#fff', color: '#64748b', border: '2px solid #e2e8f0' }
                       }
                     >
-                      {size}
+                      {size.name}
                     </button>
                   ))}
                 </div>
@@ -266,23 +315,39 @@ const ProductDetailPage: React.FC = () => {
                     <button
                       onClick={() => setQuantity(Math.max(1, quantity - 1))}
                       className="w-12 h-12 flex items-center justify-center bg-slate-50 hover:bg-slate-100 transition-colors"
+                      disabled={!selectedColor || !selectedSize || (selectedVariantId && !isAvailable)}
                     >
                       <Minus size={16} className="text-slate-600" />
                     </button>
                     <input
                       type="number"
                       value={quantity}
-                      onChange={(e) => setQuantity(Math.max(1, parseInt(e.target.value) || 1))}
+                      onChange={(e) => {
+                        const val = Math.max(1, parseInt(e.target.value) || 1);
+                        setQuantity(Math.min(val, stockQuantity || 99));
+                      }}
+                      max={stockQuantity || 99}
                       className="w-16 h-12 text-center font-bold text-slate-900 focus:outline-none"
+                      disabled={!selectedColor || !selectedSize || (selectedVariantId && !isAvailable)}
                     />
                     <button
-                      onClick={() => setQuantity(quantity + 1)}
+                      onClick={() => setQuantity(Math.min(quantity + 1, stockQuantity || 99))}
                       className="w-12 h-12 flex items-center justify-center bg-slate-50 hover:bg-slate-100 transition-colors"
+                      disabled={!selectedColor || !selectedSize || (selectedVariantId && !isAvailable)}
                     >
                       <Plus size={16} className="text-slate-600" />
                     </button>
                   </div>
-                  <span className="text-sm text-slate-400">Còn 99 sản phẩm</span>
+                  {selectedColor && selectedSize && (
+                    <StockBadge
+                      stockQuantity={stockQuantity}
+                      available={isAvailable}
+                      loading={stockLoading}
+                    />
+                  )}
+                  {!selectedColor || !selectedSize ? (
+                    <span className="text-sm text-slate-400">Chọn màu và size để xem tồn kho</span>
+                  ) : null}
                 </div>
               </div>
 
@@ -290,10 +355,15 @@ const ProductDetailPage: React.FC = () => {
               <div className="flex gap-3 mb-6">
                 <button
                   onClick={handleAddToCart}
-                  className="flex-1 flex items-center justify-center gap-3 px-8 py-4 rounded-2xl font-bold text-white text-base transition-all hover:opacity-90 bg-blue-600"
+                  disabled={!selectedColor || !selectedSize || (selectedVariantId && !isAvailable)}
+                  className="flex-1 flex items-center justify-center gap-3 px-8 py-4 rounded-2xl font-bold text-white text-base transition-all hover:opacity-90 bg-blue-600 disabled:bg-gray-300 disabled:cursor-not-allowed"
                 >
                   <ShoppingCart size={20} />
-                  Thêm vào giỏ hàng
+                  {!selectedColor || !selectedSize
+                    ? 'Chọn màu và size'
+                    : (selectedVariantId && !isAvailable)
+                      ? 'Hết hàng'
+                      : 'Thêm vào giỏ hàng'}
                 </button>
                 <button
                   className="w-14 h-14 rounded-2xl flex items-center justify-center transition-all hover:bg-slate-100"

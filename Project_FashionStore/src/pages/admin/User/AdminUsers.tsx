@@ -14,7 +14,7 @@ import {
   ShoppingBag,
   ChevronDown,
 } from 'lucide-react';
-import { authService, User as BackendUser, UpdateUserRequest } from '../../../services/authService';
+import { authService, type User as BackendUser, type UpdateUserRequest } from '../../../services/authService';
 import { swal } from '../../../utils/swal';
 
 type UserRole = 'admin' | 'customer' | 'vip';

@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react';
-import { orderingService, Voucher, CreateVoucherRequest, UpdateVoucherRequest } from '../services';
+import { useState } from 'react';
+import { orderingService, type Voucher, type CreateVoucherRequest, type UpdateVoucherRequest } from '../services';
 
 export const useVouchers = () => {
   const [vouchers, setVouchers] = useState<Voucher[]>([]);

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Search,
   Eye,
@@ -11,6 +11,7 @@ import {
   Truck,
   Package,
 } from 'lucide-react';
+import { orderingService, type OrderResponse } from '../../../services/orderingService';
 
 type OrderStatus = 'pending' | 'processing' | 'shipping' | 'completed' | 'cancelled';
 
@@ -27,87 +28,6 @@ interface Order {
   paymentMethod: string;
 }
 
-const initialOrders: Order[] = [
-  {
-    id: 'ORD-001',
-    customer: 'Nguyễn Văn An',
-    email: 'an.nguyen@gmail.com',
-    phone: '0901234567',
-    items: [
-      { name: 'Áo thun Premium Cotton', qty: 2, price: 599000 },
-      { name: 'Quần jeans Skinny', qty: 1, price: 899000 },
-    ],
-    total: 2097000,
-    status: 'completed',
-    address: '123 Lê Lợi, Q.1, TP.HCM',
-    date: '21/03/2026',
-    paymentMethod: 'Chuyển khoản',
-  },
-  {
-    id: 'ORD-002',
-    customer: 'Trần Thị Bình',
-    email: 'binh.tran@gmail.com',
-    phone: '0912345678',
-    items: [{ name: 'Áo khoác Bomber', qty: 1, price: 1299000 }],
-    total: 1299000,
-    status: 'shipping',
-    address: '456 Nguyễn Huệ, Q.1, TP.HCM',
-    date: '21/03/2026',
-    paymentMethod: 'COD',
-  },
-  {
-    id: 'ORD-003',
-    customer: 'Lê Minh Châu',
-    email: 'chau.le@gmail.com',
-    phone: '0923456789',
-    items: [{ name: 'Áo sơ mi Slim Fit', qty: 3, price: 749000 }],
-    total: 2247000,
-    status: 'processing',
-    address: '789 Pasteur, Q.3, TP.HCM',
-    date: '20/03/2026',
-    paymentMethod: 'MoMo',
-  },
-  {
-    id: 'ORD-004',
-    customer: 'Phạm Quốc Dũng',
-    email: 'dung.pham@gmail.com',
-    phone: '0934567890',
-    items: [{ name: 'Áo polo Classic', qty: 2, price: 699000 }],
-    total: 1398000,
-    status: 'pending',
-    address: '321 Trần Hưng Đạo, Q.5, TP.HCM',
-    date: '20/03/2026',
-    paymentMethod: 'VNPay',
-  },
-  {
-    id: 'ORD-005',
-    customer: 'Hoàng Thị Lan',
-    email: 'lan.hoang@gmail.com',
-    phone: '0945678901',
-    items: [{ name: 'Quần kaki Chinos', qty: 1, price: 799000 }],
-    total: 799000,
-    status: 'cancelled',
-    address: '654 Điện Biên Phủ, Q.BT, TP.HCM',
-    date: '19/03/2026',
-    paymentMethod: 'COD',
-  },
-  {
-    id: 'ORD-006',
-    customer: 'Vũ Đức Nam',
-    email: 'nam.vu@gmail.com',
-    phone: '0956789012',
-    items: [
-      { name: 'Áo thun Oversized', qty: 2, price: 549000 },
-      { name: 'Quần shorts thể thao', qty: 1, price: 399000 },
-    ],
-    total: 1497000,
-    status: 'completed',
-    address: '987 Cách Mạng Tháng 8, Q.TB, TP.HCM',
-    date: '19/03/2026',
-    paymentMethod: 'Chuyển khoản',
-  },
-];
-
 const statusConfig: Record<OrderStatus, { label: string; bg: string; color: string; border: string; icon: React.ReactNode }> = {
   pending: { label: 'Chờ xử lý', bg: '#fef9c3', color: '#ca8a04', border: '#fde68a', icon: <Clock size={12} /> },
   processing: { label: 'Đang xử lý', bg: '#dbeafe', color: '#2563eb', border: '#bfdbfe', icon: <Package size={12} /> },
@@ -119,11 +39,51 @@ const statusConfig: Record<OrderStatus, { label: string; bg: string; color: stri
 const statusFlow: OrderStatus[] = ['pending', 'processing', 'shipping', 'completed'];
 
 const AdminOrders: React.FC = () => {
-  const [orders, setOrders] = useState<Order[]>(initialOrders);
+  const [orders, setOrders] = useState<Order[]>([]);
+  const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
   const [filterStatus, setFilterStatus] = useState<string>('all');
   const [viewOrder, setViewOrder] = useState<Order | null>(null);
   const [editingStatus, setEditingStatus] = useState<string | null>(null);
+
+  // Fetch orders from API
+  useEffect(() => {
+    const fetchOrders = async () => {
+      try {
+        console.log('Fetching all orders...');
+        const apiOrders = await orderingService.getAllOrders();
+        console.log('Orders received:', apiOrders);
+
+        // Transform API response to match UI format
+        const transformedOrders: Order[] = apiOrders.map(order => ({
+          id: order.orderCode,
+          customer: order.shippingName,
+          email: order.shippingEmail,
+          phone: order.shippingPhone,
+          items: order.items.map(item => ({
+            name: item.productNameSnapshot,
+            qty: item.quantity,
+            price: item.unitPrice
+          })),
+          total: order.totalAmount,
+          status: order.status.toLowerCase() as OrderStatus,
+          address: [order.shippingAddress, order.ward, order.district, order.city]
+            .filter(Boolean)
+            .join(', '),
+          date: new Date(order.createdAt).toLocaleDateString('vi-VN'),
+          paymentMethod: order.paymentMethod
+        }));
+
+        setOrders(transformedOrders);
+      } catch (error) {
+        console.error('Error fetching orders:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchOrders();
+  }, []);
 
   const filtered = orders.filter((o) => {
     const matchSearch =
@@ -133,14 +93,33 @@ const AdminOrders: React.FC = () => {
     return matchSearch && matchStatus;
   });
 
-  const updateStatus = (orderId: string, status: OrderStatus) => {
-    setOrders((prev) =>
-      prev.map((o) => (o.id === orderId ? { ...o, status } : o))
-    );
-    if (viewOrder?.id === orderId) {
-      setViewOrder((prev) => prev ? { ...prev, status } : null);
+  const updateStatus = async (orderId: string, status: OrderStatus) => {
+    try {
+      // Find the order to get its numeric ID
+      const order = orders.find(o => o.id === orderId);
+      if (!order) return;
+
+      // Extract numeric ID from orderCode (e.g., "ORD-001" -> need to find actual ID)
+      // Since we only have orderCode, we need to call API with orderCode first
+      const apiOrder = await orderingService.getOrderByCode(orderId);
+
+      // Update status via API
+      await orderingService.updateOrderStatus(apiOrder.id, status);
+
+      // Update local state
+      setOrders((prev) =>
+        prev.map((o) => (o.id === orderId ? { ...o, status } : o))
+      );
+
+      if (viewOrder?.id === orderId) {
+        setViewOrder((prev) => prev ? { ...prev, status } : null);
+      }
+
+      setEditingStatus(null);
+    } catch (error) {
+      console.error('Error updating order status:', error);
+      alert('Không thể cập nhật trạng thái đơn hàng');
     }
-    setEditingStatus(null);
   };
 
   const gradients = ['#667eea,#764ba2', '#f093fb,#f5576c', '#4facfe,#00f2fe', '#43e97b,#38f9d7', '#fa709a,#fee140', '#a18cd1,#fbc2eb'];
@@ -150,7 +129,9 @@ const AdminOrders: React.FC = () => {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold text-slate-800">Quản lý đơn hàng</h1>
-          <p className="text-slate-500 text-sm mt-1">{orders.length} đơn hàng tổng cộng</p>
+          <p className="text-slate-500 text-sm mt-1">
+            {loading ? 'Đang tải...' : `${orders.length} đơn hàng tổng cộng`}
+          </p>
         </div>
       </div>
       <div className="grid grid-cols-2 md:grid-cols-6 gap-3">
@@ -217,7 +198,16 @@ const AdminOrders: React.FC = () => {
             </tr>
           </thead>
           <tbody>
-            {filtered.length === 0 ? (
+            {loading ? (
+              <tr>
+                <td colSpan={8} className="text-center py-16">
+                  <div className="flex flex-col items-center gap-3">
+                    <div className="w-10 h-10 border-4 border-violet-200 border-t-violet-600 rounded-full animate-spin"></div>
+                    <p className="text-slate-400 text-sm">Đang tải đơn hàng...</p>
+                  </div>
+                </td>
+              </tr>
+            ) : filtered.length === 0 ? (
               <tr>
                 <td colSpan={8} className="text-center py-16">
                   <ShoppingBag size={40} className="mx-auto mb-3 text-slate-300" />

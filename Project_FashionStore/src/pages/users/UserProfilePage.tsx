@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
+import { orderingService, type RecentOrder } from '../../services/orderingService';
 import {
   User,
   Mail,
@@ -22,51 +23,47 @@ import {
   Clock,
 } from 'lucide-react';
 
-const recentOrders = [
-  {
-    id: 'FS-20260401',
-    date: '01/04/2026',
-    total: 3396000,
-    status: 'Đang giao',
-    statusColor: '#4facfe',
-    items: 3,
-    gradient: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-  },
-  {
-    id: 'FS-20260325',
-    date: '25/03/2026',
-    total: 1498000,
-    status: 'Hoàn thành',
-    statusColor: '#43e97b',
-    items: 2,
-    gradient: 'linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)',
-  },
-  {
-    id: 'FS-20260318',
-    date: '18/03/2026',
-    total: 2599000,
-    status: 'Hoàn thành',
-    statusColor: '#43e97b',
-    items: 4,
-    gradient: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
-  },
-];
-
-const menuItems = [
-  { icon: Package, label: 'Đơn hàng của tôi', count: 5, href: '#orders' },
-  { icon: Heart, label: 'Sản phẩm yêu thích', count: 12, href: '/wishlist' },
-  { icon: MapPin, label: 'Sổ địa chỉ', count: 2, href: '#address' },
-  { icon: CreditCard, label: 'Phương thức thanh toán', count: 1, href: '#payment' },
-  { icon: Bell, label: 'Thông báo', count: 3, href: '#notifications' },
-  { icon: Gift, label: 'Voucher của tôi', count: 4, href: '#vouchers' },
-  { icon: Star, label: 'Đánh giá sản phẩm', href: '#reviews' },
-  { icon: Shield, label: 'Bảo mật tài khoản', href: '#security' },
-  { icon: Settings, label: 'Cài đặt', href: '#settings' },
-];
-
 const UserProfilePage: React.FC = () => {
   const navigate = useNavigate();
   const { user, logout } = useAuth();
+  const [recentOrders, setRecentOrders] = useState<RecentOrder[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [totalOrders, setTotalOrders] = useState(0);
+
+  useEffect(() => {
+    const fetchOrders = async () => {
+      if (user?.id) {
+        try {
+          console.log('Fetching orders for userId:', user.id);
+          const orders = await orderingService.getUserOrders(user.id);
+          console.log('Orders received:', orders);
+          setTotalOrders(orders.length);
+          // Lấy 3 đơn gần nhất và format
+          const formattedOrders = orders.slice(0, 3).map(order => ({
+            id: order.id,
+            orderCode: order.orderCode,
+            userId: user.id,
+            customerName: user.fullName || 'Khách hàng',
+            status: order.status,
+            paymentMethod: order.paymentMethod,
+            paymentStatus: order.paymentStatus,
+            totalAmount: order.totalAmount,
+            createdAt: order.createdAt,
+            itemCount: order.items.length
+          }));
+          setRecentOrders(formattedOrders);
+        } catch (error) {
+          console.error('Error fetching orders:', error);
+        } finally {
+          setLoading(false);
+        }
+      } else {
+        console.log('No user id found');
+        setLoading(false);
+      }
+    };
+    fetchOrders();
+  }, [user]);
 
   const profile = {
     name: user?.fullName ?? 'Khách hàng',
@@ -78,6 +75,18 @@ const UserProfilePage: React.FC = () => {
     level: user?.role === 'admin' ? 'Admin' : user?.role === 'vip' ? 'VIP' : 'Thành viên',
     points: 0,
   };
+
+  const menuItems = [
+    { icon: Package, label: 'Đơn hàng của tôi', count: totalOrders, href: '#orders' },
+    { icon: Heart, label: 'Sản phẩm yêu thích', count: 12, href: '/wishlist' },
+    { icon: MapPin, label: 'Sổ địa chỉ', count: 2, href: '#address' },
+    { icon: CreditCard, label: 'Phương thức thanh toán', count: 1, href: '#payment' },
+    { icon: Bell, label: 'Thông báo', count: 3, href: '#notifications' },
+    { icon: Gift, label: 'Voucher của tôi', count: 4, href: '#vouchers' },
+    { icon: Star, label: 'Đánh giá sản phẩm', href: '#reviews' },
+    { icon: Shield, label: 'Bảo mật tài khoản', href: '#security' },
+    { icon: Settings, label: 'Cài đặt', href: '#settings' },
+  ];
 
   return (
     <div style={{ background: 'linear-gradient(180deg, #f8fafc 0%, #eef2ff 100%)', minHeight: '100vh' }}>
@@ -201,7 +210,7 @@ const UserProfilePage: React.FC = () => {
           <div className="lg:col-span-3 space-y-6">
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               {[
-                { label: 'Đơn hàng', value: '12', icon: ShoppingBag, gradient: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)', glow: 'rgba(102,126,234,0.2)' },
+                { label: 'Đơn hàng', value: totalOrders.toString(), icon: ShoppingBag, gradient: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)', glow: 'rgba(102,126,234,0.2)' },
                 { label: 'Yêu thích', value: '24', icon: Heart, gradient: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)', glow: 'rgba(240,147,251,0.2)' },
                 { label: 'Đánh giá', value: '8', icon: Star, gradient: 'linear-gradient(135deg, #ffd700 0%, #ffb800 100%)', glow: 'rgba(255,215,0,0.2)' },
                 { label: 'Voucher', value: '4', icon: Gift, gradient: 'linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)', glow: 'rgba(67,233,123,0.2)' },
@@ -263,38 +272,64 @@ const UserProfilePage: React.FC = () => {
                 </button>
               </div>
               <div className="space-y-4">
-                {recentOrders.map((order) => (
-                  <div
-                    key={order.id}
-                    className="flex items-center gap-4 p-4 rounded-2xl hover:bg-slate-50 transition-colors cursor-pointer group"
-                  >
-                    <div
-                      className="w-14 h-14 rounded-xl flex items-center justify-center flex-shrink-0"
-                      style={{ background: order.gradient }}
-                    >
-                      <Package size={22} className="text-white" />
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-center gap-3 mb-1">
-                        <p className="font-bold text-slate-800">#{order.id}</p>
-                        <span
-                          className="px-2.5 py-0.5 rounded-full text-xs font-bold"
-                          style={{ background: `${order.statusColor}15`, color: order.statusColor }}
+                {loading ? (
+                  <div className="text-center py-8 text-slate-400">Đang tải...</div>
+                ) : recentOrders.length === 0 ? (
+                  <div className="text-center py-8 text-slate-400">Chưa có đơn hàng nào</div>
+                ) : (
+                  recentOrders.map((order) => {
+                    const statusColors: Record<string, { bg: string; text: string }> = {
+                      pending: { bg: '#fbbf2415', text: '#fbbf24' },
+                      processing: { bg: '#4facfe15', text: '#4facfe' },
+                      shipping: { bg: '#667eea15', text: '#667eea' },
+                      completed: { bg: '#43e97b15', text: '#43e97b' },
+                      cancelled: { bg: '#ef444415', text: '#ef4444' },
+                    };
+                    const statusColor = statusColors[order.status] || statusColors.pending;
+                    const statusLabels: Record<string, string> = {
+                      pending: 'Chờ xử lý',
+                      processing: 'Đang xử lý',
+                      shipping: 'Đang giao',
+                      completed: 'Hoàn thành',
+                      cancelled: 'Đã hủy',
+                    };
+
+                    return (
+                      <div
+                        key={order.id}
+                        className="flex items-center gap-4 p-4 rounded-2xl hover:bg-slate-50 transition-colors cursor-pointer group"
+                      >
+                        <div
+                          className="w-14 h-14 rounded-xl flex items-center justify-center flex-shrink-0"
+                          style={{ background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)' }}
                         >
-                          {order.status}
-                        </span>
+                          <Package size={22} className="text-white" />
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-center gap-3 mb-1">
+                            <p className="font-bold text-slate-800">#{order.orderCode}</p>
+                            <span
+                              className="px-2.5 py-0.5 rounded-full text-xs font-bold"
+                              style={{ background: statusColor.bg, color: statusColor.text }}
+                            >
+                              {statusLabels[order.status] || order.status}
+                            </span>
+                          </div>
+                          <div className="flex items-center gap-3 text-xs text-slate-400">
+                            <span className="flex items-center gap-1">
+                              <Clock size={11} /> {new Date(order.createdAt).toLocaleDateString('vi-VN')}
+                            </span>
+                            <span>{order.itemCount} sản phẩm</span>
+                          </div>
+                        </div>
+                        <div className="text-right">
+                          <p className="font-bold text-slate-900">{order.totalAmount.toLocaleString('vi-VN')}đ</p>
+                          <ChevronRight size={16} className="text-slate-300 ml-auto mt-1 group-hover:text-purple-400 group-hover:translate-x-1 transition-all" />
+                        </div>
                       </div>
-                      <div className="flex items-center gap-3 text-xs text-slate-400">
-                        <span className="flex items-center gap-1"><Clock size={11} /> {order.date}</span>
-                        <span>{order.items} sản phẩm</span>
-                      </div>
-                    </div>
-                    <div className="text-right">
-                      <p className="font-bold text-slate-900">{order.total.toLocaleString('vi-VN')}đ</p>
-                      <ChevronRight size={16} className="text-slate-300 ml-auto mt-1 group-hover:text-purple-400 group-hover:translate-x-1 transition-all" />
-                    </div>
-                  </div>
-                ))}
+                    );
+                  })
+                )}
               </div>
             </div>
           </div>

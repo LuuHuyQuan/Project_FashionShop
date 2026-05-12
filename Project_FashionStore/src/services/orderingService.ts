@@ -8,14 +8,23 @@ export interface CartItem {
   sizeName: string;
   quantity: number;
   unitPriceSnapshot: number;
-  imageUrl: string;
 }
 
 export interface Cart {
   id: number;
   userId: number;
   items: CartItem[];
-  totalAmount: number;
+  updatedAt: string;
+}
+
+export interface OrderItemRequest {
+  productId: number;
+  productVariantId: number;
+  productNameSnapshot: string;
+  colorSnapshot: string;
+  sizeSnapshot: string;
+  unitPrice: number;
+  quantity: number;
 }
 
 export interface CheckoutRequest {
@@ -31,23 +40,24 @@ export interface CheckoutRequest {
   note?: string;
   paymentMethod: string;
   shippingFee: number;
-  items: CheckoutOrderItem[];  // Changed from orderItems to items
+  items: OrderItemRequest[];
 }
 
-export interface CheckoutOrderItem {
+export interface OrderItemResponse {
+  id: number;
   productId: number;
-  productVariantId: number;
+  productVariantId: number | null;
   productNameSnapshot: string;
-  colorSnapshot: string;
-  sizeSnapshot: string;
+  colorSnapshot: string | null;
+  sizeSnapshot: string | null;
   unitPrice: number;
   quantity: number;
+  lineTotal: number;
 }
 
-export interface Order {
+export interface OrderResponse {
   id: number;
   orderCode: string;
-  userId: number;
   status: string;
   paymentMethod: string;
   paymentStatus: string;
@@ -55,227 +65,104 @@ export interface Order {
   shippingPhone: string;
   shippingEmail: string;
   shippingAddress: string;
-  city?: string;
-  district?: string;
-  ward?: string;
-  note?: string;
+  city: string | null;
+  district: string | null;
+  ward: string | null;
+  note: string | null;
   subtotal: number;
   shippingFee: number;
   discountAmount: number;
   totalAmount: number;
   createdAt: string;
-  items: OrderItem[];
+  items: OrderItemResponse[];
 }
 
-export interface OrderItem {
-  id: number;
-  productId: number;
-  productNameSnapshot: string;
-  colorSnapshot?: string;
-  sizeSnapshot?: string;
-  unitPrice: number;
-  quantity: number;
-  lineTotal: number;
+export interface DashboardStats {
+  totalRevenue: number;
+  totalOrders: number;
+  averageOrderValue: number;
+  ordersByStatus: Record<string, number>;
+  revenueToday: number;
+  ordersToday: number;
+  revenueThisMonth: number;
+  ordersThisMonth: number;
+  totalCustomers: number;
+  totalProductsSold: number;
 }
 
-// Voucher types
-export interface Voucher {
+export interface RecentOrder {
   id: number;
-  code: string;
-  name: string;
-  description?: string;
-  discountType: 'percentage' | 'fixed';
-  discountValue: number;
-  minOrderAmount?: number;
-  maxDiscountAmount?: number;
-  totalQuantity?: number;
-  usedQuantity: number;
-  remainingQuantity?: number;
-  usageLimit?: number;
-  startDate: string;
-  endDate: string;
-  status: 'active' | 'inactive' | 'expired';
+  orderCode: string;
+  userId: number;
+  customerName: string;
+  status: string;
+  paymentMethod: string;
+  paymentStatus: string;
+  totalAmount: number;
   createdAt: string;
-  updatedAt?: string;
+  itemCount: number;
 }
-
-export interface CreateVoucherRequest {
-  code: string;
-  name: string;
-  description?: string;
-  discountType: 'percentage' | 'fixed';
-  discountValue: number;
-  minOrderAmount?: number;
-  maxDiscountAmount?: number;
-  totalQuantity?: number;
-  usageLimit?: number;
-  startDate: string;
-  endDate: string;
-  status?: 'active' | 'inactive';
-}
-
-export interface UpdateVoucherRequest extends CreateVoucherRequest { }
-
-export interface ValidateVoucherResponse {
-  isValid: boolean;
-  message?: string;
-  discountAmount?: number;
-  voucher?: Voucher;
-}
-
-// Address types
-export interface Address {
-  id: number;
-  userId: number;
-  recipientName: string;
-  phone: string;
-  addressLine: string;
-  city?: string;
-  district?: string;
-  ward?: string;
-  isDefault: boolean;
-  fullAddress?: string;
-}
-
-export interface CreateAddressRequest {
-  userId: number;
-  recipientName: string;
-  phone: string;
-  addressLine: string;
-  city?: string;
-  district?: string;
-  ward?: string;
-  isDefault?: boolean;
-}
-
-export interface UpdateAddressRequest extends CreateAddressRequest { }
 
 export const orderingService = {
-  // Cart
-  getMyCart: async () => {
-    const response = await orderingApi.get<Cart>('/carts/my-cart');
+  // Checkout
+  checkout: async (request: CheckoutRequest): Promise<OrderResponse> => {
+    const response = await orderingApi.post('/Orders/checkout', request);
     return response.data;
   },
 
-  addToCart: async (productVariantId: number, quantity: number) => {
-    const response = await orderingApi.post('/carts/items', {
-      productVariantId,
-      quantity,
-    });
+  // Get all orders
+  getAllOrders: async (): Promise<OrderResponse[]> => {
+    const response = await orderingApi.get('/Orders');
     return response.data;
   },
 
-  updateCartItem: async (itemId: number, quantity: number) => {
-    const response = await orderingApi.put(`/carts/items/${itemId}`, {
-      quantity,
-    });
+  // Get order by ID
+  getOrderById: async (id: number): Promise<OrderResponse> => {
+    const response = await orderingApi.get(`/Orders/${id}`);
     return response.data;
   },
 
-  removeCartItem: async (itemId: number) => {
-    await orderingApi.delete(`/carts/items/${itemId}`);
-  },
-
-  clearCart: async () => {
-    await orderingApi.delete('/carts/clear');
-  },
-
-  // Orders
-  getMyOrders: async () => {
-    const response = await orderingApi.get<Order[]>('/orders/my-orders');
+  // Get order by code
+  getOrderByCode: async (orderCode: string): Promise<OrderResponse> => {
+    const response = await orderingApi.get(`/Orders/code/${orderCode}`);
     return response.data;
   },
 
-  getOrderById: async (id: number) => {
-    const response = await orderingApi.get<Order>(`/orders/${id}`);
+  // Get user orders
+  getUserOrders: async (userId: number): Promise<OrderResponse[]> => {
+    const response = await orderingApi.get(`/Orders/user/${userId}`);
     return response.data;
   },
 
-  getOrderByCode: async (orderCode: string) => {
-    const response = await orderingApi.get<Order>(`/orders/code/${orderCode}`);
+  // Update order status
+  updateOrderStatus: async (id: number, status: string, paymentStatus?: string): Promise<OrderResponse> => {
+    const response = await orderingApi.put(`/Orders/${id}/status`, { status, paymentStatus });
     return response.data;
   },
 
-  checkout: async (data: CheckoutRequest) => {
-    const response = await orderingApi.post<Order>('/orders/checkout', data);
+  // Delete order
+  deleteOrder: async (id: number): Promise<void> => {
+    await orderingApi.delete(`/Orders/${id}`);
+  },
+
+  // Dashboard APIs
+  getDashboardStats: async (): Promise<DashboardStats> => {
+    const response = await orderingApi.get('/Dashboard/stats');
     return response.data;
   },
 
-  // Vouchers
-  getAllVouchers: async () => {
-    const response = await orderingApi.get<Voucher[]>('/vouchers');
+  getRecentOrders: async (limit: number = 10): Promise<RecentOrder[]> => {
+    const response = await orderingApi.get(`/Dashboard/recent-orders?limit=${limit}`);
     return response.data;
   },
 
-  getVoucherById: async (id: number) => {
-    const response = await orderingApi.get<Voucher>(`/vouchers/${id}`);
+  getTopProducts: async (limit: number = 10) => {
+    const response = await orderingApi.get(`/Dashboard/top-products?limit=${limit}`);
     return response.data;
   },
 
-  getVoucherByCode: async (code: string) => {
-    const response = await orderingApi.get<Voucher>(`/vouchers/code/${code}`);
+  getRevenueChart: async (days: number = 30) => {
+    const response = await orderingApi.get(`/Dashboard/revenue-chart?days=${days}`);
     return response.data;
-  },
-
-  getActiveVouchers: async () => {
-    const response = await orderingApi.get<Voucher[]>('/vouchers/active');
-    return response.data;
-  },
-
-  createVoucher: async (data: CreateVoucherRequest) => {
-    const response = await orderingApi.post<Voucher>('/vouchers', data);
-    return response.data;
-  },
-
-  updateVoucher: async (id: number, data: UpdateVoucherRequest) => {
-    const response = await orderingApi.put<Voucher>(`/vouchers/${id}`, data);
-    return response.data;
-  },
-
-  deleteVoucher: async (id: number) => {
-    await orderingApi.delete(`/vouchers/${id}`);
-  },
-
-  validateVoucher: async (code: string, orderAmount: number, userId: number) => {
-    const response = await orderingApi.post<ValidateVoucherResponse>('/vouchers/validate', {
-      code,
-      orderAmount,
-      userId,
-    });
-    return response.data;
-  },
-
-  // Addresses
-  getUserAddresses: async (userId: number) => {
-    const response = await orderingApi.get<Address[]>(`/addresses/user/${userId}`);
-    return response.data;
-  },
-
-  getAddressById: async (id: number) => {
-    const response = await orderingApi.get<Address>(`/addresses/${id}`);
-    return response.data;
-  },
-
-  getDefaultAddress: async (userId: number) => {
-    const response = await orderingApi.get<Address>(`/addresses/user/${userId}/default`);
-    return response.data;
-  },
-
-  createAddress: async (data: CreateAddressRequest) => {
-    const response = await orderingApi.post<Address>('/addresses', data);
-    return response.data;
-  },
-
-  updateAddress: async (id: number, data: UpdateAddressRequest) => {
-    const response = await orderingApi.put<Address>(`/addresses/${id}`, data);
-    return response.data;
-  },
-
-  deleteAddress: async (id: number) => {
-    await orderingApi.delete(`/addresses/${id}`);
-  },
-
-  setDefaultAddress: async (id: number, userId: number) => {
-    await orderingApi.put(`/addresses/${id}/set-default`, { userId });
   },
 };

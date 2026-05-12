@@ -1,5 +1,13 @@
 // Application configuration constants
 
+// API Base URLs from environment variables
+export const API_BASE_URLS = {
+  GATEWAY: import.meta.env.VITE_API_GATEWAY_URL || 'http://localhost:5000',
+  AUTH: import.meta.env.VITE_API_AUTH_URL || 'http://localhost:5001',
+  CATALOG: import.meta.env.VITE_API_CATALOG_URL || 'http://localhost:5002',
+  ORDERING: import.meta.env.VITE_API_ORDERING_URL || 'https://localhost:7298',
+} as const;
+
 export const PAGINATION = {
   ITEMS_PER_PAGE: 5,
   MAX_ITEMS_PER_PAGE: 100,

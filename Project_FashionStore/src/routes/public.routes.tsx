@@ -18,7 +18,6 @@ const ContactPage = lazy(() => import('../pages/users/ContactPage'));
 const NotFoundPage = lazy(() => import('../pages/users/NotFoundPage'));
 const TestLoginPage = lazy(() => import('../pages/users/TestLoginPage'));
 const TestAuthPage = lazy(() => import('../pages/users/TestAuthPage'));
-
 const withSuspense = (Component: React.LazyExoticComponent<React.ComponentType<any>>) => {
   return () => (
     <Suspense fallback={<LoadingFallback />}>

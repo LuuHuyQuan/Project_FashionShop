@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = 'http://localhost:5003/api/Vouchers';
+const API_URL = 'https://localhost:7298/api/Vouchers';
 
 export interface Voucher {
   id: number;

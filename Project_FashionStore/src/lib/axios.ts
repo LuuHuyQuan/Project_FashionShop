@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 export const catalogApi = axios.create({
-  baseURL: import.meta.env.VITE_API_CATALOG_URL || 'http://localhost:5001/api',
+  baseURL: import.meta.env.VITE_API_CATALOG_URL || 'https://localhost:7002/api',
   headers: {
     'Content-Type': 'application/json',
   },
@@ -16,7 +16,7 @@ export const authApi = axios.create({
 
 // Ordering API
 export const orderingApi = axios.create({
-  baseURL: import.meta.env.VITE_API_ORDERING_URL || 'http://localhost:5003/api',
+  baseURL: import.meta.env.VITE_API_ORDERING_URL || 'https://localhost:7298/api',
   headers: {
     'Content-Type': 'application/json',
   },

@@ -1,18 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Filter, Grid, List, Star, Heart, ShoppingCart, Search, SlidersHorizontal, ChevronDown, X } from 'lucide-react';
-import { products as allProducts } from '../../data/products.ts';
+import { catalogService } from '../../services/catalogService';
+import type { Category } from '../../services/catalogService';
+import { mapProducts, type DisplayProduct } from '../../utils/productMapper';
 
-const categories = ['Tất cả', ...Array.from(new Set(allProducts.map(p => p.category)))];
 const priceRanges = ['Dưới 500.000đ', '500K – 1.000K', '1.000K – 2.000K', 'Trên 2.000K'];
 const sizes = ['XS', 'S', 'M', 'L', 'XL', 'XXL'];
-const colorOptions = [
-  { name: 'Đen', value: '#1a1a1a' },
-  { name: 'Trắng', value: '#f5f5f5' },
-  { name: 'Xám', value: '#6b7280' },
-  { name: 'Xanh', value: '#3b82f6' },
-  { name: 'Đỏ', value: '#ef4444' },
-];
 
 const badgeStyles: Record<string, { bg: string; color: string }> = {
   Sale: { bg: 'rgba(245,87,108,0.9)', color: '#fff' },
@@ -28,6 +22,36 @@ const ProductsPage: React.FC = () => {
   const [selectedCat, setSelectedCat] = useState('Tất cả');
   const [search, setSearch] = useState('');
   const [wishlist, setWishlist] = useState<number[]>([]);
+  const [products, setProducts] = useState<DisplayProduct[]>([]);
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [colors, setColors] = useState<Array<{ id: number; name: string; hexCode: string }>>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        setLoading(true);
+        const [productsData, categoriesData, colorsData] = await Promise.all([
+          catalogService.getProducts(),
+          catalogService.getCategories(),
+          catalogService.getColors()
+        ]);
+
+        const mappedProducts = mapProducts(productsData.filter(p => p.status === 'active'));
+        setProducts(mappedProducts);
+        setCategories(categoriesData.filter(c => c.status === 'active'));
+        setColors(colorsData);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  const categoryNames = ['Tất cả', ...categories.map(c => c.name)];
   const [selectedSize, setSelectedSize] = useState('');
   const [selectedColor, setSelectedColor] = useState('');
   const [sortBy, setSortBy] = useState('newest');
@@ -37,11 +61,19 @@ const ProductsPage: React.FC = () => {
     setWishlist((prev) => prev.includes(id) ? prev.filter((i) => i !== id) : [...prev, id]);
   };
 
-  const filtered = allProducts.filter((p) => {
+  const filtered = products.filter((p) => {
     const matchCat = selectedCat === 'Tất cả' || p.category === selectedCat;
     const matchSearch = p.name.toLowerCase().includes(search.toLowerCase());
     return matchCat && matchSearch;
   });
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="w-12 h-12 border-4 border-blue-600 border-t-transparent rounded-full animate-spin" />
+      </div>
+    );
+  }
 
   return (
     <div style={{ background: '#f8fafc', minHeight: '100vh' }}>
@@ -62,7 +94,7 @@ const ProductsPage: React.FC = () => {
 
         {/* Category tabs */}
         <div className="flex gap-2 flex-wrap mb-8">
-          {categories.map((cat) => (
+          {categoryNames.map((cat) => (
             <button
               key={cat}
               onClick={() => setSelectedCat(cat)}
@@ -112,7 +144,7 @@ const ProductsPage: React.FC = () => {
                 <div>
                   <label className="block text-xs text-slate-400 font-semibold uppercase tracking-wider mb-3">Danh mục</label>
                   <div className="space-y-1.5">
-                    {categories.map((cat) => (
+                    {categoryNames.map((cat) => (
                       <button
                         key={cat}
                         onClick={() => setSelectedCat(cat)}
@@ -167,15 +199,15 @@ const ProductsPage: React.FC = () => {
                 {/* Color */}
                 <div>
                   <label className="block text-xs text-slate-400 font-semibold uppercase tracking-wider mb-3">Màu sắc</label>
-                  <div className="flex gap-2">
-                    {colorOptions.map((c) => (
+                  <div className="flex flex-wrap gap-2">
+                    {colors.map((c) => (
                       <button
                         key={c.name}
                         onClick={() => setSelectedColor(selectedColor === c.name ? '' : c.name)}
                         title={c.name}
                         className="w-8 h-8 rounded-full transition-all"
                         style={{
-                          background: c.value,
+                          background: c.hexCode,
                           border: selectedColor === c.name ? '3px solid #2563eb' : '2px solid #e2e8f0',
                           transform: selectedColor === c.name ? 'scale(1.2)' : 'scale(1)',
                         }}

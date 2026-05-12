@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Mail, Phone, MapPin, Send, Clock, MessageCircle } from 'lucide-react';
+import { swal } from '../../utils/swal';
 
 const ContactPage: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -11,7 +12,7 @@ const ContactPage: React.FC = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    alert('Cảm ơn bạn đã liên hệ! Chúng tôi sẽ phản hồi sớm nhất.');
+    swal.success('Cảm ơn bạn!', 'Chúng tôi đã nhận được tin nhắn và sẽ phản hồi sớm nhất.');
     setFormData({ name: '', email: '', phone: '', message: '' });
   };
 

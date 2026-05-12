@@ -5,6 +5,7 @@ import AdminLoadingFallback from '../components/common/AdminLoadingFallback';
 // Lazy load admin components
 const AdminDashboard = lazy(() => import('../pages/admin/Command/AdminDashboard'));
 const AdminProducts = lazy(() => import('../pages/admin/Product/AdminProducts'));
+const ProductImagesVariants = lazy(() => import('../pages/admin/Product/ProductImagesVariants'));
 const AdminOrders = lazy(() => import('../pages/admin/Order/AdminOrders'));
 const AdminCategories = lazy(() => import('../pages/admin/Category/AdminCategories'));
 const AdminUsers = lazy(() => import('../pages/admin/User/AdminUsers'));
@@ -36,6 +37,15 @@ export const adminRoutes: RouteConfig[] = [
     component: withSuspense(AdminProducts),
     meta: {
       title: 'Quản lý sản phẩm - Admin',
+      requiresAuth: true,
+      roles: ['admin'],
+    },
+  },
+  {
+    path: '/admin/products/:id/manage',
+    component: withSuspense(ProductImagesVariants),
+    meta: {
+      title: 'Quản lý ảnh & biến thể - Admin',
       requiresAuth: true,
       roles: ['admin'],
     },

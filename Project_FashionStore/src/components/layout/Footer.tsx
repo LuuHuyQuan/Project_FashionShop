@@ -5,30 +5,53 @@ import { Separator } from '../ui/separator';
 
 const Footer: React.FC = () => {
   return (
-    <footer className="border-t bg-gradient-to-b from-slate-50 to-white">
-      <div className="container mx-auto px-4 py-16">
+    <footer className="relative overflow-hidden" style={{ background: 'linear-gradient(180deg, #f8fafc 0%, #ffffff 100%)' }}>
+      {/* Decorative background */}
+      <div className="absolute inset-0 pointer-events-none opacity-40">
+        <div className="absolute top-0 left-1/4 w-96 h-96 rounded-full" style={{ background: 'radial-gradient(circle, rgba(102,126,234,0.1) 0%, transparent 70%)', filter: 'blur(60px)' }} />
+        <div className="absolute bottom-0 right-1/4 w-80 h-80 rounded-full" style={{ background: 'radial-gradient(circle, rgba(240,147,251,0.1) 0%, transparent 70%)', filter: 'blur(60px)' }} />
+      </div>
+
+      <div className="container mx-auto px-6 py-16 relative z-10">
         <div className="grid grid-cols-1 gap-12 md:grid-cols-2 lg:grid-cols-4">
-          {/* Brand Section */}
-          <div className="flex flex-col gap-4">
-            <h3 className="text-2xl font-bold tracking-tighter">
-              FASHION<span className="bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">STORE</span>
-            </h3>
-            <p className="text-sm text-muted-foreground leading-relaxed">
-              Nâng tầm phong cách của bạn với những lựa chọn thời trang tinh tế và hiện đại nhất.
+          {/* Brand Section - Enhanced */}
+          <div className="flex flex-col gap-5">
+            <div className="flex items-center gap-3">
+              <div className="w-12 h-12 rounded-2xl flex items-center justify-center"
+                style={{ background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)', boxShadow: '0 8px 24px rgba(102,126,234,0.3)' }}>
+                <span className="text-2xl">✨</span>
+              </div>
+              <h3 className="text-2xl font-extrabold">
+                <span className="bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">Fashion</span>
+                <span className="text-slate-800">Store</span>
+              </h3>
+            </div>
+            <p className="text-sm text-slate-500 leading-relaxed">
+              Nâng tầm phong cách của bạn với những lựa chọn thời trang tinh tế và hiện đại nhất. Chất lượng cao, giá cả hợp lý.
             </p>
-            <div className="flex gap-3 mt-2">
+            <div className="flex gap-2.5 mt-2">
               {[
-                { Icon: Facebook, color: 'hover:bg-blue-500' },
-                { Icon: Instagram, color: 'hover:bg-pink-500' },
-                { Icon: Twitter, color: 'hover:bg-sky-500' },
-                { Icon: Youtube, color: 'hover:bg-red-500' }
-              ].map(({ Icon, color }, i) => (
+                { Icon: Facebook, color: '#1877f2', name: 'Facebook' },
+                { Icon: Instagram, color: '#e4405f', name: 'Instagram' },
+                { Icon: Twitter, color: '#1da1f2', name: 'Twitter' },
+                { Icon: Youtube, color: '#ff0000', name: 'Youtube' }
+              ].map(({ Icon, color, name }, i) => (
                 <a
                   key={i}
                   href="#"
-                  className={`p-2.5 rounded-full border bg-white ${color} hover:text-white transition-all hover:scale-110 hover:shadow-lg group`}
+                  title={name}
+                  className="w-11 h-11 rounded-2xl border border-slate-200 bg-white flex items-center justify-center transition-all hover:scale-110 hover:shadow-lg group"
+                  style={{ '--hover-color': color } as React.CSSProperties}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.background = color;
+                    e.currentTarget.style.borderColor = color;
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.background = 'white';
+                    e.currentTarget.style.borderColor = '#e2e8f0';
+                  }}
                 >
-                  <Icon size={18} />
+                  <Icon size={19} className="text-slate-600 group-hover:text-white transition-colors" />
                 </a>
               ))}
             </div>

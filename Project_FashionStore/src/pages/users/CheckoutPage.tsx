@@ -19,9 +19,12 @@ import {
   Gift,
   Clock,
   Package,
+  X,
+  Tag,
 } from 'lucide-react';
 import { useCart } from '../../context/CartContext';
 import { orderingService, type CheckoutRequest } from '../../services/orderingService';
+import { voucherService, type Voucher } from '../../services/voucherService';
 import { swal } from '../../utils/swal';
 
 const paymentMethods = [
@@ -60,7 +63,9 @@ const CheckoutPage: React.FC = () => {
   const { cartItems, clearCart } = useCart();
   const [step, setStep] = useState(1);
   const [paymentMethod, setPaymentMethod] = useState('COD');
-  const [appliedVoucher] = useState<any>(null);
+  const [appliedVoucher, setAppliedVoucher] = useState<Voucher | null>(null);
+  const [voucherCode, setVoucherCode] = useState('');
+  const [isValidatingVoucher, setIsValidatingVoucher] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState({
     fullName: '',
@@ -122,6 +127,39 @@ const CheckoutPage: React.FC = () => {
       setStep(3);
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
+  };
+
+  // Handle voucher validation
+  const handleApplyVoucher = async () => {
+    if (!voucherCode.trim()) {
+      await swal.warning('Thiếu mã giảm giá', 'Vui lòng nhập mã giảm giá');
+      return;
+    }
+
+    setIsValidatingVoucher(true);
+    try {
+      const voucher = await voucherService.validateVoucher({
+        code: voucherCode.trim().toUpperCase(),
+        orderAmount: subtotal,
+      });
+
+      setAppliedVoucher(voucher);
+      await swal.success(
+        'Áp dụng thành công!',
+        `Bạn được giảm ${voucher.discountAmount?.toLocaleString('vi-VN')}đ`
+      );
+    } catch (error: any) {
+      const errorMessage = error.response?.data?.message || 'Mã giảm giá không hợp lệ';
+      await swal.error('Không thể áp dụng', errorMessage);
+    } finally {
+      setIsValidatingVoucher(false);
+    }
+  };
+
+  // Handle remove voucher
+  const handleRemoveVoucher = () => {
+    setAppliedVoucher(null);
+    setVoucherCode('');
   };
 
   const handlePlaceOrder = async () => {
@@ -830,10 +868,62 @@ const CheckoutPage: React.FC = () => {
                     {shipping === 0 ? 'Miễn phí' : `${shipping.toLocaleString('vi-VN')}đ`}
                   </span>
                 </div>
-                <div className="flex justify-between text-sm">
-                  <span className="text-slate-400">Giảm giá</span>
-                  <span className="font-semibold text-green-600">-{discount.toLocaleString('vi-VN')}đ</span>
+
+                {/* Voucher Input */}
+                <div className="pt-2">
+                  {!appliedVoucher ? (
+                    <div className="flex gap-2">
+                      <div className="flex-1 relative">
+                        <input
+                          type="text"
+                          value={voucherCode}
+                          onChange={(e) => setVoucherCode(e.target.value.toUpperCase())}
+                          onKeyPress={(e) => e.key === 'Enter' && handleApplyVoucher()}
+                          placeholder="Nhập mã giảm giá"
+                          className="w-full px-3 py-2.5 pr-10 rounded-xl text-sm font-medium border-2 border-slate-200 focus:border-purple-500 focus:ring-2 focus:ring-purple-100 outline-none transition-all"
+                          disabled={isValidatingVoucher}
+                        />
+                        <Tag size={16} className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400" />
+                      </div>
+                      <button
+                        onClick={handleApplyVoucher}
+                        disabled={isValidatingVoucher || !voucherCode.trim()}
+                        className="px-4 py-2.5 rounded-xl font-semibold text-sm text-white transition-all disabled:opacity-50 disabled:cursor-not-allowed hover:scale-105"
+                        style={{
+                          background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                        }}
+                      >
+                        {isValidatingVoucher ? 'Đang kiểm tra...' : 'Áp dụng'}
+                      </button>
+                    </div>
+                  ) : (
+                    <div
+                      className="p-3 rounded-xl flex items-center justify-between"
+                      style={{ background: 'linear-gradient(135deg, rgba(67,233,123,0.1), rgba(56,249,215,0.1))', border: '1px solid rgba(67,233,123,0.3)' }}
+                    >
+                      <div className="flex items-center gap-2">
+                        <Gift size={16} className="text-green-600" />
+                        <div>
+                          <p className="text-xs font-bold text-green-700">{appliedVoucher.code}</p>
+                          <p className="text-xs text-green-600">{appliedVoucher.name}</p>
+                        </div>
+                      </div>
+                      <button
+                        onClick={handleRemoveVoucher}
+                        className="w-6 h-6 rounded-full flex items-center justify-center hover:bg-red-100 transition-colors"
+                      >
+                        <X size={14} className="text-red-500" />
+                      </button>
+                    </div>
+                  )}
                 </div>
+
+                {discount > 0 && (
+                  <div className="flex justify-between text-sm">
+                    <span className="text-slate-400">Giảm giá</span>
+                    <span className="font-semibold text-green-600">-{discount.toLocaleString('vi-VN')}đ</span>
+                  </div>
+                )}
               </div>
 
               <div

@@ -13,6 +13,7 @@ const WishlistPage = lazy(() => import('../pages/users/WishlistPage'));
 const LoginPage = lazy(() => import('../pages/users/LoginPage'));
 const RegisterPage = lazy(() => import('../pages/users/RegisterPage'));
 const UserProfilePage = lazy(() => import('../pages/users/UserProfilePage'));
+const UserOrders = lazy(() => import('../pages/users/UserOrders'));
 const AboutPage = lazy(() => import('../pages/users/AboutPage'));
 const ContactPage = lazy(() => import('../pages/users/ContactPage'));
 const NotFoundPage = lazy(() => import('../pages/users/NotFoundPage'));
@@ -89,6 +90,14 @@ export const publicRoutes: RouteConfig[] = [
     component: withSuspense(UserProfilePage),
     meta: {
       title: 'Tài khoản của tôi - Fashion Store',
+      requiresAuth: true,
+    },
+  },
+  {
+    path: '/my-orders',
+    component: withSuspense(UserOrders),
+    meta: {
+      title: 'Đơn hàng của tôi - Fashion Store',
       requiresAuth: true,
     },
   },

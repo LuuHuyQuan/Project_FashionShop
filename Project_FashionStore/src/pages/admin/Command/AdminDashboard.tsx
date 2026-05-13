@@ -75,7 +75,7 @@ const AdminDashboard: React.FC = () => {
       const [stats, orders, products] = await Promise.all([
         orderingService.getDashboardStats(),
         orderingService.getRecentOrders(10),
-        orderingService.getTopProducts(4)
+        orderingService.getTopProducts(5)
       ]);
 
       console.log('Dashboard stats:', stats);
@@ -192,12 +192,12 @@ const AdminDashboard: React.FC = () => {
     },
   ];
 
-  const formattedTopProducts = topProducts.map((product, idx) => ({
+  const formattedTopProducts = topProducts.map((product: any, idx: number) => ({
     name: product.name,
-    sold: product.soldCount,
-    revenue: formatCurrency(product.revenue),
-    progress: Math.min(100, (product.soldCount / Math.max(...topProducts.map((p: any) => p.soldCount))) * 100),
-    gradient: ['linear-gradient(90deg, #667eea, #764ba2)', 'linear-gradient(90deg, #f093fb, #f5576c)', 'linear-gradient(90deg, #4facfe, #00f2fe)', 'linear-gradient(90deg, #43e97b, #38f9d7)'][idx % 4],
+    sold: product.totalSold,
+    revenue: formatCurrency(product.totalRevenue),
+    progress: Math.min(100, (product.totalSold / Math.max(...topProducts.map((p: any) => p.totalSold))) * 100),
+    gradient: ['linear-gradient(90deg, #667eea, #764ba2)', 'linear-gradient(90deg, #f093fb, #f5576c)', 'linear-gradient(90deg, #4facfe, #00f2fe)', 'linear-gradient(90deg, #43e97b, #38f9d7)', 'linear-gradient(90deg, #fa709a, #fee140)'][idx % 5],
   }));
 
   return (
@@ -303,7 +303,7 @@ const AdminDashboard: React.FC = () => {
             <table className="w-full">
               <thead>
                 <tr style={{ borderBottom: '1px solid #f1f5f9' }}>
-                  {['Mã đơn', 'Khách hàng', 'Sản phẩm', 'Số tiền', 'Trạng thái', 'Ngày'].map((h) => (
+                  {['Mã đơn', 'Khách hàng', 'Số tiền', 'Trạng thái', 'Ngày'].map((h) => (
                     <th key={h} className="text-left text-xs text-slate-400 font-semibold px-6 py-3 uppercase tracking-wider bg-slate-50">
                       {h}
                     </th>
@@ -311,7 +311,7 @@ const AdminDashboard: React.FC = () => {
                 </tr>
               </thead>
               <tbody>
-                {dashboardData.recentOrders.map((order, idx) => {
+                {recentOrders.map((order: any, idx: number) => {
                   const sc = statusConfig[order.status] || statusConfig['Pending'];
                   return (
                     <tr
@@ -333,7 +333,6 @@ const AdminDashboard: React.FC = () => {
                           <span className="text-sm text-slate-700 font-medium">{order.customerName}</span>
                         </div>
                       </td>
-                      <td className="px-6 py-3.5 text-sm text-slate-400 max-w-[140px] truncate">{order.productName}</td>
                       <td className="px-6 py-3.5 text-sm font-bold text-slate-800">{formatCurrency(order.totalAmount)}</td>
                       <td className="px-6 py-3.5">
                         <span
@@ -365,7 +364,7 @@ const AdminDashboard: React.FC = () => {
             </button>
           </div>
           <div className="p-5 space-y-5">
-            {topProducts.map((product, idx) => (
+            {formattedTopProducts.map((product: any, idx: number) => (
               <div key={product.name} className="group">
                 <div className="flex items-center justify-between mb-2">
                   <div className="flex items-center gap-2">
@@ -379,7 +378,7 @@ const AdminDashboard: React.FC = () => {
                       {product.name}
                     </span>
                   </div>
-                  <span className="text-xs text-slate-400">{product.sold} sold</span>
+                  <span className="text-xs text-slate-400">{product.sold} bán</span>
                 </div>
                 <div className="w-full h-1.5 rounded-full bg-slate-100 overflow-hidden">
                   <div
@@ -395,8 +394,8 @@ const AdminDashboard: React.FC = () => {
           {/* Quick stats at bottom */}
           <div className="px-5 pb-5 grid grid-cols-2 gap-2">
             {[
-              { label: 'Tổng sản phẩm', value: dashboardData.stats.products.value.toString(), color: '#7c3aed', bg: '#ede9fe' },
-              { label: 'Tồn kho thấp', value: dashboardData.lowStockCount.toString(), color: '#dc2626', bg: '#fee2e2' },
+              { label: 'Tổng đơn hàng', value: dashboardStats.totalOrders.toString(), color: '#7c3aed', bg: '#ede9fe' },
+              { label: 'Khách hàng', value: dashboardStats.totalCustomers.toString(), color: '#059669', bg: '#d1fae5' },
             ].map((s) => (
               <div key={s.label} className="rounded-xl p-3 text-center border border-slate-100" style={{ background: s.bg }}>
                 <p className="text-lg font-bold" style={{ color: s.color }}>{s.value}</p>
@@ -407,37 +406,31 @@ const AdminDashboard: React.FC = () => {
         </div>
       </div>
 
-      {/* Bottom row: Activity feed */}
-      <div
-        className="bg-white rounded-2xl p-5 border border-slate-100"
-        style={{ boxShadow: '0 1px 6px rgba(0,0,0,0.06)' }}
-      >
-        <div className="flex items-center justify-between mb-4">
-          <h2 className="font-bold text-slate-800">Hoạt động gần đây</h2>
+      {/* Bottom row: Summary stats */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div
+          className="bg-white rounded-2xl p-5 border border-slate-100"
+          style={{ boxShadow: '0 1px 6px rgba(0,0,0,0.06)' }}
+        >
+          <h3 className="text-sm font-semibold text-slate-500 mb-2">Doanh thu hôm nay</h3>
+          <p className="text-2xl font-bold text-slate-800">{formatCurrency(dashboardStats.revenueToday)}</p>
+          <p className="text-xs text-slate-400 mt-1">{dashboardStats.ordersToday} đơn hàng</p>
         </div>
-        <div className="flex gap-4 overflow-x-auto pb-1">
-          {dashboardData.activities.map((activity, i) => {
-            const colors = [
-              { color: '#16a34a', bg: '#dcfce7' },
-              { color: '#7c3aed', bg: '#ede9fe' },
-              { color: '#dc2626', bg: '#fee2e2' },
-              { color: '#d97706', bg: '#fef3c7' },
-              { color: '#2563eb', bg: '#dbeafe' },
-            ];
-            const colorSet = colors[i % colors.length];
-
-            return (
-              <div
-                key={activity.id}
-                className="flex-shrink-0 rounded-xl p-4 min-w-[220px] border"
-                style={{ background: colorSet.bg, borderColor: colorSet.bg }}
-              >
-                <div className="w-1.5 h-1.5 rounded-full mb-2" style={{ background: colorSet.color }} />
-                <p className="text-sm text-slate-700 leading-tight">{activity.message}</p>
-                <p className="text-xs text-slate-400 mt-2">{formatRelativeTime(activity.createdAt)}</p>
-              </div>
-            );
-          })}
+        <div
+          className="bg-white rounded-2xl p-5 border border-slate-100"
+          style={{ boxShadow: '0 1px 6px rgba(0,0,0,0.06)' }}
+        >
+          <h3 className="text-sm font-semibold text-slate-500 mb-2">Doanh thu tháng này</h3>
+          <p className="text-2xl font-bold text-slate-800">{formatCurrency(dashboardStats.revenueThisMonth)}</p>
+          <p className="text-xs text-slate-400 mt-1">{dashboardStats.ordersThisMonth} đơn hàng</p>
+        </div>
+        <div
+          className="bg-white rounded-2xl p-5 border border-slate-100"
+          style={{ boxShadow: '0 1px 6px rgba(0,0,0,0.06)' }}
+        >
+          <h3 className="text-sm font-semibold text-slate-500 mb-2">Giá trị trung bình</h3>
+          <p className="text-2xl font-bold text-slate-800">{formatCurrency(dashboardStats.averageOrderValue)}</p>
+          <p className="text-xs text-slate-400 mt-1">Mỗi đơn hàng</p>
         </div>
       </div>
     </div>

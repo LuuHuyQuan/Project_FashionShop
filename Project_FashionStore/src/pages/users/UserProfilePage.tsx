@@ -31,7 +31,6 @@ const UserProfilePage: React.FC = () => {
   const [allOrders, setAllOrders] = useState<OrderResponse[]>([]);
   const [loading, setLoading] = useState(true);
   const [totalOrders, setTotalOrders] = useState(0);
-  const [showAllOrders, setShowAllOrders] = useState(false);
 
   useEffect(() => {
     const fetchOrders = async () => {
@@ -81,7 +80,7 @@ const UserProfilePage: React.FC = () => {
   };
 
   const menuItems = [
-    { icon: Package, label: 'Đơn hàng của tôi', count: totalOrders, href: '#orders', onClick: () => setShowAllOrders(true) },
+    { icon: Package, label: 'Đơn hàng của tôi', count: totalOrders, href: '/my-orders' },
     { icon: Heart, label: 'Sản phẩm yêu thích', count: 12, href: '/wishlist' },
     { icon: MapPin, label: 'Sổ địa chỉ', count: 2, href: '#address' },
     { icon: CreditCard, label: 'Phương thức thanh toán', count: 1, href: '#payment' },
@@ -190,6 +189,8 @@ const UserProfilePage: React.FC = () => {
                     onClick={() => {
                       if (item.href.startsWith('/')) {
                         navigate(item.href);
+                      } else if (item.onClick) {
+                        item.onClick();
                       }
                     }}
                     className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-left transition-all hover:bg-purple-50 group"
@@ -271,7 +272,10 @@ const UserProfilePage: React.FC = () => {
             >
               <div className="flex items-center justify-between mb-6">
                 <h3 className="font-bold text-lg text-slate-900">Đơn hàng gần đây</h3>
-                <button className="text-sm font-semibold text-purple-600 hover:text-purple-700 transition-colors">
+                <button
+                  onClick={() => navigate('/my-orders')}
+                  className="text-sm font-semibold text-purple-600 hover:text-purple-700 transition-colors"
+                >
                   Xem tất cả →
                 </button>
               </div>

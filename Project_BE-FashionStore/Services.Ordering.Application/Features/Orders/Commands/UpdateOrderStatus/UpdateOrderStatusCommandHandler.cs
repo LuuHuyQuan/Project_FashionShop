@@ -24,6 +24,7 @@ public sealed class UpdateOrderStatusCommandHandler : IRequestHandler<UpdateOrde
         return new OrderResponse(
             order.Id,
             order.OrderCode,
+            order.UserId,
             order.Status,
             order.PaymentMethod,
             order.PaymentStatus,

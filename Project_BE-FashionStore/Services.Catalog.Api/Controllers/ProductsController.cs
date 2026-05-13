@@ -58,4 +58,20 @@ public class ProductsController : ControllerBase
         await _productRepository.UpdateAsync(product);
         return Ok(product);
     }
+
+    [HttpGet("search")]
+    public async Task<IActionResult> Search(
+        [FromQuery] string? q,
+        [FromQuery] int? categoryId,
+        [FromQuery] decimal? minPrice,
+        [FromQuery] decimal? maxPrice)
+    {
+        var products = await _productRepository.SearchAsync(
+            q ?? string.Empty, 
+            categoryId, 
+            minPrice, 
+            maxPrice);
+        
+        return Ok(products);
+    }
 }

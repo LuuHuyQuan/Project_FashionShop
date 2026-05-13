@@ -34,6 +34,7 @@ public class GetOrdersQueryHandler : IRequestHandler<GetOrdersQuery, IEnumerable
             return new OrderResponse(
                 o.Id,
                 o.OrderCode,
+                o.UserId,
                 o.Status,
                 o.PaymentMethod,
                 o.PaymentStatus,

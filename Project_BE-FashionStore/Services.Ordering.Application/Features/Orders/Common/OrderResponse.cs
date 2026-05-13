@@ -14,6 +14,7 @@ public sealed record OrderItemResponse(
 public sealed record OrderResponse(
     int Id,
     string OrderCode,
+    int UserId,
     string Status,
     string PaymentMethod,
     string PaymentStatus,

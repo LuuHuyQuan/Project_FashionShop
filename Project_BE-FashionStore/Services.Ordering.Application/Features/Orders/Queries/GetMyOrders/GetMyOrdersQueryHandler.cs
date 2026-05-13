@@ -22,6 +22,7 @@ public sealed class GetMyOrdersQueryHandler : IRequestHandler<GetMyOrdersQuery, 
             .Select(order => new OrderResponse(
                 order.Id,
                 order.OrderCode,
+                order.UserId,
                 order.Status,
                 order.PaymentMethod,
                 order.PaymentStatus,

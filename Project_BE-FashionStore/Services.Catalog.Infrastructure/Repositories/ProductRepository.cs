@@ -67,4 +67,54 @@ public class ProductRepository : IProductRepository
         _context.Products.Update(product);
         await _context.SaveChangesAsync(cancellationToken);
     }
+
+    public async Task<IReadOnlyCollection<Product>> SearchAsync(
+        string searchTerm, 
+        int? categoryId = null, 
+        decimal? minPrice = null, 
+        decimal? maxPrice = null, 
+        CancellationToken cancellationToken = default)
+    {
+        var query = _context.Products
+            .Include(p => p.Category)
+            .Include(p => p.ProductImages)
+            .Include(p => p.ProductVariants)
+                .ThenInclude(pv => pv.Color)
+            .Include(p => p.ProductVariants)
+                .ThenInclude(pv => pv.Size)
+            .AsSplitQuery()
+            .Where(p => p.Status == "active")
+            .AsQueryable();
+
+        // Search by name or description
+        if (!string.IsNullOrWhiteSpace(searchTerm))
+        {
+            var lowerSearchTerm = searchTerm.ToLower();
+            query = query.Where(p => 
+                p.Name.ToLower().Contains(lowerSearchTerm) || 
+                (p.Description != null && p.Description.ToLower().Contains(lowerSearchTerm)));
+        }
+
+        // Filter by category
+        if (categoryId.HasValue)
+        {
+            query = query.Where(p => p.CategoryId == categoryId.Value);
+        }
+
+        // Filter by price range
+        if (minPrice.HasValue)
+        {
+            query = query.Where(p => p.Price >= minPrice.Value);
+        }
+
+        if (maxPrice.HasValue)
+        {
+            query = query.Where(p => p.Price <= maxPrice.Value);
+        }
+
+        return await query
+            .OrderByDescending(p => p.CreatedAt)
+            .AsNoTracking()
+            .ToListAsync(cancellationToken);
+    }
 }

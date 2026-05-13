@@ -109,6 +109,7 @@ public sealed class CheckoutCommandHandler : IRequestHandler<CheckoutCommand, Or
         return new OrderResponse(
             orderId,
             orderCode,
+            userId,
             status,
             paymentMethod,
             paymentStatus,

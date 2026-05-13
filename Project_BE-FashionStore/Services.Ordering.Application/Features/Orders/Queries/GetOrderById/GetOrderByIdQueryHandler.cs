@@ -35,6 +35,7 @@ public class GetOrderByIdQueryHandler : IRequestHandler<GetOrderByIdQuery, Order
         return new OrderResponse(
             order.Id,
             order.OrderCode,
+            order.UserId,
             order.Status,
             order.PaymentMethod,
             order.PaymentStatus,

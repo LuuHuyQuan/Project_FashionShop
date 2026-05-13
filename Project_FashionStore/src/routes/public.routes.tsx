@@ -19,6 +19,7 @@ const ContactPage = lazy(() => import('../pages/users/ContactPage'));
 const NotFoundPage = lazy(() => import('../pages/users/NotFoundPage'));
 const TestLoginPage = lazy(() => import('../pages/users/TestLoginPage'));
 const TestAuthPage = lazy(() => import('../pages/users/TestAuthPage'));
+const DebugAuthPage = lazy(() => import('../pages/users/DebugAuthPage'));
 const withSuspense = (Component: React.LazyExoticComponent<React.ComponentType<any>>) => {
   return () => (
     <Suspense fallback={<LoadingFallback />}>
@@ -127,6 +128,13 @@ export const publicRoutes: RouteConfig[] = [
     component: withSuspense(TestAuthPage),
     meta: {
       title: 'Test Auth API - Fashion Store',
+    },
+  },
+  {
+    path: '/debug-auth',
+    component: withSuspense(DebugAuthPage),
+    meta: {
+      title: 'Debug Auth - Fashion Store',
     },
   },
   {

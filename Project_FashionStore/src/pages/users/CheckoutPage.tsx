@@ -24,8 +24,8 @@ import {
   Tag,
 } from 'lucide-react';
 import { useCart } from '../../context/CartContext';
-import { orderingService, type CheckoutRequest } from '../../services/orderingService';
-import { voucherService, type Voucher } from '../../services/voucherService';
+import { orderingService } from '../../services/orderingService';
+import { voucherService, type VoucherValidationResponse } from '../../services/voucherService';
 import { swal } from '../../utils/swal';
 
 const paymentMethods = [
@@ -65,7 +65,7 @@ const CheckoutPage: React.FC = () => {
   const { cartItems, clearCart } = useCart();
   const [step, setStep] = useState(1);
   const [paymentMethod, setPaymentMethod] = useState('COD');
-  const [appliedVoucher, setAppliedVoucher] = useState<Voucher | null>(null);
+  const [appliedVoucher, setAppliedVoucher] = useState<VoucherValidationResponse | null>(null);
   const [voucherCode, setVoucherCode] = useState('');
   const [isValidatingVoucher, setIsValidatingVoucher] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -140,10 +140,7 @@ const CheckoutPage: React.FC = () => {
 
     setIsValidatingVoucher(true);
     try {
-      const voucher = await voucherService.validateVoucher({
-        code: voucherCode.trim().toUpperCase(),
-        orderAmount: subtotal,
-      });
+      const voucher = await voucherService.validateVoucher(voucherCode.trim().toUpperCase(), subtotal);
 
       setAppliedVoucher(voucher);
       await swal.success(
@@ -221,6 +218,8 @@ const CheckoutPage: React.FC = () => {
 
       // DEBUG: Log request data
       console.log('=== CHECKOUT REQUEST ===');
+      console.log('User from context:', user);
+      console.log('User ID:', user.id);
       console.log('Request:', JSON.stringify(checkoutRequest, null, 2));
       console.log('Order Items:', orderItems);
       console.log('========================');

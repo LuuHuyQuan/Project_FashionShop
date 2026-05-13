@@ -141,6 +141,12 @@ export const orderingService = {
     return response.data;
   },
 
+  // Cancel order (for users)
+  cancelOrder: async (id: number): Promise<{ message: string; order: OrderResponse }> => {
+    const response = await orderingApi.post(`/Orders/${id}/cancel`);
+    return response.data;
+  },
+
   // Delete order
   deleteOrder: async (id: number): Promise<void> => {
     await orderingApi.delete(`/Orders/${id}`);

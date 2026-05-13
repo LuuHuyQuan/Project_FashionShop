@@ -74,6 +74,17 @@ export const catalogService = {
     return response.data;
   },
 
+  searchProducts: async (params: SearchProductsParams) => {
+    const queryParams = new URLSearchParams();
+    if (params.q) queryParams.append('q', params.q);
+    if (params.categoryId) queryParams.append('categoryId', params.categoryId.toString());
+    if (params.minPrice) queryParams.append('minPrice', params.minPrice.toString());
+    if (params.maxPrice) queryParams.append('maxPrice', params.maxPrice.toString());
+
+    const response = await catalogApi.get<Product[]>(`/catalog/products/search?${queryParams.toString()}`);
+    return response.data;
+  },
+
   createProduct: async (data: CreateProductRequest) => {
     const response = await catalogApi.post<Product>('/catalog/products', data);
     return response.data;
@@ -214,6 +225,13 @@ export const catalogService = {
 };
 
 // Request types for Create/Update
+export interface SearchProductsParams {
+  q?: string;
+  categoryId?: number;
+  minPrice?: number;
+  maxPrice?: number;
+}
+
 export interface CreateProductRequest {
   categoryId: number;
   name: string;

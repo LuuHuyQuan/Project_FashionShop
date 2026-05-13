@@ -20,6 +20,7 @@ const UserOrders: React.FC = () => {
   const [orders, setOrders] = useState<OrderResponse[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedOrder, setSelectedOrder] = useState<OrderResponse | null>(null);
+  const [cancellingOrderId, setCancellingOrderId] = useState<number | null>(null);
 
   useEffect(() => {
     const fetchOrders = async () => {
@@ -36,6 +37,30 @@ const UserOrders: React.FC = () => {
     };
     fetchOrders();
   }, [user]);
+
+  const handleCancelOrder = async (orderId: number, orderCode: string) => {
+    if (!confirm(`Bạn có chắc muốn hủy đơn hàng #${orderCode}?`)) {
+      return;
+    }
+
+    setCancellingOrderId(orderId);
+    try {
+      await orderingService.cancelOrder(orderId);
+      alert('Đã hủy đơn hàng thành công!');
+
+      // Refresh orders list
+      if (user?.id) {
+        const data = await orderingService.getUserOrders(user.id);
+        setOrders(data);
+      }
+    } catch (error: any) {
+      console.error('Error cancelling order:', error);
+      const errorMessage = error.response?.data?.message || 'Không thể hủy đơn hàng';
+      alert(errorMessage);
+    } finally {
+      setCancellingOrderId(null);
+    }
+  };
 
   const formatDate = (dateStr: string) => {
     try {
@@ -140,12 +165,31 @@ const UserOrders: React.FC = () => {
                     </div>
                   </div>
 
-                  <button
-                    className="mt-4 w-full py-2 text-sm font-semibold text-purple-600 hover:bg-purple-50 rounded-lg transition-colors flex items-center justify-center gap-2"
-                  >
-                    <Eye size={16} />
-                    Xem chi tiết
-                  </button>
+                  <div className="mt-4 flex gap-2">
+                    <button
+                      className="flex-1 py-2 text-sm font-semibold text-purple-600 hover:bg-purple-50 rounded-lg transition-colors flex items-center justify-center gap-2"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setSelectedOrder(order);
+                      }}
+                    >
+                      <Eye size={16} />
+                      Xem chi tiết
+                    </button>
+                    {(status === 'pending' || status === 'processing') && (
+                      <button
+                        className="px-4 py-2 text-sm font-semibold text-red-600 hover:bg-red-50 rounded-lg transition-colors flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleCancelOrder(order.id, order.orderCode);
+                        }}
+                        disabled={cancellingOrderId === order.id}
+                      >
+                        <X size={16} />
+                        {cancellingOrderId === order.id ? 'Đang hủy...' : 'Hủy đơn'}
+                      </button>
+                    )}
+                  </div>
                 </div>
               );
             })}
@@ -272,6 +316,23 @@ const UserOrders: React.FC = () => {
                   <span className="text-sm font-medium text-slate-700">Phương thức thanh toán</span>
                   <span className="text-sm font-semibold text-blue-600">{selectedOrder.paymentMethod}</span>
                 </div>
+
+                {/* Cancel Button */}
+                {(selectedOrder.status.toLowerCase() === 'pending' || selectedOrder.status.toLowerCase() === 'processing') && (
+                  <div className="pt-4 border-t border-slate-200">
+                    <button
+                      className="w-full py-3 text-sm font-semibold text-red-600 hover:bg-red-50 border-2 border-red-200 rounded-xl transition-all flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                      onClick={() => {
+                        handleCancelOrder(selectedOrder.id, selectedOrder.orderCode);
+                        setSelectedOrder(null);
+                      }}
+                      disabled={cancellingOrderId === selectedOrder.id}
+                    >
+                      <X size={18} />
+                      {cancellingOrderId === selectedOrder.id ? 'Đang hủy đơn hàng...' : 'Hủy đơn hàng'}
+                    </button>
+                  </div>
+                )}
               </div>
             </div>
           </div>

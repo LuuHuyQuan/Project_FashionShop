@@ -7,6 +7,7 @@ const AdminDashboard = lazy(() => import('../pages/admin/Command/AdminDashboardS
 const AdminProducts = lazy(() => import('../pages/admin/Product/AdminProducts'));
 const ProductImagesVariants = lazy(() => import('../pages/admin/Product/ProductImagesVariants'));
 const AdminOrders = lazy(() => import('../pages/admin/Order/AdminOrders'));
+const AdminVouchers = lazy(() => import('../pages/admin/Voucher/AdminVouchers'));
 const AdminCategories = lazy(() => import('../pages/admin/Category/AdminCategories'));
 const AdminUsers = lazy(() => import('../pages/admin/User/AdminUsers'));
 const AdminAnalytics = lazy(() => import('../pages/admin/Command/AdminAnalytics'));
@@ -55,6 +56,15 @@ export const adminRoutes: RouteConfig[] = [
     component: withSuspense(AdminOrders),
     meta: {
       title: 'Quản lý đơn hàng - Admin',
+      requiresAuth: true,
+      roles: ['admin'],
+    },
+  },
+  {
+    path: '/admin/vouchers',
+    component: withSuspense(AdminVouchers),
+    meta: {
+      title: 'Quản lý Voucher - Admin',
       requiresAuth: true,
       roles: ['admin'],
     },

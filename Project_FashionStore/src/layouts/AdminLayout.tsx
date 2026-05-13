@@ -16,6 +16,7 @@ import {
   ChevronRight,
   LogOut,
   Sparkles,
+  Ticket,
 } from 'lucide-react';
 
 interface AdminLayoutProps {
@@ -26,6 +27,7 @@ const navItems = [
   { label: 'Tổng quan', icon: LayoutDashboard, path: '/admin', color: '#7c3aed' },
   { label: 'Sản phẩm', icon: Package, path: '/admin/products', color: '#2563eb' },
   { label: 'Đơn hàng', icon: ShoppingBag, path: '/admin/orders', color: '#db2777' },
+  { label: 'Voucher', icon: Ticket, path: '/admin/vouchers', color: '#f59e0b' },
   { label: 'Danh mục', icon: Tags, path: '/admin/categories', color: '#059669' },
   { label: 'Người dùng', icon: Users, path: '/admin/users', color: '#ea580c' },
   { label: 'Thống kê', icon: BarChart3, path: '/admin/analytics', color: '#0284c7' },
@@ -142,19 +144,19 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
                 boxShadow: '0 2px 10px rgba(240,147,251,0.3)',
               }}
             >
-               {user?.fullName?.charAt(0).toUpperCase() || 'A'}
+              {user?.fullName?.charAt(0).toUpperCase() || 'A'}
 
             </div>
             {sidebarOpen && (
               <>
                 <div className="flex-1 min-w-0">
-                   <p className="text-sm font-semibold text-slate-700 truncate leading-tight">{user?.fullName || 'Admin'}</p>
-                   <p className="text-xs truncate text-slate-400">{user?.email || 'admin@fashionstore.vn'}</p>
+                  <p className="text-sm font-semibold text-slate-700 truncate leading-tight">{user?.fullName || 'Admin'}</p>
+                  <p className="text-xs truncate text-slate-400">{user?.email || 'admin@fashionstore.vn'}</p>
 
                 </div>
-                 <button onClick={logout} className="text-slate-300 hover:text-red-400 transition-colors">
-                   <LogOut size={15} />
-                 </button>
+                <button onClick={logout} className="text-slate-300 hover:text-red-400 transition-colors">
+                  <LogOut size={15} />
+                </button>
 
               </>
             )}

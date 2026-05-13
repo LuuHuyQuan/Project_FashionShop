@@ -17,8 +17,6 @@ const UserOrders = lazy(() => import('../pages/users/UserOrders'));
 const AboutPage = lazy(() => import('../pages/users/AboutPage'));
 const ContactPage = lazy(() => import('../pages/users/ContactPage'));
 const NotFoundPage = lazy(() => import('../pages/users/NotFoundPage'));
-const TestLoginPage = lazy(() => import('../pages/users/TestLoginPage'));
-const TestAuthPage = lazy(() => import('../pages/users/TestAuthPage'));
 const DebugAuthPage = lazy(() => import('../pages/users/DebugAuthPage'));
 const withSuspense = (Component: React.LazyExoticComponent<React.ComponentType<any>>) => {
   return () => (
@@ -114,20 +112,6 @@ export const publicRoutes: RouteConfig[] = [
     component: withSuspense(RegisterPage),
     meta: {
       title: 'Đăng ký - Fashion Store',
-    },
-  },
-  {
-    path: '/test-login',
-    component: withSuspense(TestLoginPage),
-    meta: {
-      title: 'Test Login API - Fashion Store',
-    },
-  },
-  {
-    path: '/test-auth',
-    component: withSuspense(TestAuthPage),
-    meta: {
-      title: 'Test Auth API - Fashion Store',
     },
   },
   {

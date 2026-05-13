@@ -28,9 +28,18 @@ export const api = authApi;
 const addAuthInterceptor = (apiInstance: ReturnType<typeof axios.create>) => {
   apiInstance.interceptors.request.use(
     (config) => {
-      const token = localStorage.getItem('accessToken');
-      if (token) {
-        config.headers.Authorization = `Bearer ${token}`;
+      // Read from the correct storage key
+      const authData = localStorage.getItem('fashionstore_auth');
+      if (authData) {
+        try {
+          const parsed = JSON.parse(authData);
+          const token = parsed.accessToken;
+          if (token) {
+            config.headers.Authorization = `Bearer ${token}`;
+          }
+        } catch (e) {
+          console.error('Failed to parse auth data:', e);
+        }
       }
       return config;
     },
@@ -49,7 +58,14 @@ const addRefreshInterceptor = (apiInstance: ReturnType<typeof axios.create>) => 
         originalRequest._retry = true;
 
         try {
-          const refreshToken = localStorage.getItem('refreshToken');
+          const authData = localStorage.getItem('fashionstore_auth');
+          if (!authData) {
+            throw new Error('No auth data');
+          }
+
+          const parsed = JSON.parse(authData);
+          const refreshToken = parsed.refreshToken;
+
           if (!refreshToken) {
             throw new Error('No refresh token');
           }
@@ -58,15 +74,21 @@ const addRefreshInterceptor = (apiInstance: ReturnType<typeof axios.create>) => 
             refreshToken,
           });
 
-          const { accessToken, refreshToken: newRefreshToken } = response.data;
-          localStorage.setItem('accessToken', accessToken);
-          localStorage.setItem('refreshToken', newRefreshToken);
+          const { accessToken, refreshToken: newRefreshToken, user, expiresAt } = response.data;
+
+          // Update the stored auth data
+          const newAuthData = {
+            accessToken,
+            refreshToken: newRefreshToken,
+            user,
+            expiresAt
+          };
+          localStorage.setItem('fashionstore_auth', JSON.stringify(newAuthData));
 
           originalRequest.headers.Authorization = `Bearer ${accessToken}`;
           return apiInstance(originalRequest);
         } catch (refreshError) {
-          localStorage.removeItem('accessToken');
-          localStorage.removeItem('refreshToken');
+          localStorage.removeItem('fashionstore_auth');
           window.location.href = '/login';
           return Promise.reject(refreshError);
         }

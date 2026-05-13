@@ -58,6 +58,7 @@ export interface OrderItemResponse {
 export interface OrderResponse {
   id: number;
   orderCode: string;
+  userId: number;
   status: string;
   paymentMethod: string;
   paymentStatus: string;

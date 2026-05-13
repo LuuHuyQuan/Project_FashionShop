@@ -94,8 +94,10 @@ const AdminOrders: React.FC = () => {
         });
 
         setOrders(transformedOrders);
-      } catch (error) {
+      } catch (error: any) {
         console.error('Error fetching orders:', error);
+        const errorMessage = error.response?.data?.message || error.message || 'Lỗi khi tải danh sách đơn hàng';
+        alert(`Lỗi: ${errorMessage}\n\nVui lòng kiểm tra:\n1. Đã đăng nhập với tài khoản admin?\n2. Backend đang chạy?\n3. Token còn hiệu lực?`);
       } finally {
         setLoading(false);
       }

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../../context/AuthContext';
 import {
   CreditCard,
   Truck,
@@ -60,6 +61,7 @@ const paymentMethods = [
 
 const CheckoutPage: React.FC = () => {
   const navigate = useNavigate();
+  const { user } = useAuth();
   const { cartItems, clearCart } = useCart();
   const [step, setStep] = useState(1);
   const [paymentMethod, setPaymentMethod] = useState('COD');
@@ -163,6 +165,13 @@ const CheckoutPage: React.FC = () => {
   };
 
   const handlePlaceOrder = async () => {
+    // Validate user is logged in
+    if (!user?.id) {
+      await swal.warning('Chưa đăng nhập', 'Vui lòng đăng nhập để đặt hàng');
+      navigate('/login');
+      return;
+    }
+
     // Validate cart items
     if (cartItems.length === 0) {
       await swal.warning('Giỏ hàng trống', 'Vui lòng thêm sản phẩm vào giỏ hàng');
@@ -195,7 +204,7 @@ const CheckoutPage: React.FC = () => {
 
       // Prepare checkout request
       const checkoutRequest = {
-        userId: 1, // TODO: Get from auth context
+        userId: user.id, // Get from authenticated user
         voucherId: appliedVoucher?.id,
         shippingName: formData.fullName,
         shippingPhone: formData.phone,

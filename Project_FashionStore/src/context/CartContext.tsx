@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import type { ReactNode } from 'react';
-import type { Product } from '../data/products';
+import type { Product } from '../services/catalogService';
 import { catalogService } from '../services/catalogService';
 import Swal from 'sweetalert2';
 

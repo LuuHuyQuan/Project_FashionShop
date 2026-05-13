@@ -59,7 +59,7 @@ const CartPage: React.FC = () => {
                   {/* Product Image */}
                   <div className="w-32 h-32 flex-shrink-0 rounded-lg overflow-hidden bg-slate-100">
                     <img
-                      src={item.image}
+                      src={item.images?.[0]?.url || 'https://via.placeholder.com/300'}
                       alt={item.name}
                       className="w-full h-full object-cover"
                     />

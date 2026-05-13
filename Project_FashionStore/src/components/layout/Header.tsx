@@ -14,7 +14,7 @@ const Header: React.FC = () => {
   const [searchFocused, setSearchFocused] = useState(false);
   const { getTotalItems } = useCart();
   const cartCount = getTotalItems();
-  const wishlistCount = 0; // TODO: Implement wishlist context
+  const wishlistCount = 0;
 
   return (
     <header

@@ -1,21 +1,43 @@
 import React, { useState } from 'react';
 import { Heart, ShoppingCart, Star, ArrowRight, Sparkles, X } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-import { products } from '../../data/products';
 
-const initialWishlistItems = products.slice(0, 6).map((p) => ({
-  id: p.id,
-  name: p.name,
-  price: p.price,
-  oldPrice: p.oldPrice,
-  rating: p.rating,
-  reviews: p.reviews,
-  category: p.category,
-  image: p.image,
-  inStock: true,
-}));
-
-initialWishlistItems[2] = { ...initialWishlistItems[2], inStock: false };
+// Mock wishlist items - in real app, this would come from context/API
+const initialWishlistItems = [
+  {
+    id: 1,
+    name: 'Áo thun Premium Cotton',
+    price: 299000,
+    oldPrice: 399000,
+    rating: 5,
+    reviews: 128,
+    category: 'Áo thun',
+    image: 'https://via.placeholder.com/400x500/e0f2fe/0284c7?text=T-Shirt',
+    inStock: true,
+  },
+  {
+    id: 2,
+    name: 'Quần jean Slim Fit',
+    price: 599000,
+    oldPrice: 799000,
+    rating: 4,
+    reviews: 89,
+    category: 'Quần',
+    image: 'https://via.placeholder.com/400x500/fef3c7/f59e0b?text=Jeans',
+    inStock: true,
+  },
+  {
+    id: 3,
+    name: 'Áo khoác Bomber',
+    price: 899000,
+    oldPrice: null,
+    rating: 5,
+    reviews: 156,
+    category: 'Áo khoác',
+    image: 'https://via.placeholder.com/400x500/fce7f3/ec4899?text=Jacket',
+    inStock: false,
+  },
+];
 
 const WishlistPage: React.FC = () => {
   const navigate = useNavigate();

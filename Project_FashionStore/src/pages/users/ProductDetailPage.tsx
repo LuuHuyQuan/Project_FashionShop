@@ -448,9 +448,13 @@ const ProductDetailPage: React.FC = () => {
                 >
                   <div className="aspect-square bg-slate-100 overflow-hidden">
                     <img
-                      src={product.image}
+                      src={product.images?.[0]?.url || product.image || 'https://via.placeholder.com/400x500/e2e8f0/64748b?text=No+Image'}
                       alt={product.name}
                       className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                      onError={(e) => {
+                        const target = e.target as HTMLImageElement;
+                        target.src = 'https://via.placeholder.com/400x500/e2e8f0/64748b?text=No+Image';
+                      }}
                     />
                   </div>
                   <div className="p-4">

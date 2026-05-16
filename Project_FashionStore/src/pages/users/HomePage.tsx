@@ -310,9 +310,13 @@ const HomePage: React.FC = () => {
                     {/* Product image */}
                     <div className="relative aspect-[3/4] overflow-hidden bg-slate-100">
                       <img
-                        src={product.image}
+                        src={product.images?.[0]?.url || product.image || 'https://via.placeholder.com/400x500/e2e8f0/64748b?text=No+Image'}
                         alt={product.name}
                         className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                        onError={(e) => {
+                          const target = e.target as HTMLImageElement;
+                          target.src = 'https://via.placeholder.com/400x500/e2e8f0/64748b?text=No+Image';
+                        }}
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent" />
 
@@ -399,11 +403,9 @@ const HomePage: React.FC = () => {
         </div>
       </section>
 
-      {/* ── NEW SECTIONS ──────────────────────────────── */}
       <BrandStorySection />
       <QualityGuaranteeSection />
 
-      {/* ── PROMO BANNER ──────────────────────────────── */}
       <section className="py-10" style={{ background: '#ffffff' }}>
         <div className="container mx-auto px-6">
           <div
@@ -524,90 +526,6 @@ const HomePage: React.FC = () => {
                 <p className="text-slate-600 text-sm leading-relaxed">{review.comment}</p>
               </div>
             ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ── INSTAGRAM FEED ──────────────────────────────── */}
-      <section className="py-20" style={{ background: 'linear-gradient(180deg, #ffffff 0%, #fef3f2 100%)' }}>
-        <div className="container mx-auto px-6">
-          <div className="text-center mb-12">
-            <div className="inline-flex items-center gap-2 mb-4 px-4 py-1.5 rounded-full"
-              style={{ background: 'rgba(228,64,95,0.1)', border: '1px solid rgba(228,64,95,0.2)' }}>
-              <span className="text-sm">📸</span>
-              <span className="text-sm text-pink-600 font-medium">Instagram</span>
-            </div>
-            <h2 className="text-4xl md:text-5xl font-extrabold text-slate-900 mb-4">
-              Theo dõi chúng tôi <span className="bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">@fashionstore</span>
-            </h2>
-            <p className="text-slate-400 text-lg">Cảm hứng thời trang mỗi ngày</p>
-          </div>
-
-          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
-            {[...Array(6)].map((_, idx) => (
-              <div
-                key={idx}
-                className="group relative aspect-square rounded-2xl overflow-hidden cursor-pointer"
-                style={{ background: `linear-gradient(135deg, ${['#667eea', '#f093fb', '#4facfe', '#fa709a', '#43e97b', '#ffd89b'][idx]}, ${['#764ba2', '#f5576c', '#00f2fe', '#fee140', '#38f9d7', '#19547b'][idx]})` }}
-              >
-                <div className="absolute inset-0 bg-black/20 group-hover:bg-black/40 transition-all" />
-                <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all">
-                  <Heart size={32} className="text-white" />
-                </div>
-              </div>
-            ))}
-          </div>
-
-          <div className="text-center mt-8">
-            <button
-              className="inline-flex items-center gap-2 px-8 py-4 rounded-2xl font-bold text-white transition-all hover:scale-105"
-              style={{ background: 'linear-gradient(135deg, #e4405f, #c13584)', boxShadow: '0 8px 24px rgba(228,64,95,0.4)' }}
-            >
-              <span>📱</span>
-              Theo dõi ngay
-            </button>
-          </div>
-        </div>
-      </section>
-
-      {/* ── NEWSLETTER ──────────────────────────────── */}
-      <section className="py-20" style={{ background: '#ffffff' }}>
-        <div className="container mx-auto px-6">
-          <div
-            className="relative overflow-hidden rounded-3xl p-12 md:p-16 text-center"
-            style={{ background: 'linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)' }}
-          >
-            <div className="absolute -left-20 -top-20 w-80 h-80 rounded-full bg-white/20 blur-3xl" />
-            <div className="absolute -right-20 -bottom-20 w-80 h-80 rounded-full bg-white/20 blur-3xl" />
-
-            <div className="relative z-10 max-w-2xl mx-auto">
-              <div className="text-6xl mb-6">📧</div>
-              <h2 className="text-4xl md:text-5xl font-extrabold text-white mb-4">
-                Đăng ký nhận tin
-              </h2>
-              <p className="text-white/90 text-lg mb-8">
-                Nhận thông tin về sản phẩm mới, ưu đãi đặc biệt và xu hướng thời trang mới nhất
-              </p>
-
-              <div className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
-                <input
-                  type="email"
-                  placeholder="Nhập email của bạn..."
-                  className="flex-1 px-6 py-4 rounded-2xl text-slate-800 placeholder:text-slate-400 focus:outline-none"
-                  style={{ border: '2px solid rgba(255,255,255,0.3)' }}
-                />
-                <button
-                  className="px-8 py-4 rounded-2xl font-bold text-white transition-all hover:scale-105 whitespace-nowrap"
-                  style={{ background: 'linear-gradient(135deg, #667eea, #764ba2)', boxShadow: '0 8px 24px rgba(102,126,234,0.4)' }}
-                >
-                  Đăng ký →
-                </button>
-              </div>
-
-              <p className="text-white/70 text-xs mt-4">
-                Chúng tôi tôn trọng quyền riêng tư của bạn. Hủy đăng ký bất cứ lúc nào.
-              </p>
-            </div>
           </div>
         </div>
       </section>

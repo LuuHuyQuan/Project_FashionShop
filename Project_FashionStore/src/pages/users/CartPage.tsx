@@ -6,17 +6,67 @@ import { Input } from '../../components/ui/input';
 import { Separator } from '../../components/ui/separator';
 import { Badge } from '../../components/ui/badge';
 import { useCart } from '../../context/CartContext';
+import { catalogService } from '../../services/catalogService';
 
 const CartPage: React.FC = () => {
   const navigate = useNavigate();
   const { cartItems, updateQuantity, removeFromCart, getTotalPrice } = useCart();
+  const [itemsWithImages, setItemsWithImages] = React.useState<typeof cartItems>([]);
+  const [loading, setLoading] = React.useState(true);
+
+  // Load product images from API if missing
+  React.useEffect(() => {
+    const loadImages = async () => {
+      try {
+        const itemsWithFullData = await Promise.all(
+          cartItems.map(async (item) => {
+            // If item already has images, use it
+            if (item.images && item.images.length > 0) {
+              return item;
+            }
+
+            // Otherwise, fetch from API
+            try {
+              const product = await catalogService.getProductById(item.id);
+              return {
+                ...item,
+                images: product.images || []
+              };
+            } catch (error) {
+              console.error(`Failed to load images for product ${item.id}:`, error);
+              return item;
+            }
+          })
+        );
+        setItemsWithImages(itemsWithFullData);
+      } catch (error) {
+        console.error('Error loading cart images:', error);
+        setItemsWithImages(cartItems);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadImages();
+  }, [cartItems]);
 
   const subtotal = getTotalPrice();
   const shipping = subtotal > 500000 ? 0 : 30000;
   const discount = 0;
   const total = subtotal + shipping - discount;
 
-  const hasItems = cartItems.length > 0;
+  const displayItems = loading ? cartItems : itemsWithImages;
+  const hasItems = displayItems.length > 0;
+
+  if (loading) {
+    return (
+      <div className="container mx-auto px-4 py-12">
+        <div className="flex items-center justify-center py-20">
+          <div className="w-12 h-12 border-4 border-blue-600 border-t-transparent rounded-full animate-spin" />
+        </div>
+      </div>
+    );
+  }
 
   if (!hasItems) {
     return (
@@ -47,21 +97,32 @@ const CartPage: React.FC = () => {
   return (
     <div className="container mx-auto px-4 py-12">
       <h1 className="text-4xl font-bold mb-2">Giỏ hàng của bạn</h1>
-      <p className="text-muted-foreground mb-8">Bạn có {cartItems.length} sản phẩm trong giỏ hàng</p>
+      <p className="text-muted-foreground mb-8">Bạn có {displayItems.length} sản phẩm trong giỏ hàng</p>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Cart Items */}
         <div className="lg:col-span-2 space-y-4">
-          {cartItems.map((item) => (
+          {displayItems.map((item) => (
             <Card key={`${item.id}-${item.selectedSize}-${item.selectedColor}`} className="overflow-hidden hover-lift">
               <CardContent className="p-0">
                 <div className="flex gap-6 p-6">
                   {/* Product Image */}
                   <div className="w-32 h-32 flex-shrink-0 rounded-lg overflow-hidden bg-slate-100">
                     <img
-                      src={item.images?.[0]?.url || 'https://via.placeholder.com/300'}
+                      src={
+                        // Handle both ProductImage[] and string[]
+                        Array.isArray(item.images) && item.images.length > 0
+                          ? typeof item.images[0] === 'string'
+                            ? item.images[0]
+                            : item.images[0]?.url
+                          : 'https://via.placeholder.com/300x300/e2e8f0/64748b?text=No+Image'
+                      }
                       alt={item.name}
                       className="w-full h-full object-cover"
+                      onError={(e) => {
+                        const target = e.target as HTMLImageElement;
+                        target.src = 'https://via.placeholder.com/300x300/e2e8f0/64748b?text=No+Image';
+                      }}
                     />
                   </div>
 

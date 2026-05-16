@@ -77,7 +77,7 @@ export const authApi = {
     return {
       accessToken: response.accessToken,
       refreshToken: response.refreshToken,
-      expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString(),
+      expiresAt: new Date(Date.now() + 180 * 60 * 1000).toISOString(),
       user: {
         id: response.id,
         fullName: response.fullName,
@@ -106,7 +106,7 @@ export const authApi = {
     return {
       accessToken: response.accessToken,
       refreshToken: response.refreshToken,
-      expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString(),
+      expiresAt: new Date(Date.now() + 180 * 60 * 1000).toISOString(),
       user: {
         id: response.id,
         fullName: response.fullName,
